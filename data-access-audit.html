@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Data Access Audit — Endpoint Central</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <style>
+    /* === RESET === */
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{font-size:14px}
+    body{font-family:'Lato','Segoe UI',Roboto,Arial,sans-serif;background:#f5f6fa;color:#333;overflow:hidden;height:100vh}
+    a{text-decoration:none;color:inherit}
+    ul{list-style:none}
+    hr{border:none;border-top:1px solid #e4e4e4;margin:4px 0}
+    button{font-family:inherit;cursor:pointer}
+
+    /* === TOPBAR === */
+    .topbar{display:flex;align-items:center;height:48px;background:#222;color:#fff;padding:0 0 0 12px;position:fixed;top:0;left:0;right:0;z-index:1000}
+    .topbar-left{display:flex;align-items:center;gap:8px;padding-right:16px}
+    .brand{display:flex;align-items:center;gap:8px}
+    .brand-icon{font-size:24px;background:linear-gradient(135deg,#e53935,#f9a825,#43a047,#1e88e5);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .brand-text{font-size:15px;font-weight:600;white-space:nowrap;color:#fff}
+    .topbar-nav{display:flex;align-items:center;height:100%;flex:1;overflow:hidden}
+    .topnav-item{padding:0 14px;height:48px;display:flex;align-items:center;font-size:13px;font-weight:500;color:rgba(255,255,255,.7);border-bottom:3px solid transparent;transition:all .15s;white-space:nowrap;cursor:pointer}
+    .topnav-item:hover{color:#fff;background:rgba(255,255,255,.06)}
+    .topnav-item.active{color:#fff;border-bottom-color:#4d90fe;background:rgba(77,144,254,.15)}
+    .topnav-overflow{position:relative;height:48px;display:flex;align-items:center}
+    .overflow-dots{padding:0 14px;height:48px;display:flex;align-items:center;font-size:18px;letter-spacing:2px;color:rgba(255,255,255,.7);cursor:pointer;font-weight:bold}
+    .overflow-dots:hover{color:#fff;background:rgba(255,255,255,.06)}
+    .overflow-menu{display:none;position:absolute;top:48px;left:0;background:#fff;color:#333;border-radius:0 0 8px 8px;box-shadow:0 8px 24px rgba(0,0,0,.18);min-width:200px;z-index:1100;overflow:hidden}
+    .overflow-menu.open{display:block}
+    .overflow-menu a{display:block;padding:10px 20px;font-size:13px;color:#333;transition:background .1s}
+    .overflow-menu a:hover{background:#f0f4ff;color:#1a73e8}
+    .topbar-right{display:flex;align-items:center;gap:2px;margin-left:auto;padding-right:8px;flex-shrink:0}
+    .trial-btn{background:#4d90fe;color:#fff;padding:6px 12px;border-radius:4px;font-size:12px;font-weight:600;white-space:nowrap;margin-right:4px}
+    .trial-btn:hover{background:#3b7ddb}
+    .jump-sdp{display:flex;align-items:center;gap:4px;padding:6px 10px;font-size:12px;color:rgba(255,255,255,.8);white-space:nowrap}
+    .jump-sdp:hover{color:#fff}
+    .topbar-action{padding:8px 10px;cursor:pointer;border-radius:4px;font-size:16px;position:relative;color:rgba(255,255,255,.7);transition:background .15s}
+    .topbar-action:hover{background:rgba(255,255,255,.1);color:#fff}
+    .user-avatar{font-size:22px}
+    .user-dropdown{display:none;position:absolute;top:44px;right:0;background:#fff;color:#333;border-radius:6px;box-shadow:0 6px 20px rgba(0,0,0,.18);min-width:180px;z-index:1100;overflow:hidden}
+    .user-dropdown.open{display:block}
+    .user-dropdown a{display:flex;align-items:center;gap:8px;padding:10px 16px;font-size:13px;transition:background .1s;color:#333}
+    .user-dropdown a:hover{background:#f5f7fa}
+
+    /* === LAYOUT === */
+    .main-wrapper{display:flex;margin-top:48px;height:calc(100vh - 48px)}
+
+    /* === SIDEBAR === */
+    .sidebar{width:240px;min-width:240px;background:#fff;border-right:1px solid #e8e8e8;display:flex;flex-direction:column;overflow-y:auto;transition:width .2s,min-width .2s;position:relative}
+    .sidebar.collapsed{width:0;min-width:0;overflow:hidden;border:none}
+    .sidebar-nav{flex:1;padding:8px 0}
+    .sidebar-top-item{display:flex;align-items:center;gap:10px;padding:10px 20px;font-size:13px;color:#555;cursor:pointer;transition:background .1s;white-space:nowrap}
+    .sidebar-top-item:hover{background:#f0f4ff;color:#1a73e8}
+    .sidebar-top-item i{width:16px;text-align:center;font-size:14px;color:#888}
+    .sidebar-group-header{display:flex;align-items:center;gap:8px;padding:10px 20px;font-size:13px;font-weight:600;color:#333;cursor:pointer;transition:background .1s;user-select:none}
+    .sidebar-group-header:hover{background:#f5f5f5}
+    .sidebar-group-header i.group-icon{width:16px;text-align:center;font-size:14px;color:#888}
+    .sidebar-group-header .arrow{margin-left:auto;font-size:11px;color:#aaa;transition:transform .2s}
+    .sidebar-group-items{display:block}
+    .sidebar-group-items.collapsed-items{display:none}
+    .sidebar-group-items li{position:relative}
+    .sidebar-group-items li a{display:flex;align-items:center;justify-content:space-between;padding:9px 20px 9px 36px;font-size:13px;color:#555;cursor:pointer;transition:all .1s;border-left:3px solid transparent}
+    .sidebar-group-items li a:hover{background:#f0f4ff;color:#1a73e8}
+    .sidebar-group-items li a.active{background:#e8f0fe;color:#1a73e8;border-left-color:#1a73e8;font-weight:500}
+    .nav-badge{display:inline-flex;align-items:center;justify-content:center;background:#e53935;color:#fff;font-size:10px;padding:1px 6px;border-radius:10px;min-width:20px;flex-shrink:0}
+    .sidebar-group-items .nav-badge{background:#757575}
+    .sidebar-collapse-btn{position:absolute;top:50%;right:-12px;transform:translateY(-50%);width:24px;height:24px;border-radius:50%;background:#fff;border:1px solid #ddd;display:flex;align-items:center;justify-content:center;font-size:10px;color:#888;cursor:pointer;z-index:10;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+    .sidebar-collapse-btn:hover{background:#f5f5f5}
+
+    /* === SIDEBAR SUB-LABELS === */
+    .sidebar-sub-label{font-size:11px;font-weight:700;text-transform:uppercase;color:#aaa;padding:6px 20px 4px 36px;letter-spacing:.5px;display:block}
+
+    /* === CONTENT === */
+    .content{flex:1;overflow-y:auto;background:#f5f6fa;transition:margin-right .25s}
+    .content.panel-active{margin-right:400px}
+
+    /* === PAGE HEADER === */
+    .page-header{padding:20px 28px 16px;background:#fff;border-bottom:1px solid #e8e8e8}
+    .breadcrumb{display:flex;align-items:center;gap:5px;font-size:12px;color:#888;margin-bottom:6px}
+    .breadcrumb a{color:#1a73e8}
+    .breadcrumb a:hover{text-decoration:underline}
+    .breadcrumb .bc-sep{color:#ccc}
+    .page-title{font-size:18px;font-weight:700;color:#222;margin-bottom:2px}
+    .page-subtitle{font-size:13px;color:#777}
+
+    /* === FILTER TABS === */
+    .filter-tabs-bar{display:flex;background:#fff;border-bottom:2px solid #e8e8e8;padding:0 28px}
+    .filter-tab{padding:10px 18px;font-size:13px;font-weight:500;color:#666;background:none;border:none;border-bottom:3px solid transparent;margin-bottom:-2px;cursor:pointer;transition:all .15s;white-space:nowrap}
+    .filter-tab:hover{color:#1a73e8}
+    .filter-tab.active{color:#1a73e8;border-bottom-color:#1a73e8;font-weight:600}
+
+    /* === TOOLBAR === */
+    .toolbar{display:flex;align-items:center;gap:8px;padding:10px 28px;background:#fff;border-bottom:1px solid #e8e8e8}
+    .btn{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;font-size:13px;font-weight:500;border:1px solid #dadce0;border-radius:4px;background:#fff;color:#333;cursor:pointer;transition:all .15s;white-space:nowrap}
+    .btn:hover{background:#f8f9fa;border-color:#ccc}
+    .toolbar-right{margin-left:0;display:flex;align-items:center;gap:4px}
+    .icon-btn{width:30px;height:30px;display:flex;align-items:center;justify-content:center;border-radius:4px;cursor:pointer;color:#555;font-size:13px}
+    .icon-btn:hover{background:#f0f0f0}
+    .toolbar-sep{width:1px;height:20px;background:#e0e0e0;margin:0 4px}
+
+    /* === TABLE === */
+    .table-wrap{overflow-x:auto;background:#fff}
+    table.data-table{width:100%;border-collapse:collapse;min-width:900px}
+    table.data-table th{background:#f8f9fa;font-weight:600;font-size:12px;color:#5f6368;padding:10px 16px;text-align:left;border-bottom:1px solid #e8e8e8;white-space:nowrap;position:sticky;top:0}
+    table.data-table td{padding:11px 16px;font-size:13px;border-bottom:1px solid #f0f0f0;color:#333;vertical-align:middle}
+    table.data-table tbody tr{cursor:pointer}
+    table.data-table tbody tr:hover{background:#f0f4ff}
+    table.data-table tbody tr.selected{background:#e8f0fe}
+    table.data-table td a{color:#1a73e8}
+
+    /* === SEV BADGE === */
+    .sev-badge{display:inline-flex;align-items:center;padding:2px 10px;border-radius:10px;font-size:11px;font-weight:700;text-transform:uppercase;flex-shrink:0}
+    .sev-badge.critical{background:#ffebee;color:#c62828;border:1px solid #ef9a9a}
+    .sev-badge.warning{background:#fff8e1;color:#b45309;border:1px solid #ffe082}
+    .sev-badge.low{background:#f5f5f5;color:#555;border:1px solid #ddd}
+
+    /* === APPROVE STATUS PILL === */
+    .approve-pill{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:12px;font-size:12px;font-weight:500}
+    .approve-pill.approved{background:#e8f5e9;color:#2e7d32;border:1px solid #a5d6a7}
+    .approve-pill.not-approved{background:#f5f5f5;color:#555;border:1px solid #ddd}
+    .approve-pill.declined{background:#ffebee;color:#c62828;border:1px solid #ef9a9a}
+
+    /* === STATUS CELL === */
+    .status-cell{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:500;white-space:nowrap}
+    .status-cell.unreviewed{color:#d32f2f}
+    .status-cell.cleared{color:#2e7d32}
+    .status-cell.escalated{color:#e65100}
+    .status-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;display:inline-block}
+    .dot-unreviewed{background:#d32f2f}
+    .dot-cleared{background:#2e7d32}
+    .dot-escalated{background:#e65100}
+
+    /* === KEBAB MENU === */
+    .kebab-wrap{position:relative;display:inline-block}
+    .kebab-btn{width:28px;height:28px;display:inline-flex;align-items:center;justify-content:center;border-radius:4px;border:1px solid #e0e0e0;background:#fff;color:#555;cursor:pointer;font-size:14px;font-weight:700;letter-spacing:1px;line-height:1}
+    .kebab-btn:hover{background:#f0f4ff;color:#1a73e8;border-color:#1a73e8}
+    .kebab-menu{display:none;position:absolute;right:0;top:32px;background:#fff;border:1px solid #e0e0e0;border-radius:6px;box-shadow:0 6px 20px rgba(0,0,0,.12);min-width:170px;z-index:300;overflow:hidden}
+    .kebab-wrap.open .kebab-menu{display:block}
+    .kebab-menu a,.kebab-menu button{display:flex;align-items:center;gap:8px;padding:9px 14px;font-size:13px;color:#333;background:none;border:none;width:100%;text-align:left;cursor:pointer;transition:background .1s}
+    .kebab-menu a:hover,.kebab-menu button:hover{background:#f0f4ff;color:#1a73e8}
+    .kebab-menu .danger{color:#d32f2f}
+    .kebab-menu .danger:hover{background:#ffebee;color:#d32f2f}
+
+    /* === PAGINATION === */
+    .table-pagination{display:flex;align-items:center;justify-content:flex-end;padding:10px 16px;font-size:12px;color:#666;border-top:1px solid #f0f0f0;background:#fff;gap:8px}
+    .table-pagination select{padding:2px 6px;border:1px solid #ddd;border-radius:3px;font-size:12px}
+    .page-btn{padding:4px 8px;cursor:pointer;color:#1a73e8}
+
+    /* === DETAIL PANEL === */
+    .detail-panel{position:fixed;top:48px;right:0;width:400px;height:calc(100vh - 48px);background:#fff;border-left:1px solid #e8e8e8;z-index:500;transform:translateX(100%);transition:transform .25s ease;display:flex;flex-direction:column;overflow:hidden}
+    .detail-panel.open{transform:translateX(0)}
+    .panel-header{display:flex;align-items:center;gap:10px;padding:14px 18px;border-bottom:1px solid #e8e8e8;flex-shrink:0;background:#fff}
+    .panel-close-btn{width:28px;height:28px;display:flex;align-items:center;justify-content:center;border:none;background:none;cursor:pointer;color:#555;border-radius:4px;font-size:16px;flex-shrink:0}
+    .panel-close-btn:hover{background:#f0f0f0;color:#333}
+    .panel-patch-name{font-size:14px;font-weight:600;color:#222;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .panel-body{padding:20px 18px;overflow-y:auto;flex:1;display:flex;flex-direction:column;gap:16px}
+    .panel-info-row{display:flex;align-items:center;gap:8px;font-size:13px;color:#555}
+    .panel-info-row i{color:#888;width:16px;text-align:center}
+    .panel-section-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#999;margin-bottom:-6px}
+    .panel-actions-col{display:flex;flex-direction:column;gap:8px}
+    .panel-action-btn{display:flex;align-items:center;gap:8px;padding:9px 14px;font-size:13px;font-weight:500;border-radius:5px;cursor:pointer;transition:all .15s;border:1px solid #dadce0;background:#fff;color:#333;width:100%}
+    .panel-action-btn:hover{background:#f8f9fa}
+    .panel-action-btn.btn-danger{background:#fff;color:#e65100;border-color:#ffb74d}
+    .panel-action-btn.btn-danger:hover{background:#fff3e0}
+    .panel-action-btn.btn-success{color:#2e7d32;border-color:#a5d6a7}
+    .panel-action-btn.btn-success:hover{background:#e8f5e9}
+    .panel-action-btn.btn-muted{color:#777;border-color:#ddd}
+    .panel-action-btn.btn-muted:hover{background:#f5f5f5}
+    .panel-divider{border:none;border-top:1px solid #f0f0f0}
+
+    /* === PANEL TEXTAREA === */
+    .panel-comment-textarea{width:100%;padding:8px 12px;border:1px solid #dadce0;border-radius:5px;font-size:13px;font-family:inherit;color:#333;resize:vertical;outline:none;min-height:72px}
+    .panel-comment-textarea:focus{border-color:#1a73e8}
+    .panel-save-btn{margin-top:8px;padding:7px 16px;background:#1a73e8;color:#fff;border:none;border-radius:4px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;transition:background .15s}
+    .panel-save-btn:hover{background:#1557b0}
+
+    /* === COMMENT MODAL === */
+    .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:2000;align-items:center;justify-content:center}
+    .modal-overlay.open{display:flex}
+    .modal-card{background:#fff;border-radius:10px;width:420px;display:flex;flex-direction:column;box-shadow:0 12px 48px rgba(0,0,0,.28)}
+    .modal-header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px 22px 14px;border-bottom:1px solid #e8e8e8;flex-shrink:0}
+    .modal-title{font-size:15px;font-weight:700;color:#222}
+    .modal-close-btn{width:28px;height:28px;display:flex;align-items:center;justify-content:center;border:none;background:none;cursor:pointer;color:#555;border-radius:4px;font-size:16px}
+    .modal-close-btn:hover{background:#f0f0f0;color:#333}
+    .modal-body{padding:18px 22px}
+    .modal-body textarea{width:100%;padding:8px 12px;border:1px solid #dadce0;border-radius:5px;font-size:13px;font-family:inherit;color:#333;resize:vertical;outline:none;min-height:80px}
+    .modal-body textarea:focus{border-color:#1a73e8}
+    .modal-footer{display:flex;align-items:center;gap:10px;padding:14px 22px;border-top:1px solid #f0f0f0}
+    .btn-save{padding:7px 20px;background:#1a73e8;color:#fff;border:none;border-radius:4px;font-size:13px;font-weight:600;cursor:pointer;transition:background .15s;font-family:inherit}
+    .btn-save:hover{background:#1557b0}
+    .btn-cancel{padding:7px 16px;background:#fff;color:#333;border:1px solid #dadce0;border-radius:4px;font-size:13px;cursor:pointer;transition:all .15s;font-family:inherit}
+    .btn-cancel:hover{background:#f5f5f5}
+
+    /* === SCROLLBAR === */
+    ::-webkit-scrollbar{width:6px;height:6px}
+    ::-webkit-scrollbar-track{background:transparent}
+    ::-webkit-scrollbar-thumb{background:#c0c7d0;border-radius:3px}
+  </style>
+</head>
+<body>
+
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <div class="brand">
+        <span class="brand-icon"><i class="fa-solid fa-circle-notch"></i></span>
+        <span class="brand-text">Endpoint Central</span>
+      </div>
+    </div>
+    <nav class="topbar-nav" id="topNav">
+      <a href="#" class="topnav-item">Home</a>
+      <a href="#" class="topnav-item">Configurations</a>
+      <a href="#" class="topnav-item">Threats &amp; Patches</a>
+      <a href="#" class="topnav-item">Software Deployment</a>
+      <a href="#" class="topnav-item">Inventory</a>
+      <a href="#" class="topnav-item">OS Deployment</a>
+      <a href="#" class="topnav-item">MDM</a>
+      <a href="#" class="topnav-item">Tools</a>
+      <a href="#" class="topnav-item active">AI Governance</a>
+      <a href="#" class="topnav-item">Admin</a>
+      <div class="topnav-overflow" id="overflowBtn">
+        <span class="overflow-dots">•••</span>
+        <div class="overflow-menu" id="overflowMenu">
+          <a href="#">Agent</a>
+          <a href="#">Browsers</a>
+          <a href="#">Application Control</a>
+        </div>
+      </div>
+    </nav>
+    <div class="topbar-right">
+      <a href="#" class="trial-btn">Start your 30 days free trial</a>
+      <a href="#" class="jump-sdp"><i class="fa fa-building"></i> Jump to SDP</a>
+      <div class="topbar-action" title="Search"><i class="fa fa-search"></i></div>
+      <div class="topbar-action" title="Notifications"><i class="fa fa-bell"></i></div>
+      <div class="topbar-action" title="What's New"><i class="fa fa-bolt"></i></div>
+      <div class="topbar-action user-avatar" id="userMenu" style="position:relative">
+        <i class="fa fa-user-circle"></i>
+        <div class="user-dropdown" id="userDropdown">
+          <a href="#"><i class="fa fa-user"></i> My Profile</a>
+          <a href="#"><i class="fa fa-key"></i> Change Password</a>
+          <hr />
+          <a href="#"><i class="fa fa-sign-out-alt"></i> Logout</a>
+        </div>
+      </div>
+      <div class="topbar-action" title="Apps"><i class="fa fa-th"></i></div>
+    </div>
+  </header>
+
+  <!-- MAIN LAYOUT -->
+  <div class="main-wrapper">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+      <nav class="sidebar-nav">
+
+        <div class="sidebar-top-item">
+          <i class="fa fa-house group-icon"></i>
+          <span>Dashboard</span>
+        </div>
+        <div class="sidebar-top-item">
+          <i class="fa fa-shield-halved group-icon"></i>
+          <span>Threats</span>
+        </div>
+
+        <!-- Patches (collapsed) -->
+        <div class="sidebar-group" id="patchesGroup">
+          <div class="sidebar-group-header" onclick="toggleGroup('patchesGroup')">
+            <i class="fa fa-shield-virus group-icon"></i>
+            <span>Patches</span>
+            <i class="fa fa-chevron-right arrow" id="patchesArrow"></i>
+          </div>
+          <ul class="sidebar-group-items collapsed-items" id="patchesItems">
+            <li><a href="#"><span>Missing Patches</span><span class="nav-badge">316</span></a></li>
+            <li><a href="#"><span>Installed Patches</span><span class="nav-badge">81</span></a></li>
+            <li><a href="#"><span>Applicable Patches</span><span class="nav-badge">397</span></a></li>
+            <li><a href="#"><span>Supported Patches</span><span class="nav-badge">554388</span></a></li>
+            <li><a href="#"><span>Decline Patch</span></a></li>
+          </ul>
+        </div>
+
+        <!-- Deployment (collapsed) -->
+        <div class="sidebar-group" id="deployGroup">
+          <div class="sidebar-group-header" onclick="toggleGroup('deployGroup')">
+            <i class="fa fa-rocket group-icon"></i>
+            <span>Deployment</span>
+            <i class="fa fa-chevron-right arrow" id="deployArrow"></i>
+          </div>
+          <ul class="sidebar-group-items collapsed-items" id="deployItems">
+            <li><a href="#"><span>Patch Approval Settings</span></a></li>
+          </ul>
+        </div>
+
+        <!-- Attention Required (collapsed) -->
+        <div class="sidebar-group" id="attentionGroup">
+          <div class="sidebar-group-header" onclick="toggleGroup('attentionGroup')">
+            <i class="fa fa-triangle-exclamation group-icon"></i>
+            <span>Attention Required</span>
+            <i class="fa fa-chevron-right arrow" id="attentionArrow"></i>
+          </div>
+          <ul class="sidebar-group-items collapsed-items" id="attentionItems">
+            <li><a href="#"><span>Upload Pending</span><span class="nav-badge">1</span></a></li>
+            <li><a href="reliability-alerts.html"><span>Reliability Alerts</span><span class="nav-badge">4</span></a></li>
+          </ul>
+        </div>
+
+        <!-- AI Governance (expanded) -->
+        <div class="sidebar-group" id="aigovGroup">
+          <div class="sidebar-group-header" onclick="toggleGroup('aigovGroup')">
+            <i class="fa fa-robot group-icon"></i>
+            <span>AI Governance</span>
+            <i class="fa fa-chevron-down arrow" id="aigovArrow"></i>
+          </div>
+          <ul class="sidebar-group-items" id="aigovItems">
+            <span class="sidebar-sub-label">Agent Governance</span>
+            <li><a href="ai-discovery.html"><span>AI Discovery</span><span class="nav-badge" style="background:#e53935">3</span></a></li>
+            <li>
+              <a href="data-access-audit.html" class="active">
+                <span>Data Access Audit</span>
+                <span class="nav-badge" style="background:#e53935">8</span>
+              </a>
+            </li>
+            <li><a href="privilege-control.html"><span>Privilege Control</span></a></li>
+            <li><a href="#"><span>Removal Policies</span></a></li>
+            <span class="sidebar-sub-label">Shadow AI</span>
+            <li><a href="#"><span>Browser Usage</span><span class="nav-badge" style="background:#e53935">2</span></a></li>
+            <li><a href="#"><span>DLP for AI Apps</span></a></li>
+          </ul>
+        </div>
+
+      </nav>
+      <button class="sidebar-collapse-btn" id="sidebarCollapseBtn">
+        <i class="fa fa-angle-double-left" id="collapseIcon"></i>
+      </button>
+    </aside>
+
+    <!-- CONTENT -->
+    <main class="content" id="mainContent">
+
+      <!-- PAGE HEADER -->
+      <div class="page-header">
+        <div class="breadcrumb">
+          <a href="ai-discovery.html">AI Governance</a>
+          <span class="bc-sep">›</span>
+          <a href="ai-discovery.html">Agent Governance</a>
+          <span class="bc-sep">›</span>
+          <span>Data Access Audit</span>
+        </div>
+        <div class="page-title">Data Access Audit</div>
+        <div class="page-subtitle">AI agent interactions with sensitive files and data — flagged for security review and incident management.</div>
+      </div>
+
+      <!-- FILTER TABS -->
+      <div class="filter-tabs-bar">
+        <button class="filter-tab active" onclick="setFilter('all',this)">All</button>
+        <button class="filter-tab" onclick="setFilter('credentials',this)">Credentials</button>
+        <button class="filter-tab" onclick="setFilter('pii',this)">PII</button>
+        <button class="filter-tab" onclick="setFilter('sourcecode',this)">Source Code</button>
+        <button class="filter-tab" onclick="setFilter('internal',this)">Internal Docs</button>
+        <button class="filter-tab" onclick="setFilter('unreviewed',this)">Unreviewed</button>
+      </div>
+
+      <!-- TOOLBAR -->
+      <div class="toolbar">
+        <div class="toolbar-right">
+          <div class="icon-btn" title="Search"><i class="fa fa-search"></i></div>
+          <div class="icon-btn" title="Export"><i class="fa fa-file-export"></i></div>
+          <div class="icon-btn" title="Refresh"><i class="fa fa-rotate"></i></div>
+        </div>
+      </div>
+
+      <!-- TABLE -->
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Computer Name</th>
+              <th>Logged in User</th>
+              <th>File Name</th>
+              <th>AI Agent</th>
+              <th>Classification Rule</th>
+              <th>Classification Category</th>
+              <th>Event Status</th>
+              <th>Event Time</th>
+              <th>Comment</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="auditTableBody"></tbody>
+        </table>
+      </div>
+
+      <!-- PAGINATION -->
+      <div class="table-pagination">
+        <span>1 – <span id="rowCount">8</span> of <span id="totalCount">8</span> Records</span>
+        <select title="Rows per page"><option>25</option><option>50</option></select>
+        <span class="page-btn">&#8249;</span>
+        <span class="page-btn">&#8250;</span>
+      </div>
+
+    </main><!-- /content -->
+
+    <!-- SLIDE-IN DETAIL PANEL -->
+    <aside class="detail-panel" id="detailPanel">
+      <div class="panel-header">
+        <button class="panel-close-btn" onclick="closePanel()" title="Close"><i class="fa fa-xmark"></i></button>
+        <span class="panel-patch-name" id="panelFileName">—</span>
+        <span class="sev-badge" id="panelSevBadge"></span>
+      </div>
+      <div class="panel-body">
+
+        <!-- Meta info -->
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div class="panel-info-row">
+            <i class="fa fa-desktop"></i>
+            <span id="panelComputer">—</span>
+          </div>
+          <div class="panel-info-row">
+            <i class="fa fa-user"></i>
+            <span id="panelUser">—</span>
+          </div>
+          <div class="panel-info-row">
+            <i class="fa fa-robot"></i>
+            <span id="panelAgent">—</span>
+          </div>
+          <div class="panel-info-row">
+            <i class="fa fa-ruler"></i>
+            <span id="panelRule">—</span>
+          </div>
+          <div class="panel-info-row">
+            <i class="fa fa-clock"></i>
+            <span id="panelTime">—</span>
+          </div>
+        </div>
+
+        <hr class="panel-divider" />
+
+        <!-- Comment -->
+        <div>
+          <div class="panel-section-label">Comment</div>
+          <textarea class="panel-comment-textarea" id="panelCommentArea" rows="3" placeholder="Add a comment…" style="margin-top:8px"></textarea>
+          <button class="panel-save-btn" onclick="savePanelComment()">Save Comment</button>
+        </div>
+
+        <hr class="panel-divider" />
+
+        <!-- Incident Actions -->
+        <div>
+          <div class="panel-section-label">Incident Actions</div>
+          <div class="panel-actions-col" style="margin-top:8px">
+            <button class="panel-action-btn btn-success" onclick="panelMarkCleared()">
+              <i class="fa fa-circle-check"></i> Mark Cleared
+            </button>
+            <button class="panel-action-btn btn-danger" onclick="panelEscalate()">
+              <i class="fa fa-arrow-up-right-from-square"></i> Escalate
+            </button>
+            <button class="panel-action-btn btn-muted" onclick="closePanel()">
+              <i class="fa fa-xmark"></i> Close Panel
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </aside>
+
+  </div><!-- /main-wrapper -->
+
+  <!-- ADD COMMENT MODAL -->
+  <div id="commentModalOverlay" class="modal-overlay" role="dialog" aria-modal="true">
+    <div class="modal-card">
+      <div class="modal-header">
+        <span class="modal-title">Add Comment</span>
+        <button class="modal-close-btn" onclick="closeCommentModal()"><i class="fa fa-xmark"></i></button>
+      </div>
+      <div class="modal-body">
+        <textarea id="commentModalText" rows="4" placeholder="Enter your comment…"></textarea>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-save" onclick="saveCommentModal()">Save</button>
+        <button class="btn-cancel" onclick="closeCommentModal()">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* ===== DATA ===== */
+    const EVENTS = [
+      { id:'EVT-001', computer:'WKSTN-042',   user:'john.smith',   file:'credentials.env',       agent:'GitHub Copilot', rule:'Credential Scan Rule',  category:'credentials', eventStatus:'unreviewed', time:'May 29, 2026 09:14', comment:'',                            status:'new' },
+      { id:'EVT-002', computer:'WKSTN-117',   user:'sarah.jones',  file:'user_data.csv',          agent:'Claude Desktop', rule:'PII Detection Rule',    category:'pii',         eventStatus:'cleared',    time:'May 28, 2026 10:02', comment:'Cleared by IT security team', status:'cleared' },
+      { id:'EVT-003', computer:'DEVBOX-005',  user:'mike.chen',    file:'src/auth/handler.py',    agent:'Cursor IDE',     rule:'Source Code Policy',    category:'sourcecode',  eventStatus:'unreviewed', time:'May 29, 2026 11:30', comment:'',                            status:'new' },
+      { id:'EVT-004', computer:'LAPTOP-221',  user:'emily.davis',  file:'payroll_q1.xlsx',        agent:'Gemini CLI',     rule:'Internal Docs Rule',    category:'internal',    eventStatus:'escalated',  time:'May 27, 2026 15:45', comment:'Escalated to security team',  status:'escalated' },
+      { id:'EVT-005', computer:'WKSTN-089',   user:'robert.kim',   file:'api_keys.json',          agent:'Continue.dev',   rule:'Credential Scan Rule',  category:'credentials', eventStatus:'unreviewed', time:'May 29, 2026 08:00', comment:'',                            status:'new' },
+      { id:'EVT-006', computer:'DEVBOX-013',  user:'lisa.wong',    file:'employee_records.db',    agent:'Claude Desktop', rule:'PII Detection Rule',    category:'pii',         eventStatus:'unreviewed', time:'May 29, 2026 09:22', comment:'',                            status:'new' },
+      { id:'EVT-007', computer:'WKSTN-055',   user:'david.park',   file:'src/auth/jwt.ts',        agent:'GitHub Copilot', rule:'Source Code Policy',    category:'sourcecode',  eventStatus:'cleared',    time:'May 27, 2026 14:10', comment:'Dev activity — approved',     status:'cleared' },
+      { id:'EVT-008', computer:'LAPTOP-198',  user:'amanda.lee',   file:'budget_2026_final.xlsx', agent:'Ollama',         rule:'Internal Docs Rule',    category:'internal',    eventStatus:'unreviewed', time:'May 29, 2026 10:15', comment:'',                            status:'new' },
+    ];
+
+    const CATEGORY_META = {
+      credentials: { cls: 'critical', label: 'Credentials' },
+      pii:         { cls: 'warning',  label: 'PII' },
+      sourcecode:  { cls: 'low',      label: 'Source Code' },
+      internal:    { cls: 'warning',  label: 'Internal Docs' },
+    };
+
+    const STATUS_PILL_MAP = {
+      new:       { cls: 'not-approved', label: 'New' },
+      cleared:   { cls: 'approved',     label: 'Cleared' },
+      escalated: { cls: 'declined',     label: 'Escalated' },
+    };
+
+    let currentFilter  = 'all';
+    let currentEventId = null;
+    let commentTargetId = null;
+
+    /* ===== RENDER ===== */
+    function getFiltered() {
+      if (currentFilter === 'all') return EVENTS;
+      if (currentFilter === 'unreviewed') return EVENTS.filter(e => e.eventStatus === 'unreviewed');
+      return EVENTS.filter(e => e.category === currentFilter);
+    }
+
+    function renderTable() {
+      const data  = getFiltered();
+      const tbody = document.getElementById('auditTableBody');
+      document.getElementById('rowCount').textContent  = data.length;
+      document.getElementById('totalCount').textContent = data.length;
+
+      if (!data.length) {
+        tbody.innerHTML = `<tr><td colspan="11" style="text-align:center;padding:40px;color:#999;font-size:13px">No events found for this filter.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = data.map(ev => {
+        const catMeta   = CATEGORY_META[ev.category] || { cls:'low', label: ev.category };
+        const pillMeta  = STATUS_PILL_MAP[ev.status]  || { cls:'not-approved', label: ev.status };
+        const isSelected = ev.id === currentEventId ? 'selected' : '';
+
+        const dotCls    = 'dot-' + ev.eventStatus;
+        const statusCls = 'status-cell ' + ev.eventStatus;
+        const statusLbl = ev.eventStatus.charAt(0).toUpperCase() + ev.eventStatus.slice(1);
+
+        const commentDisplay = ev.comment
+          ? ev.comment
+          : '<em style="color:#bbb">—</em>';
+
+        return `
+          <tr class="${isSelected}" onclick="openPanel('${ev.id}')">
+            <td><a href="#" onclick="event.stopPropagation()">${ev.computer}</a></td>
+            <td>${ev.user}</td>
+            <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${ev.file}">${ev.file}</td>
+            <td>${ev.agent}</td>
+            <td><span style="font-size:12px;color:#777">${ev.rule}</span></td>
+            <td><span class="sev-badge ${catMeta.cls}">${catMeta.label}</span></td>
+            <td><span class="${statusCls}"><span class="status-dot ${dotCls}"></span>${statusLbl}</span></td>
+            <td style="white-space:nowrap">${ev.time}</td>
+            <td style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${commentDisplay}</td>
+            <td><span class="approve-pill ${pillMeta.cls}">${pillMeta.label}</span></td>
+            <td onclick="event.stopPropagation()">
+              <div class="kebab-wrap" id="kebab-${ev.id}">
+                <button class="kebab-btn" onclick="toggleKebab('${ev.id}',event)" title="Actions">•••</button>
+                <div class="kebab-menu">
+                  <button onclick="markCleared('${ev.id}')"><i class="fa fa-circle-check" style="color:#2e7d32"></i> Mark Cleared</button>
+                  <button onclick="escalate('${ev.id}')"><i class="fa fa-arrow-up-right-from-square" style="color:#e65100"></i> Escalate</button>
+                  <button onclick="openCommentModal('${ev.id}')"><i class="fa fa-comment" style="color:#1a73e8"></i> Add Comment</button>
+                </div>
+              </div>
+            </td>
+          </tr>`;
+      }).join('');
+    }
+
+    /* ===== KEBAB ===== */
+    function toggleKebab(evId, e) {
+      e.stopPropagation();
+      const wrap = document.getElementById('kebab-' + evId);
+      const isOpen = wrap.classList.contains('open');
+      closeAllKebabs();
+      if (!isOpen) wrap.classList.add('open');
+    }
+    function closeAllKebabs() {
+      document.querySelectorAll('.kebab-wrap.open').forEach(w => w.classList.remove('open'));
+    }
+
+    /* ===== FILTER ===== */
+    function setFilter(filter, tabEl) {
+      currentFilter = filter;
+      document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+      if (tabEl) tabEl.classList.add('active');
+      renderTable();
+    }
+
+    /* ===== ACTIONS ===== */
+    function markCleared(evId) {
+      closeAllKebabs();
+      const ev = EVENTS.find(e => e.id === evId);
+      if (!ev) return;
+      ev.eventStatus = 'cleared';
+      ev.status      = 'cleared';
+      renderTable();
+      if (currentEventId === evId) syncPanel(evId);
+    }
+
+    function escalate(evId) {
+      closeAllKebabs();
+      const ev = EVENTS.find(e => e.id === evId);
+      if (!ev) return;
+      ev.eventStatus = 'escalated';
+      ev.status      = 'escalated';
+      renderTable();
+      if (currentEventId === evId) syncPanel(evId);
+    }
+
+    /* ===== COMMENT MODAL ===== */
+    function openCommentModal(evId) {
+      closeAllKebabs();
+      commentTargetId = evId;
+      const ev = EVENTS.find(e => e.id === evId);
+      document.getElementById('commentModalText').value = ev ? ev.comment : '';
+      document.getElementById('commentModalOverlay').classList.add('open');
+    }
+    function closeCommentModal() {
+      document.getElementById('commentModalOverlay').classList.remove('open');
+      commentTargetId = null;
+    }
+    function saveCommentModal() {
+      if (!commentTargetId) return;
+      const ev = EVENTS.find(e => e.id === commentTargetId);
+      if (ev) ev.comment = document.getElementById('commentModalText').value.trim();
+      closeCommentModal();
+      renderTable();
+      if (currentEventId === (ev && ev.id)) {
+        document.getElementById('panelCommentArea').value = ev.comment;
+      }
+    }
+
+    /* ===== DETAIL PANEL ===== */
+    function openPanel(evId) {
+      const ev = EVENTS.find(e => e.id === evId);
+      if (!ev) return;
+      currentEventId = evId;
+
+      const catMeta = CATEGORY_META[ev.category] || { cls:'low', label: ev.category };
+      document.getElementById('panelFileName').textContent = ev.file;
+      const badge = document.getElementById('panelSevBadge');
+      badge.textContent  = catMeta.label;
+      badge.className    = 'sev-badge ' + catMeta.cls;
+
+      document.getElementById('panelComputer').textContent     = ev.computer;
+      document.getElementById('panelUser').textContent         = ev.user;
+      document.getElementById('panelAgent').textContent        = ev.agent;
+      document.getElementById('panelRule').textContent         = ev.rule;
+      document.getElementById('panelTime').textContent         = ev.time;
+      document.getElementById('panelCommentArea').value        = ev.comment;
+
+      document.getElementById('detailPanel').classList.add('open');
+      document.getElementById('mainContent').classList.add('panel-active');
+
+      // highlight row
+      document.querySelectorAll('#auditTableBody tr').forEach(tr => tr.classList.remove('selected'));
+      const data = getFiltered();
+      const idx  = data.findIndex(e => e.id === evId);
+      const rows = document.querySelectorAll('#auditTableBody tr');
+      if (rows[idx]) rows[idx].classList.add('selected');
+    }
+
+    function syncPanel(evId) {
+      // Re-sync panel data after action without closing
+      const ev = EVENTS.find(e => e.id === evId);
+      if (!ev) return;
+      document.getElementById('panelCommentArea').value = ev.comment;
+    }
+
+    function closePanel() {
+      document.getElementById('detailPanel').classList.remove('open');
+      document.getElementById('mainContent').classList.remove('panel-active');
+      document.querySelectorAll('#auditTableBody tr').forEach(tr => tr.classList.remove('selected'));
+      currentEventId = null;
+    }
+
+    /* ===== PANEL ACTIONS ===== */
+    function savePanelComment() {
+      if (!currentEventId) return;
+      const ev = EVENTS.find(e => e.id === currentEventId);
+      if (!ev) return;
+      ev.comment = document.getElementById('panelCommentArea').value.trim();
+      renderTable();
+    }
+
+    function panelMarkCleared() {
+      if (!currentEventId) return;
+      markCleared(currentEventId);
+    }
+
+    function panelEscalate() {
+      if (!currentEventId) return;
+      escalate(currentEventId);
+    }
+
+    /* ===== SIDEBAR GROUPS ===== */
+    function toggleGroup(groupId) {
+      const itemsId = groupId.replace('Group', 'Items');
+      const arrowId = groupId.replace('Group', 'Arrow');
+      const items   = document.getElementById(itemsId);
+      const arrow   = document.getElementById(arrowId);
+      const isOpen  = !items.classList.contains('collapsed-items');
+      items.classList.toggle('collapsed-items', isOpen);
+      arrow.classList.toggle('fa-chevron-down', !isOpen);
+      arrow.classList.toggle('fa-chevron-right', isOpen);
+    }
+
+    /* ===== SIDEBAR COLLAPSE ===== */
+    let sidebarCollapsed = false;
+    document.getElementById('sidebarCollapseBtn').addEventListener('click', function () {
+      sidebarCollapsed = !sidebarCollapsed;
+      document.getElementById('sidebar').classList.toggle('collapsed', sidebarCollapsed);
+      document.getElementById('collapseIcon').className = sidebarCollapsed
+        ? 'fa fa-angle-double-right' : 'fa fa-angle-double-left';
+    });
+
+    /* ===== TOPBAR DROPDOWNS ===== */
+    document.getElementById('overflowBtn').addEventListener('click', e => {
+      e.stopPropagation();
+      document.getElementById('overflowMenu').classList.toggle('open');
+      document.getElementById('userDropdown').classList.remove('open');
+    });
+    document.getElementById('userMenu').addEventListener('click', e => {
+      e.stopPropagation();
+      document.getElementById('userDropdown').classList.toggle('open');
+      document.getElementById('overflowMenu').classList.remove('open');
+    });
+    document.addEventListener('click', e => {
+      closeAllKebabs();
+      document.getElementById('overflowMenu').classList.remove('open');
+      document.getElementById('userDropdown').classList.remove('open');
+    });
+
+    /* ===== MODAL DISMISS ===== */
+    document.getElementById('commentModalOverlay').addEventListener('click', function(e) {
+      if (e.target === this) closeCommentModal();
+    });
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        closeCommentModal();
+      }
+    });
+
+    /* ===== INIT ===== */
+    renderTable();
+  </script>
+</body>
+</html>
