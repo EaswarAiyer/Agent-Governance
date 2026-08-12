@@ -327,6 +327,7 @@
             <li><a href="ai-discovery.html"><i class="fa fa-house"></i><span>Overview</span></a></li>
             <li><a href="ai-discovery.html"><i class="fa fa-circle"></i><span>Discovery</span></a></li>
             <li><a href="privilege-control.html"><i class="fa fa-ban"></i><span>Policies</span></a></li>
+            <li><a href="deployment.html"><i class="fa fa-rocket"></i><span>Deployment</span></a></li>
             <li><span class="sidebar-sub-label" style="margin-top:20px">Intelligence</span></li>
             <li><a href="data-access-audit.html" class="active"><i class="fa fa-chart-pie"></i><span>Observability</span></a></li>
             <li><a href="#"><i class="fa fa-exclamation"></i><span>Alerts</span><span class="nav-badge">12</span></a></li>
@@ -349,11 +350,16 @@
           <span class="bc-sep">›</span>
           <a href="ai-discovery.html">Agent Governance</a>
           <span class="bc-sep">›</span>
-          <span>Data Access Audit</span>
+          <span>Observability</span>
         </div>
-        <div class="page-title">Data Access Audit</div>
-        <div class="page-subtitle">AI agent interactions with sensitive files and data — flagged for security review and incident management.</div>
+        <div class="page-title">Prompt Observability</div>
+        <div class="page-subtitle">A global view of prompts, attachments, classifications, and responses across all AI agents.</div>
       </div>
+
+      <section class="global-prompt-log">
+        <div class="global-log-toolbar"><strong>All prompt activity</strong><span>Click a prompt to view its full prompt and response.</span></div>
+        <div class="table-wrap"><table class="data-table"><thead><tr><th>AI Agent</th><th>Prompt</th><th>Attached Files</th><th>Data Classification</th><th>Computer</th><th>Time</th></tr></thead><tbody id="globalPromptRows"></tbody></table></div>
+      </section>
 
       <!-- FILTER TABS -->
       <div class="filter-tabs-bar">
@@ -470,6 +476,11 @@
     </aside>
 
   </div><!-- /main-wrapper -->
+
+  <style>
+    #mainContent > .filter-tabs-bar,#mainContent > .toolbar,#mainContent > .table-wrap,#mainContent > .table-pagination,.detail-panel{display:none !important}
+    .global-prompt-log{display:flex;flex-direction:column;flex:1;min-height:0;background:#fff;overflow:auto}.global-log-toolbar{display:flex;justify-content:space-between;align-items:center;padding:13px 28px;border-bottom:1px solid #e5e7eb;font-size:13px}.global-log-toolbar span{font-size:12px;color:#6b7280}.global-prompt-log .table-wrap{flex:1}.global-prompt-log tbody tr{cursor:pointer}.global-prompt-log tbody tr:hover{background:#f5f8ff}.prompt-cell{max-width:420px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.global-classification{display:inline-block;padding:3px 8px;border-radius:9px;background:#fff3e0;color:#a85c00;font-size:11px;font-weight:700}
+  </style>
 
   <!-- ADD COMMENT MODAL -->
   <div id="commentModalOverlay" class="modal-overlay" role="dialog" aria-modal="true">
@@ -752,6 +763,16 @@
 
     /* ===== INIT ===== */
     renderTable();
+  </script>
+  <script>
+    const GLOBAL_PROMPTS = [
+      {id:'P-001',agent:'GitHub Copilot',agentId:'AI-001',prompt:'Summarize the customer escalation and propose a response.',files:'customer-escalation.docx',classification:'Confidential',computer:'WIN-DEV-001',time:'Jun 2, 2026 14:23'},
+      {id:'P-002',agent:'GitHub Copilot',agentId:'AI-001',prompt:'Review this deployment configuration for security issues.',files:'deployment-config.yaml, .env.example',classification:'Internal',computer:'WIN-DEV-001',time:'Jun 2, 2026 11:08'},
+      {id:'P-003',agent:'Claude Desktop',agentId:'AI-002',prompt:'Create a concise summary of the attached project plan.',files:'project-plan.pdf',classification:'Internal',computer:'MAC-ENG-002',time:'Jun 1, 2026 16:42'},
+      {id:'P-001',agent:'Cursor IDE',agentId:'AI-003',prompt:'Summarize the customer escalation and propose a response.',files:'customer-escalation.docx',classification:'Confidential',computer:'WIN-DEV-007',time:'Jun 1, 2026 13:15'},
+      {id:'P-002',agent:'Gemini CLI',agentId:'AI-006',prompt:'Review this deployment configuration for security issues.',files:'deployment-config.yaml',classification:'Internal',computer:'MAC-ENG-010',time:'May 31, 2026 09:36'}
+    ];
+    document.getElementById('globalPromptRows').innerHTML = GLOBAL_PROMPTS.map(p => `<tr onclick="location.href='prompt-details.html?agent=${p.agentId}&prompt=${p.id}'"><td><i class="fa fa-robot" style="color:#1a73e8;margin-right:7px"></i>${p.agent}</td><td class="prompt-cell">${p.prompt}</td><td>${p.files}</td><td><span class="global-classification">${p.classification}</span></td><td>${p.computer}</td><td style="white-space:nowrap;color:#6b7280">${p.time}</td></tr>`).join('');
   </script>
 </body>
 </html>

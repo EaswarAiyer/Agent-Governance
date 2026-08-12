@@ -314,6 +314,7 @@
             <li><a href="ai-discovery.html"><i class="fa fa-house"></i><span>Overview</span></a></li>
             <li><a href="ai-discovery.html"><i class="fa fa-circle"></i><span>Discovery</span></a></li>
             <li><a href="privilege-control.html" class="active"><i class="fa fa-ban"></i><span>Policies</span></a></li>
+            <li><a href="deployment.html"><i class="fa fa-rocket"></i><span>Deployment</span></a></li>
             <li><span class="sidebar-sub-label" style="margin-top:20px">Intelligence</span></li>
             <li><a href="data-access-audit.html"><i class="fa fa-chart-pie"></i><span>Observability</span></a></li>
             <li><a href="#"><i class="fa fa-exclamation"></i><span>Alerts</span><span class="nav-badge">12</span></a></li>
@@ -336,10 +337,10 @@
           <span class="bc-sep">›</span>
           <a href="ai-discovery.html">Agent Governance</a>
           <span class="bc-sep">›</span>
-          <span>Privilege Control</span>
+          <span>Policies</span>
         </div>
-        <div class="page-title">Privilege Control</div>
-        <div class="page-subtitle">Define least-privilege profiles for AI agents. Restrict file system paths, network destinations, and process invocations.</div>
+        <div class="page-title">AI Agent Policies</div>
+        <div class="page-subtitle">Create and manage allowlist and blocklist policies for AI agents across managed computers.</div>
       </div>
 
       <!-- FILTER TABS (main tabs: Profiles / Violations) -->
@@ -402,9 +403,26 @@
 
       </div><!-- /violationsSection -->
 
+      <section class="ai-policy-manager" id="aiPolicyManager">
+        <div class="policy-list">
+          <div class="policy-list-header"><strong>AI agent policies</strong><div class="policy-create"><button class="new-profile-btn" onclick="togglePolicyCreate(event)"><i class="fa fa-plus"></i> Create policy <i class="fa fa-chevron-down" style="font-size:9px"></i></button><div class="policy-create-menu" id="policyCreateMenu"><button onclick="createPolicy('Windows')"><i class="fa fa-windows"></i> Windows</button><button onclick="createPolicy('Mac')"><i class="fa fa-apple"></i> Mac</button><button onclick="createPolicy('Linux')"><i class="fa fa-linux"></i> Linux</button></div></div></div>
+          <div id="policyList"></div>
+        </div>
+        <div class="policy-editor" id="policyEditor"></div>
+      </section>
+      <section class="policy-table-manager">
+        <div class="policy-table-toolbar"><strong>All Policies</strong><div class="policy-create"><button class="new-profile-btn" onclick="toggleTableCreate(event)"><i class="fa fa-plus"></i> Create policy <i class="fa fa-chevron-down" style="font-size:9px"></i></button><div class="policy-create-menu" id="tableCreateMenu"><button onclick="openNewPolicy('Windows')"><i class="fa fa-windows"></i> Windows</button><button onclick="openNewPolicy('Mac')"><i class="fa fa-apple"></i> Mac</button><button onclick="openNewPolicy('Linux')"><i class="fa fa-linux"></i> Linux</button></div></div></div>
+        <div class="table-wrap"><table class="data-table"><thead><tr><th>Policy Name</th><th>OS Platform</th><th>Mode</th><th>Allow List</th><th>Block List</th><th>Auto-uninstall</th><th>Modified By</th><th>Last Modified</th><th>Action</th></tr></thead><tbody id="policyTableBody"></tbody></table></div>
+      </section>
+
     </main>
 
   </div><!-- /main-wrapper -->
+
+  <style>
+    #mainContent > .filter-tabs-bar,#profilesSection,#violationsSection{display:none !important}
+    .ai-policy-manager{display:none}.policy-table-manager{display:flex;flex-direction:column;flex:1;overflow:auto;background:#fff}.policy-table-toolbar{padding:12px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #e5e7eb;font-size:14px}.policy-create{position:relative}.policy-create-menu{display:none;position:absolute;right:0;top:28px;width:145px;background:#fff;border:1px solid #dfe3ea;border-radius:6px;box-shadow:0 8px 20px rgba(0,0,0,.13);z-index:30;padding:4px}.policy-create-menu.open{display:block}.policy-create-menu button{width:100%;border:0;background:none;text-align:left;padding:8px;font:12px inherit;cursor:pointer;border-radius:4px}.policy-create-menu button:hover{background:#f0f4ff;color:#1a73e8}.policy-create-menu i{width:16px;margin-right:5px}.policy-table-manager .table-wrap{flex:1}.policy-link{color:#1a73e8;font-weight:600;cursor:pointer}.action-menu{position:relative}.action-menu-button{border:0;background:none;color:#4b5563;font-size:17px;cursor:pointer;padding:3px 7px}.action-popup{display:none;position:absolute;right:4px;top:27px;z-index:20;background:#fff;border:1px solid #dfe3ea;border-radius:5px;box-shadow:0 6px 18px rgba(0,0,0,.13);min-width:110px}.action-menu.open .action-popup{display:block}.action-popup button{width:100%;border:0;background:none;text-align:left;padding:9px 11px;font:12px inherit;cursor:pointer}.action-popup button:hover{background:#f0f4ff;color:#1a73e8}
+  </style>
 
   <script>
     /* ================================================================
@@ -691,6 +709,48 @@
     ================================================================ */
     renderProfileList();
     renderProfileEditor();
+  </script>
+  <script>
+    const POLICY_AGENTS = ['GitHub Copilot', 'Claude Desktop', 'Cursor IDE', 'Ollama', 'Gemini CLI', 'LM Studio', 'Codeium'];
+    const AI_POLICIES = [
+      {id:'POL-001', name:'Engineering approved AI tools', platform:'Windows', mode:'strict', uninstall:true, allow:['GitHub Copilot','Claude Desktop','Cursor IDE'], block:['Ollama','Gemini CLI','LM Studio','Codeium']},
+      {id:'POL-002', name:'Pilot group monitoring', platform:'Mac', mode:'audit', uninstall:false, allow:['GitHub Copilot','Claude Desktop'], block:[]},
+      {id:'POL-003', name:'Finance workstation controls', platform:'Windows', mode:'strict', uninstall:true, allow:[], block:['GitHub Copilot','Claude Desktop','Cursor IDE','Ollama','Gemini CLI','LM Studio','Codeium']}
+    ];
+    let selectedPolicyId = 'POL-001';
+    function policyById(){ return AI_POLICIES.find(p => p.id === selectedPolicyId); }
+    function renderPolicyList(){
+      document.getElementById('policyList').innerHTML = AI_POLICIES.map(p => `<div class="policy-list-item ${p.id === selectedPolicyId ? 'active' : ''}" onclick="selectPolicy('${p.id}')"><div class="policy-list-name">${p.name}</div><div class="policy-list-meta"><span class="platform-chip">${p.platform}</span><span class="mode-chip ${p.mode === 'audit' ? 'audit' : ''}">${p.mode}</span><span>${p.allow.length} allowed · ${p.block.length} blocked</span></div></div>`).join('');
+    }
+    function selectPolicy(id){ selectedPolicyId = id; renderPolicyList(); renderPolicyEditor(); }
+    function renderPolicyEditor(){
+      const p = policyById(); if(!p) return;
+      document.getElementById('policyEditor').innerHTML = `
+        <div class="policy-card"><div class="policy-card-header">Policy details</div><div class="policy-card-body"><label style="display:block;font-size:12px;font-weight:700;margin-bottom:7px">Policy name</label><input class="policy-name-input" id="policyName" value="${p.name.replace(/&/g,'&amp;').replace(/"/g,'&quot;')}"><div style="margin-top:14px;font-size:12px;color:#6b7280">Operating system: <span class="platform-chip">${p.platform}</span></div></div></div>
+        <div class="policy-card"><div class="policy-card-header">Allow List</div><div class="policy-card-body"><p style="font-size:12px;color:#6b7280;margin-bottom:12px">Select AI agents that are approved to run on ${p.platform} computers.</p><div class="list-choice">${agentCheckboxes('allow', p)}</div></div></div>
+        <div class="policy-card"><div class="policy-card-header">Block List</div><div class="policy-card-body"><p style="font-size:12px;color:#6b7280;margin-bottom:12px">Select AI agents that must not run on ${p.platform} computers.</p><div class="list-choice">${agentCheckboxes('block', p)}</div></div></div>
+        <div class="policy-card"><div class="policy-card-header">Enforcement mode</div><div class="policy-card-body"><div class="mode-options"><label class="mode-option"><input type="radio" name="mode" value="strict" ${p.mode === 'strict' ? 'checked' : ''} onchange="setPolicyMode(this.value)"><strong>Strict mode</strong><small>Enforce allowlist and blocklist actions on assigned computers.</small></label><label class="mode-option"><input type="radio" name="mode" value="audit" ${p.mode === 'audit' ? 'checked' : ''} onchange="setPolicyMode(this.value)"><strong>Audit mode</strong><small>Record policy matches without blocking or uninstalling agents.</small></label></div></div></div>
+        <div class="policy-card"><div class="policy-card-header">Remediation</div><div class="policy-card-body"><div class="toggle-row"><div><strong style="font-size:13px">Auto-uninstall blocklisted agents</strong><p>Remove a blocklisted AI agent automatically when strict mode is active.</p></div><input class="switch" type="checkbox" ${p.uninstall ? 'checked' : ''} onchange="policyById().uninstall=this.checked"></div></div></div>
+        <div class="policy-actions"><button class="btn-cancel" onclick="renderPolicyEditor()">Cancel</button><button class="btn-save" onclick="saveAiPolicy()">Save policy</button></div>`;
+    }
+    function agentCheckboxes(type, p){ return POLICY_AGENTS.map(agent => `<label class="choice-agent"><input type="checkbox" ${p[type].includes(agent) ? 'checked' : ''} onchange="togglePolicyAgent('${type}','${agent}',this.checked)"><i class="fa fa-robot" style="color:#1a73e8"></i>${agent}</label>`).join(''); }
+    function togglePolicyAgent(type, agent, checked){ const p = policyById(), other = type === 'allow' ? 'block' : 'allow'; p[type] = checked ? [...new Set([...p[type],agent])] : p[type].filter(a => a !== agent); if(checked) p[other] = p[other].filter(a => a !== agent); renderPolicyList(); renderPolicyEditor(); }
+    function setPolicyMode(mode){ policyById().mode = mode; renderPolicyList(); }
+    function togglePolicyCreate(e){ e.stopPropagation(); document.getElementById('policyCreateMenu').classList.toggle('open'); }
+    function createPolicy(platform){ const id = `POL-${String(AI_POLICIES.length + 1).padStart(3,'0')}`; AI_POLICIES.push({id,name:`New ${platform} AI Agent Policy`,platform,mode:'audit',uninstall:false,allow:[],block:[]}); document.getElementById('policyCreateMenu').classList.remove('open'); selectPolicy(id); document.getElementById('policyName').focus(); document.getElementById('policyName').select(); }
+    function saveAiPolicy(){ const p = policyById(), input = document.getElementById('policyName'); p.name = input.value.trim() || 'Untitled AI Agent Policy'; renderPolicyList(); const button = document.querySelector('.policy-actions .btn-save'); button.textContent = 'Saved'; button.style.background = '#2e7d32'; setTimeout(() => { button.textContent = 'Save policy'; button.style.background = ''; }, 1200); }
+    renderPolicyList(); renderPolicyEditor();
+  </script>
+  <script>
+    function policyUrl(id, platform='Windows'){ return `policy-details.html?policy=${encodeURIComponent(id)}&platform=${encodeURIComponent(platform)}`; }
+    function renderPolicyTable(){
+      document.getElementById('policyTableBody').innerHTML = AI_POLICIES.map(p => `<tr><td><a class="policy-link" href="${policyUrl(p.id,p.platform)}"><i class="fa ${p.platform === 'Mac' ? 'fa-apple' : p.platform === 'Linux' ? 'fa-linux' : 'fa-windows'}" style="margin-right:7px;color:#6b7280"></i>${p.name}</a></td><td>${p.platform}</td><td><span class="mode-chip ${p.mode === 'audit' ? 'audit' : ''}">${p.mode}</span></td><td>${p.allow.length}</td><td>${p.block.length}</td><td>${p.uninstall ? '<span style="color:#2e7d32;font-weight:600">Enabled</span>' : '<span style="color:#6b7280">Disabled</span>'}</td><td>easwar</td><td>Jun 2, 2026 14:30</td><td><div class="action-menu" id="policy-action-${p.id}"><button class="action-menu-button" onclick="togglePolicyAction('${p.id}',event)" aria-label="Actions">•••</button><div class="action-popup"><button onclick="location.href='${policyUrl(p.id,p.platform)}'"><i class="fa fa-pen" style="margin-right:6px"></i>Modify</button></div></div></td></tr>`).join('');
+    }
+    function togglePolicyAction(id,event){ event.stopPropagation(); document.querySelectorAll('.action-menu.open').forEach(el => el.id !== `policy-action-${id}` && el.classList.remove('open')); document.getElementById(`policy-action-${id}`).classList.toggle('open'); }
+    function toggleTableCreate(event){ event.stopPropagation(); document.getElementById('tableCreateMenu').classList.toggle('open'); }
+    function openNewPolicy(platform){ location.href = `policy-details.html?platform=${encodeURIComponent(platform)}&new=1`; }
+    document.addEventListener('click', () => { const menu = document.getElementById('tableCreateMenu'); if(menu) menu.classList.remove('open'); document.querySelectorAll('.action-menu.open').forEach(el => el.classList.remove('open')); });
+    renderPolicyTable();
   </script>
 </body>
 </html>
