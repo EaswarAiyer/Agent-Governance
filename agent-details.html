@@ -56,9 +56,9 @@
     const agentId = new URLSearchParams(location.search).get('agent') || 'AI-001';
     const agent = agents[agentId] || agents['AI-001'];
     const prompts = [
-      {id:'P-001',text:'Summarize the customer escalation and propose a response.',files:['customer-escalation.docx'],classification:'Confidential',computer:agent.computers[0][0],time:'Jun 2, 2026 14:23'},
-      {id:'P-002',text:'Review this deployment configuration for security issues.',files:['deployment-config.yaml','.env.example'],classification:'Internal',computer:agent.computers[0][0],time:'Jun 2, 2026 11:08'},
-      {id:'P-003',text:'Create a concise summary of the attached project plan.',files:['project-plan.pdf'],classification:'Internal',computer:agent.computers.at(-1)[0],time:'Jun 1, 2026 16:42'}
+      {id:'P-001',text:'Summarize the customer escalation and propose a response.',files:['customer-escalation.docx','incident-timeline.xlsx'],classification:'PII',computer:agent.computers[0][0],time:'Jun 2, 2026 14:23'},
+      {id:'P-002',text:'Review this deployment configuration for security issues.',files:['deployment-config.yaml','.env.example'],classification:'Credentials & Secrets',computer:agent.computers[0][0],time:'Jun 2, 2026 11:08'},
+      {id:'P-003',text:'Create a concise summary of the attached project plan.',files:['project-plan.pdf','rollout-owners.csv'],classification:'Internal Documents',computer:agent.computers.at(-1)[0],time:'Jun 1, 2026 16:42'}
     ];
     document.title = `${agent.name} — AI Discovery`;
     document.getElementById('agentName').textContent = agent.name;

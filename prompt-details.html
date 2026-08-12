@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Prompt details — AI Discovery</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
   <style>
-    *{box-sizing:border-box;margin:0;padding:0}body{font-family:Lato,'Segoe UI',Arial,sans-serif;background:#f5f6fa;color:#273142;min-height:100vh}.topbar{height:48px;background:#222;color:#fff;display:flex;align-items:center;padding:0 16px;font-weight:600}.topbar i{color:#a9a2ff;margin-right:9px}.page{max-width:1120px;margin:0 auto;padding:28px}.back{display:inline-flex;align-items:center;gap:7px;color:#1a73e8;font-size:13px;font-weight:600;margin-bottom:20px}.breadcrumb{font-size:12px;color:#7d8796;margin-bottom:9px}.breadcrumb a{color:#1a73e8}.title{font-size:21px;color:#202124;margin-bottom:5px}.subtitle{color:#687386;font-size:13px;margin-bottom:22px}.layout{display:grid;grid-template-columns:minmax(0,1fr) 285px;gap:18px}.card{background:#fff;border:1px solid #e5e7eb;border-radius:8px;overflow:hidden;margin-bottom:18px}.card-title{padding:14px 17px;border-bottom:1px solid #e5e7eb;font-size:14px;font-weight:700}.content{padding:17px;line-height:1.65;font-size:14px;white-space:pre-wrap}.meta{padding:14px 17px}.meta-row{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px solid #f0f0f0;font-size:13px}.meta-row:last-child{border:0}.label{color:#687386}.classification{display:inline-block;background:#fff3e0;color:#a85c00;padding:3px 8px;border-radius:9px;font-size:11px;font-weight:700}.attachment{display:flex;align-items:center;gap:8px;padding:9px 11px;border:1px solid #e7eaf0;border-radius:6px;margin-bottom:8px;font-size:12px;color:#1a73e8}.attachment i{color:#8993a4}.empty{padding:16px;color:#8b95a5;font-size:13px}@media(max-width:760px){.layout{grid-template-columns:1fr}.page{padding:20px}}
+    *{box-sizing:border-box;margin:0;padding:0}body{font-family:Lato,'Segoe UI',Arial,sans-serif;background:#f5f6fa;color:#273142;min-height:100vh}.topbar{height:48px;background:#222;color:#fff;display:flex;align-items:center;padding:0 16px;font-weight:600}.topbar i{color:#a9a2ff;margin-right:9px}.page{max-width:1180px;margin:0 auto;padding:28px}.back{display:inline-flex;align-items:center;gap:7px;color:#1a73e8;font-size:13px;font-weight:600;margin-bottom:20px;text-decoration:none}.breadcrumb{font-size:12px;color:#7d8796;margin-bottom:9px}.breadcrumb a{color:#1a73e8;text-decoration:none}.title-row{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;margin-bottom:22px}.title{font-size:21px;color:#202124;margin-bottom:5px}.subtitle{color:#687386;font-size:13px}.prompt-id{padding:5px 9px;border:1px solid #dfe4eb;background:#fff;border-radius:5px;font:11px ui-monospace,SFMono-Regular,Menlo,monospace;color:#687386}.layout{display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:18px;align-items:start}.card{background:#fff;border:1px solid #e5e7eb;border-radius:8px;overflow:hidden;margin-bottom:18px}.card-title{padding:14px 17px;border-bottom:1px solid #e5e7eb;font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:space-between;gap:12px}.card-title small{font-size:11px;font-weight:400;color:#7b8494}.content{padding:17px;line-height:1.65;font-size:14px;white-space:pre-wrap}.meta{padding:14px 17px}.meta-row{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px solid #f0f0f0;font-size:13px}.meta-row:last-child{border:0}.label{color:#687386;flex:none}.value{text-align:right;font-weight:600;overflow-wrap:anywhere}.mono{font:11px ui-monospace,SFMono-Regular,Menlo,monospace}.classification{display:inline-flex;align-items:center;gap:6px;background:#fff3e0;color:#a85c00;padding:5px 9px;border-radius:12px;font-size:11px;font-weight:700}.classification i{font-size:10px}.attachment{border:1px solid #e2e7ef;border-radius:7px;margin-bottom:10px;overflow:hidden}.attachment:last-child{margin-bottom:0}.attachment-head{display:flex;align-items:center;gap:9px;padding:10px 11px;background:#fafbfc;border-bottom:1px solid #edf0f4}.attachment-icon{width:28px;height:28px;display:grid;place-items:center;border-radius:6px;background:#edf3ff;color:#1a73e8;flex:none}.attachment-name{font-size:12px;font-weight:700;color:#273142;overflow-wrap:anywhere}.attachment-type{font-size:10px;color:#7b8494;margin-top:2px}.file-findings{padding:10px 11px}.finding-summary{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:11px;margin-bottom:7px}.sensitive{color:#b45309;font-weight:700}.clear{color:#26834a;font-weight:700}.finding-tags{display:flex;flex-wrap:wrap;gap:5px}.finding-tag{padding:3px 7px;border-radius:10px;background:#fff4e5;color:#9a5700;font-size:10px;font-weight:600}.finding-tag.clear-tag{background:#edf8f1;color:#267044}.trace{padding:4px 17px 15px}.trace-step{display:grid;grid-template-columns:28px 1fr;gap:10px;position:relative;padding-top:13px}.trace-step:not(:last-child):before{content:'';position:absolute;left:13px;top:39px;bottom:-13px;width:1px;background:#dfe4eb}.trace-number{width:28px;height:28px;display:grid;place-items:center;border-radius:50%;background:#eef3ff;color:#1a56db;font-size:11px;font-weight:700;z-index:1}.trace-title{font-size:12px;font-weight:700;margin:2px 0 3px}.trace-detail{font-size:12px;color:#687386;line-height:1.5}.tools{padding:0 17px 14px}.tool-call{display:grid;grid-template-columns:34px minmax(0,1fr) auto;gap:10px;align-items:start;padding:13px 0;border-bottom:1px solid #edf0f4}.tool-call:last-child{border:0}.tool-icon{width:32px;height:32px;display:grid;place-items:center;border-radius:7px;background:#f1efff;color:#6957d8}.tool-name{font-size:12px;font-weight:700}.tool-action{font-size:12px;color:#5f6877;margin-top:3px;line-height:1.45}.tool-target{font:10px ui-monospace,SFMono-Regular,Menlo,monospace;color:#7b8494;margin-top:5px;overflow-wrap:anywhere}.tool-result{text-align:right}.status{display:inline-flex;align-items:center;gap:5px;padding:3px 7px;border-radius:9px;background:#edf8f1;color:#267044;font-size:10px;font-weight:700}.tool-time{display:block;font-size:10px;color:#8a93a2;margin-top:5px;white-space:nowrap}.empty{padding:16px;color:#8b95a5;font-size:13px}@media(max-width:820px){.layout{grid-template-columns:1fr}.page{padding:20px}.title-row{align-items:flex-start}.tool-call{grid-template-columns:34px minmax(0,1fr)}.tool-result{grid-column:2;text-align:left}.tool-time{display:inline;margin-left:6px}}
   </style>
 </head>
 <body>
@@ -13,20 +14,103 @@
   <main class="page">
     <a class="back" id="backLink" href="ai-discovery.html"><i class="fa fa-arrow-left"></i>Back to agent</a>
     <div class="breadcrumb"><a href="ai-discovery.html">AI Governance</a> › <a id="agentLink" href="ai-discovery.html">AI Discovery</a> › Prompt details</div>
-    <h1 class="title">Prompt details</h1><p class="subtitle" id="promptMeta"></p>
-    <div class="layout"><section><div class="card"><div class="card-title">Prompt</div><div class="content" id="promptText"></div></div><div class="card"><div class="card-title">AI response</div><div class="content" id="responseText"></div></div></section><aside><div class="card"><div class="card-title">Classification</div><div class="meta"><span class="classification" id="classification"></span></div></div><div class="card"><div class="card-title">Attached files</div><div class="meta" id="attachments"></div></div><div class="card"><div class="card-title">Activity</div><div class="meta" id="activity"></div></div></aside></div>
+    <div class="title-row"><div><h1 class="title">Prompt details</h1><p class="subtitle" id="promptMeta"></p></div><span class="prompt-id" id="promptId"></span></div>
+    <div class="layout">
+      <section>
+        <div class="card"><div class="card-title">Prompt</div><div class="content" id="promptText"></div></div>
+        <div class="card"><div class="card-title"><span>Reasoning trace</span><small>Recorded reasoning summary</small></div><div class="trace" id="reasoningTrace"></div></div>
+        <div class="card"><div class="card-title"><span>Tool calls</span><small id="toolCount"></small></div><div class="tools" id="toolCalls"></div></div>
+        <div class="card"><div class="card-title">AI response</div><div class="content" id="responseText"></div></div>
+      </section>
+      <aside>
+        <div class="card"><div class="card-title">Session details</div><div class="meta" id="sessionDetails"></div></div>
+        <div class="card"><div class="card-title">General classification</div><div class="meta"><span class="classification" id="classification"></span></div></div>
+        <div class="card"><div class="card-title"><span>Attached files</span><small id="fileCount"></small></div><div class="meta" id="attachments"></div></div>
+      </aside>
+    </div>
   </main>
   <script>
     const params = new URLSearchParams(location.search), agentId = params.get('agent') || 'AI-001', promptId = params.get('prompt') || 'P-001';
-    const promptData = {
-      'P-001': {prompt:'Summarize the customer escalation and propose a response.',response:'The escalation concerns an outage affecting account provisioning. Recommend acknowledging the impact, confirming the incident owner, and sharing the next update time. Draft response:\n\nThank you for reporting this issue. We are actively investigating the provisioning delay and will provide an update within two hours.',files:['customer-escalation.docx'],classification:'Confidential',computer:'WIN-DEV-001',user:'john.doe',time:'Jun 2, 2026 14:23'},
-      'P-002': {prompt:'Review this deployment configuration for security issues.',response:'The configuration exposes a secret through an environment variable and permits unauthenticated inbound traffic. Store the secret in the approved vault and restrict the inbound rule to the service network.',files:['deployment-config.yaml','.env.example'],classification:'Internal',computer:'WIN-DEV-001',user:'john.doe',time:'Jun 2, 2026 11:08'},
-      'P-003': {prompt:'Create a concise summary of the attached project plan.',response:'The project plan proposes a phased rollout: discovery, pilot deployment, organization-wide enablement, and post-launch review. Key dependencies are endpoint inventory accuracy and policy approval.',files:['project-plan.pdf'],classification:'Internal',computer:'MAC-ENG-003',user:'ben.t',time:'Jun 1, 2026 16:42'}
+    const agents = {
+      'AI-001': {name:'GitHub Copilot',model:'GPT-4.1'},'AI-002': {name:'Claude Desktop',model:'Claude Sonnet 4'},'AI-003': {name:'Cursor IDE',model:'Claude Sonnet 4'},'AI-004': {name:'ChatGPT Desktop',model:'GPT-4.1'},'AI-005': {name:'Ollama',model:'Llama 3.3 70B'},'AI-006': {name:'Gemini CLI',model:'Gemini 2.5 Pro'},'AI-007': {name:'LM Studio',model:'Qwen2.5-Coder 32B'},'AI-008': {name:'Codeium',model:'Command R+'}
     };
-    const p = promptData[promptId] || promptData['P-001'], agentURL = `agent-details.html?agent=${agentId}`;
-    document.getElementById('backLink').href = agentURL; document.getElementById('agentLink').href = agentURL; document.getElementById('promptText').textContent = p.prompt; document.getElementById('responseText').textContent = p.response; document.getElementById('classification').textContent = p.classification; document.getElementById('promptMeta').textContent = `${p.computer} · ${p.user} · ${p.time}`;
-    document.getElementById('attachments').innerHTML = p.files.length ? p.files.map(file => `<div class="attachment"><i class="fa fa-paperclip"></i>${file}</div>`).join('') : '<div class="empty">No attachments</div>';
-    document.getElementById('activity').innerHTML = `<div class="meta-row"><span class="label">Computer</span><span>${p.computer}</span></div><div class="meta-row"><span class="label">User</span><span>${p.user}</span></div><div class="meta-row"><span class="label">Time</span><span>${p.time}</span></div>`;
+    const promptData = {
+      'P-001': {
+        prompt:'Summarize the customer escalation and propose a response.',
+        response:'The escalation concerns an outage affecting account provisioning. Recommend acknowledging the impact, confirming the incident owner, and sharing the next update time. Draft response:\n\nThank you for reporting this issue. We are actively investigating the provisioning delay and will provide an update within two hours.',
+        classification:'PII',computer:'WIN-DEV-001',user:'john.doe',account:'john.doe@acme.example',sessionId:'SES-7F4A-91C2-D08E',time:'Jun 2, 2026 14:23',
+        files:[
+          {name:'customer-escalation.docx',type:'Microsoft Word document',classification:'PII',findings:['Customer name','Email address','Account ID']},
+          {name:'incident-timeline.xlsx',type:'Microsoft Excel workbook',classification:'Internal Documents',findings:[]}
+        ],
+        reasoning:[
+          {title:'Understand the request',detail:'Identified that the user needs a concise incident summary and a customer-ready response.'},
+          {title:'Inspect supporting files',detail:'Reviewed both attachments and detected personal identifiers in the escalation document.'},
+          {title:'Extract the key incident facts',detail:'Collected the impact, incident owner, current status, and promised update window.'},
+          {title:'Prepare the response',detail:'Produced a short summary and a professional acknowledgement without repeating sensitive identifiers.'}
+        ],
+        tools:[
+          {name:'read_document',action:'Extracted text and metadata from the customer escalation.',target:'customer-escalation.docx',status:'Completed',time:'14:23:08'},
+          {name:'read_spreadsheet',action:'Read the incident chronology and affected service entries.',target:'incident-timeline.xlsx',status:'Completed',time:'14:23:11'},
+          {name:'data_classifier',action:'Scanned prompt content and attachments using configured Data Groups.',target:'PII, Internal Documents',status:'Completed',time:'14:23:13'}
+        ]
+      },
+      'P-002': {
+        prompt:'Review this deployment configuration for security issues.',
+        response:'The configuration exposes a secret through an environment variable and permits unauthenticated inbound traffic. Store the secret in the approved vault and restrict the inbound rule to the service network.',
+        classification:'Credentials & Secrets',computer:'WIN-DEV-001',user:'john.doe',account:'john.doe@acme.example',sessionId:'SES-31B8-660D-A914',time:'Jun 2, 2026 11:08',
+        files:[
+          {name:'deployment-config.yaml',type:'YAML configuration',classification:'Source Code',findings:['Internal service URL']},
+          {name:'.env.example',type:'Environment configuration',classification:'Credentials & Secrets',findings:['API key','Database credential']}
+        ],
+        reasoning:[
+          {title:'Parse the configuration',detail:'Separated service, network, and environment settings for review.'},
+          {title:'Check sensitive values',detail:'Detected credential-like values in the environment configuration.'},
+          {title:'Evaluate exposure',detail:'Found an unrestricted inbound rule and a secret stored outside the approved vault.'},
+          {title:'Recommend remediation',detail:'Prioritized secret rotation, vault storage, and network restriction.'}
+        ],
+        tools:[
+          {name:'read_file',action:'Parsed deployment settings and inbound network rules.',target:'deployment-config.yaml',status:'Completed',time:'11:08:05'},
+          {name:'secret_scanner',action:'Checked environment keys and values for exposed credentials.',target:'.env.example',status:'Completed',time:'11:08:07'},
+          {name:'data_classifier',action:'Applied configured Source Code and Credentials classifiers.',target:'Source Code, Credentials & Secrets',status:'Completed',time:'11:08:09'}
+        ]
+      },
+      'P-003': {
+        prompt:'Create a concise summary of the attached project plan.',
+        response:'The project plan proposes a phased rollout: discovery, pilot deployment, organization-wide enablement, and post-launch review. Key dependencies are endpoint inventory accuracy and policy approval.',
+        classification:'Internal Documents',computer:'MAC-ENG-003',user:'ben.t',account:'ben.t@acme.example',sessionId:'SES-C82D-107E-59B4',time:'Jun 1, 2026 16:42',
+        files:[
+          {name:'project-plan.pdf',type:'PDF document',classification:'Internal Documents',findings:['Confidential project milestone']},
+          {name:'rollout-owners.csv',type:'CSV document',classification:'PII',findings:['Employee names','Email addresses']}
+        ],
+        reasoning:[
+          {title:'Review the requested scope',detail:'Focused the summary on rollout phases, dependencies, and ownership.'},
+          {title:'Inspect project materials',detail:'Read the plan and owner list, noting internal milestones and employee identifiers.'},
+          {title:'Organize key themes',detail:'Grouped the content into phases, dependencies, and approval gates.'},
+          {title:'Generate a concise summary',detail:'Removed operational detail that was not necessary for the requested overview.'}
+        ],
+        tools:[
+          {name:'read_pdf',action:'Extracted headings, milestones, dependencies, and approval gates.',target:'project-plan.pdf',status:'Completed',time:'16:42:04'},
+          {name:'read_spreadsheet',action:'Read rollout ownership and contact assignments.',target:'rollout-owners.csv',status:'Completed',time:'16:42:06'},
+          {name:'data_classifier',action:'Applied configured Internal Documents and PII classifiers.',target:'Internal Documents, PII',status:'Completed',time:'16:42:08'}
+        ]
+      }
+    };
+    const p = promptData[promptId] || promptData['P-001'], agent = agents[agentId] || agents['AI-001'], agentURL = `agent-details.html?agent=${agentId}`;
+    document.title = `${promptId} — Prompt details`;
+    document.getElementById('backLink').href = agentURL;
+    document.getElementById('agentLink').href = agentURL;
+    document.getElementById('promptId').textContent = promptId;
+    document.getElementById('promptText').textContent = p.prompt;
+    document.getElementById('responseText').textContent = p.response;
+    document.getElementById('classification').innerHTML = `<i class="fa fa-shield-halved"></i>${p.classification}`;
+    document.getElementById('promptMeta').textContent = `${agent.name} · ${p.computer} · ${p.time}`;
+    document.getElementById('sessionDetails').innerHTML = `<div class="meta-row"><span class="label">Agent</span><span class="value">${agent.name}</span></div><div class="meta-row"><span class="label">Model</span><span class="value">${agent.model}</span></div><div class="meta-row"><span class="label">Session ID</span><span class="value mono">${p.sessionId}</span></div><div class="meta-row"><span class="label">Account</span><span class="value">${p.account}</span></div><div class="meta-row"><span class="label">User</span><span class="value">${p.user}</span></div><div class="meta-row"><span class="label">Computer</span><span class="value">${p.computer}</span></div><div class="meta-row"><span class="label">Time</span><span class="value">${p.time}</span></div>`;
+    document.getElementById('fileCount').textContent = `${p.files.length} ${p.files.length===1?'file':'files'}`;
+    document.getElementById('attachments').innerHTML = p.files.length ? p.files.map(file => `<div class="attachment"><div class="attachment-head"><span class="attachment-icon"><i class="fa fa-file-lines"></i></span><span><div class="attachment-name">${file.name}</div><div class="attachment-type">${file.type}</div></span></div><div class="file-findings"><div class="finding-summary"><span class="label">Classification</span><strong>${file.classification}</strong></div><div class="finding-summary"><span class="label">Sensitive data</span><span class="${file.findings.length?'sensitive':'clear'}">${file.findings.length?'Detected':'Not detected'}</span></div><div class="finding-tags">${file.findings.length?file.findings.map(finding=>`<span class="finding-tag">${finding}</span>`).join(''):'<span class="finding-tag clear-tag"><i class="fa fa-check"></i> Clear</span>'}</div></div></div>`).join('') : '<div class="empty">No attachments</div>';
+    document.getElementById('reasoningTrace').innerHTML = p.reasoning.map((step,index)=>`<div class="trace-step"><span class="trace-number">${index+1}</span><div><div class="trace-title">${step.title}</div><div class="trace-detail">${step.detail}</div></div></div>`).join('');
+    document.getElementById('toolCount').textContent = `${p.tools.length} calls`;
+    document.getElementById('toolCalls').innerHTML = p.tools.length ? p.tools.map(tool=>`<div class="tool-call"><span class="tool-icon"><i class="fa fa-screwdriver-wrench"></i></span><div><div class="tool-name">${tool.name}</div><div class="tool-action">${tool.action}</div><div class="tool-target">${tool.target}</div></div><div class="tool-result"><span class="status"><i class="fa fa-check"></i>${tool.status}</span><span class="tool-time">${tool.time}</span></div></div>`).join('') : '<div class="empty">No tool calls recorded.</div>';
   </script>
 </body>
 </html>

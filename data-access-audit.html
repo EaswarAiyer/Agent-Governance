@@ -759,11 +759,11 @@
   </script>
   <script>
     const GLOBAL_PROMPTS = [
-      {id:'P-001',agent:'GitHub Copilot',agentId:'AI-001',prompt:'Summarize the customer escalation and propose a response.',files:'customer-escalation.docx',classification:'Confidential',computer:'WIN-DEV-001',time:'Jun 2, 2026 14:23'},
-      {id:'P-002',agent:'GitHub Copilot',agentId:'AI-001',prompt:'Review this deployment configuration for security issues.',files:'deployment-config.yaml, .env.example',classification:'Internal',computer:'WIN-DEV-001',time:'Jun 2, 2026 11:08'},
-      {id:'P-003',agent:'Claude Desktop',agentId:'AI-002',prompt:'Create a concise summary of the attached project plan.',files:'project-plan.pdf',classification:'Internal',computer:'MAC-ENG-002',time:'Jun 1, 2026 16:42'},
-      {id:'P-001',agent:'Cursor IDE',agentId:'AI-003',prompt:'Summarize the customer escalation and propose a response.',files:'customer-escalation.docx',classification:'Confidential',computer:'WIN-DEV-007',time:'Jun 1, 2026 13:15'},
-      {id:'P-002',agent:'Gemini CLI',agentId:'AI-006',prompt:'Review this deployment configuration for security issues.',files:'deployment-config.yaml',classification:'Internal',computer:'MAC-ENG-010',time:'May 31, 2026 09:36'}
+      {id:'P-001',agent:'GitHub Copilot',agentId:'AI-001',prompt:'Summarize the customer escalation and propose a response.',files:'customer-escalation.docx, incident-timeline.xlsx',classification:'PII',computer:'WIN-DEV-001',time:'Jun 2, 2026 14:23'},
+      {id:'P-002',agent:'GitHub Copilot',agentId:'AI-001',prompt:'Review this deployment configuration for security issues.',files:'deployment-config.yaml, .env.example',classification:'Credentials & Secrets',computer:'WIN-DEV-001',time:'Jun 2, 2026 11:08'},
+      {id:'P-003',agent:'Claude Desktop',agentId:'AI-002',prompt:'Create a concise summary of the attached project plan.',files:'project-plan.pdf, rollout-owners.csv',classification:'Internal Documents',computer:'MAC-ENG-002',time:'Jun 1, 2026 16:42'},
+      {id:'P-001',agent:'Cursor IDE',agentId:'AI-003',prompt:'Summarize the customer escalation and propose a response.',files:'customer-escalation.docx, incident-timeline.xlsx',classification:'PII',computer:'WIN-DEV-007',time:'Jun 1, 2026 13:15'},
+      {id:'P-002',agent:'Gemini CLI',agentId:'AI-006',prompt:'Review this deployment configuration for security issues.',files:'deployment-config.yaml, .env.example',classification:'Credentials & Secrets',computer:'MAC-ENG-010',time:'May 31, 2026 09:36'}
     ];
     document.getElementById('globalPromptRows').innerHTML = GLOBAL_PROMPTS.map(p => `<tr onclick="location.href='prompt-details.html?agent=${p.agentId}&prompt=${p.id}'"><td><i class="fa fa-robot" style="color:#1a73e8;margin-right:7px"></i>${p.agent}</td><td class="prompt-cell">${p.prompt}</td><td>${p.files}</td><td><span class="global-classification">${p.classification}</span></td><td>${p.computer}</td><td style="white-space:nowrap;color:#6b7280">${p.time}</td></tr>`).join('');
   </script>
