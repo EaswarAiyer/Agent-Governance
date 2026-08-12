@@ -890,7 +890,7 @@
         const isSelected = t.id === currentToolId ? 'selected' : '';
         const installedCount = (COMPUTER_DATA[t.id] || []).length;
         return `
-          <tr class="${isSelected}" onclick="openPanel('${t.id}')">
+          <tr class="${isSelected}" onclick="location.href='agent-details.html?agent=${t.id}'">
             <td>
               <div class="agent-name">
                 <i class="fa fa-robot"></i>

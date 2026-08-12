@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Agent Details — Endpoint Central</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0} body{font-family:Lato,'Segoe UI',Arial,sans-serif;color:#273142;background:#f5f6fa;height:100vh;overflow:hidden} a{text-decoration:none;color:inherit}
+    .topbar{height:48px;background:#222;color:#fff;display:flex;align-items:center;padding:0 16px;font-size:15px;font-weight:600}.topbar i{color:#a9a2ff;margin-right:9px}
+    .layout{height:calc(100vh - 48px);display:flex}.sidebar{width:232px;flex:none;background:#101d34;padding:18px 14px}.section-label{padding:0 10px 7px;color:#8390aa;font-size:10px;font-weight:500;letter-spacing:1.25px;text-transform:uppercase}.section-label.intelligence{margin-top:20px}.nav-link{display:flex;align-items:center;gap:10px;padding:11px 14px;color:#c5ccdb;border-radius:6px;font-size:14px;font-weight:600;margin-bottom:2px}.nav-link i{width:14px;color:#a9a2ff;font-size:12px;text-align:center}.nav-link.active,.nav-link:hover{background:#263a5b;color:#fff}
+    .content{flex:1;overflow:auto}.page-header{background:#fff;padding:21px 28px 18px;border-bottom:1px solid #e8e8e8}.breadcrumb{font-size:12px;color:#7d8796;margin-bottom:8px}.breadcrumb a{color:#1a73e8}.breadcrumb span{margin:0 5px}.title-row{display:flex;align-items:center;gap:12px}.agent-icon{width:38px;height:38px;display:grid;place-items:center;background:#e8f0fe;color:#1a73e8;border-radius:9px}.page-title{font-size:19px;font-weight:700;color:#202124}.subtitle{margin-top:3px;font-size:13px;color:#6b7280}
+    .body{padding:22px 28px}.back-link{display:inline-flex;align-items:center;gap:7px;color:#1a73e8;font-size:13px;font-weight:600;margin-bottom:18px}.card{background:#fff;border:1px solid #e5e7eb;border-radius:8px;overflow:hidden;max-width:1100px}.tab-bar{display:flex;padding:0 18px;border-bottom:1px solid #e5e7eb}.tab{padding:14px 4px;margin-right:24px;border:0;border-bottom:2px solid transparent;background:none;color:#687386;font:600 13px inherit;cursor:pointer}.tab.active{color:#1a73e8;border-bottom-color:#1a73e8}.card-header{padding:15px 18px;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;justify-content:space-between}.card-title{font-size:14px;font-weight:700}.computer-total{font-size:12px;color:#687386}.computer-total strong{color:#1a73e8}.table-wrap{overflow:auto}table{border-collapse:collapse;width:100%;min-width:680px}th{background:#f8f9fa;color:#5f6368;font-size:12px;text-align:left;padding:11px 16px;border-bottom:1px solid #e5e7eb}td{padding:13px 16px;font-size:13px;border-bottom:1px solid #f0f0f0}tr:last-child td{border-bottom:0}tbody tr.clickable{cursor:pointer}tbody tr.clickable:hover{background:#f5f8ff}.computer-name{font-weight:600;color:#1a73e8}.computer-name i{color:#8993a4;margin-right:7px;font-size:12px}.department{display:inline-block;background:#e8f0fe;color:#1a56db;padding:3px 8px;border-radius:9px;font-size:11px;font-weight:600}.classification{display:inline-block;background:#fff3e0;color:#a85c00;padding:3px 8px;border-radius:9px;font-size:11px;font-weight:600}.empty{padding:45px;text-align:center;color:#8b95a5;font-size:13px}.empty i{font-size:28px;display:block;margin-bottom:10px;color:#c4cad2}.prompt-preview{max-width:430px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  </style>
+</head>
+<body>
+  <header class="topbar"><i class="fa fa-robot"></i> Endpoint Central</header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="section-label">Governance</div>
+      <a class="nav-link" href="ai-discovery.html"><i class="fa fa-house"></i>Overview</a>
+      <a class="nav-link active" href="ai-discovery.html"><i class="fa fa-circle"></i>Discovery</a>
+      <a class="nav-link" href="privilege-control.html"><i class="fa fa-ban"></i>Policies</a>
+      <div class="section-label intelligence">Intelligence</div>
+      <a class="nav-link" href="data-access-audit.html"><i class="fa fa-chart-pie"></i>Observability</a>
+      <a class="nav-link" href="#"><i class="fa fa-exclamation"></i>Alerts</a>
+    </aside>
+    <main class="content">
+      <div class="page-header">
+        <div class="breadcrumb"><a href="ai-discovery.html">AI Governance</a><span>›</span><a href="ai-discovery.html">Discovery</a><span>›</span><span id="crumbName">Agent details</span></div>
+        <div class="title-row"><div class="agent-icon"><i class="fa fa-robot"></i></div><div><div class="page-title" id="agentName">AI Agent</div><div class="subtitle" id="agentPublisher"></div></div></div>
+      </div>
+      <div class="body">
+        <a class="back-link" href="ai-discovery.html"><i class="fa fa-arrow-left"></i>Back to AI Discovery</a>
+        <section class="card">
+          <div class="tab-bar"><button class="tab active" data-tab="computers">Installed computers</button><button class="tab" data-tab="prompts">Prompt log</button></div>
+          <div id="computersTab"><div class="card-header"><span class="card-title">Installed computers</span><span class="computer-total"><strong id="computerCount">0</strong> computers</span></div><div class="table-wrap"><table><thead><tr><th>Computer name</th><th>Operating system</th><th>Logged-in user</th><th>Install location</th><th>Agent version</th></tr></thead><tbody id="computerRows"></tbody></table></div></div>
+          <div id="promptsTab" style="display:none"><div class="card-header"><span class="card-title">Prompt log</span><span class="computer-total"><strong id="promptCount">0</strong> prompts</span></div><div class="table-wrap"><table><thead><tr><th>Prompt</th><th>Attached files</th><th>Data classification</th><th>Computer</th><th>Time</th></tr></thead><tbody id="promptRows"></tbody></table></div></div>
+        </section>
+      </div>
+    </main>
+  </div>
+  <script>
+    const agents = {
+      'AI-001': {name:'GitHub Copilot',provider:'Microsoft / OpenAI',computers:[['WIN-DEV-001','Windows 11 Pro','john.doe','C:\\Program Files\\GitHub Copilot','1.240.0'],['WIN-DEV-015','Windows 11 Pro','alice.wang','C:\\Program Files\\GitHub Copilot','1.240.0'],['MAC-ENG-003','macOS Sonoma','ben.t','/Applications/GitHub Copilot.app','1.239.0']]},
+      'AI-002': {name:'Claude Desktop',provider:'Anthropic',computers:[['WIN-DEV-003','Windows 11 Pro','ravi.s','C:\\Users\\ravi.s\\AppData\\Local\\Claude','1.0.76'],['MAC-ENG-002','macOS Ventura','linda.m','/Applications/Claude.app','1.0.76']]},
+      'AI-003': {name:'Cursor IDE',provider:'Anysphere / OpenAI',computers:[['WIN-DEV-007','Windows 11 Pro','emily.r','C:\\Users\\emily.r\\AppData\\Local\\Programs\\Cursor','0.48.7'],['MAC-ENG-008','macOS Sonoma','david.k','/Applications/Cursor.app','0.48.7']]},
+      'AI-004': {name:'Ollama',provider:'Ollama (Local)',computers:[['WIN-DEV-011','Windows 11 Pro','arjun.p','C:\\Program Files\\Ollama','0.6.5']]},
+      'AI-005': {name:'Continue.dev',provider:'Anthropic / OpenAI',computers:[['WIN-DEV-002','Windows 11 Pro','james.w','C:\\Users\\james.w\\.vscode\\extensions\\continue','1.0.3'],['WIN-DEV-008','Windows 10','nina.k','C:\\Users\\nina.k\\.vscode\\extensions\\continue','1.0.3']]},
+      'AI-006': {name:'Gemini CLI',provider:'Google',computers:[['MAC-ENG-010','macOS Sonoma','sam.r','/usr/local/lib/node_modules/@google/gemini-cli','0.1.7']]},
+      'AI-007': {name:'LM Studio',provider:'Hugging Face',computers:[['WIN-DEV-014','Windows 11 Pro','lucas.a','C:\\Users\\lucas.a\\AppData\\Local\\LM Studio','0.3.14'],['WIN-DEV-019','Windows 10','mia.c','C:\\Users\\mia.c\\AppData\\Local\\LM Studio','0.3.14']]},
+      'AI-008': {name:'Codeium',provider:'Codeium',computers:[['WIN-DEV-004','Windows 11 Pro','zara.p','C:\\Users\\zara.p\\.vscode\\extensions\\codeium','1.41.0'],['WIN-DEV-013','Windows 11 Pro','henry.v','C:\\Users\\henry.v\\.vscode\\extensions\\codeium','1.41.0'],['MAC-ENG-005','macOS Ventura','grace.h','/Users/grace.h/.vscode/extensions/codeium','1.41.0']]}
+    };
+    const agentId = new URLSearchParams(location.search).get('agent') || 'AI-001';
+    const agent = agents[agentId] || agents['AI-001'];
+    const prompts = [
+      {id:'P-001',text:'Summarize the customer escalation and propose a response.',files:['customer-escalation.docx'],classification:'Confidential',computer:agent.computers[0][0],time:'Jun 2, 2026 14:23'},
+      {id:'P-002',text:'Review this deployment configuration for security issues.',files:['deployment-config.yaml','.env.example'],classification:'Internal',computer:agent.computers[0][0],time:'Jun 2, 2026 11:08'},
+      {id:'P-003',text:'Create a concise summary of the attached project plan.',files:['project-plan.pdf'],classification:'Internal',computer:agent.computers.at(-1)[0],time:'Jun 1, 2026 16:42'}
+    ];
+    document.title = `${agent.name} — AI Discovery`;
+    document.getElementById('agentName').textContent = agent.name;
+    document.getElementById('crumbName').textContent = agent.name;
+    document.getElementById('agentPublisher').textContent = agent.provider;
+    document.getElementById('computerCount').textContent = agent.computers.length;
+    document.getElementById('computerRows').innerHTML = agent.computers.length ? agent.computers.map(c => `<tr><td class="computer-name"><i class="fa fa-desktop"></i>${c[0]}</td><td>${c[1]}</td><td>${c[2]}</td><td style="font-family:monospace;font-size:12px">${c[3]}</td><td><span class="department">${c[4]}</span></td></tr>`).join('') : '<tr><td class="empty" colspan="5"><i class="fa fa-desktop"></i>No managed computers found for this agent.</td></tr>';
+    document.getElementById('promptCount').textContent = prompts.length;
+    document.getElementById('promptRows').innerHTML = prompts.map(p => `<tr class="clickable" onclick="location.href='prompt-details.html?agent=${agentId}&prompt=${p.id}'"><td class="prompt-preview">${p.text}</td><td>${p.files.join(', ')}</td><td><span class="classification">${p.classification}</span></td><td>${p.computer}</td><td class="last-seen">${p.time}</td></tr>`).join('');
+    document.querySelectorAll('.tab').forEach(tab => tab.addEventListener('click', () => { const promptsActive = tab.dataset.tab === 'prompts'; document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t === tab)); document.getElementById('computersTab').style.display = promptsActive ? 'none' : 'block'; document.getElementById('promptsTab').style.display = promptsActive ? 'block' : 'none'; }));
+  </script>
+</body>
+</html>

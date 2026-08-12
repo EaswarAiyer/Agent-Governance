@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Prompt details — AI Discovery</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}body{font-family:Lato,'Segoe UI',Arial,sans-serif;background:#f5f6fa;color:#273142;min-height:100vh}.topbar{height:48px;background:#222;color:#fff;display:flex;align-items:center;padding:0 16px;font-weight:600}.topbar i{color:#a9a2ff;margin-right:9px}.page{max-width:1120px;margin:0 auto;padding:28px}.back{display:inline-flex;align-items:center;gap:7px;color:#1a73e8;font-size:13px;font-weight:600;margin-bottom:20px}.breadcrumb{font-size:12px;color:#7d8796;margin-bottom:9px}.breadcrumb a{color:#1a73e8}.title{font-size:21px;color:#202124;margin-bottom:5px}.subtitle{color:#687386;font-size:13px;margin-bottom:22px}.layout{display:grid;grid-template-columns:minmax(0,1fr) 285px;gap:18px}.card{background:#fff;border:1px solid #e5e7eb;border-radius:8px;overflow:hidden;margin-bottom:18px}.card-title{padding:14px 17px;border-bottom:1px solid #e5e7eb;font-size:14px;font-weight:700}.content{padding:17px;line-height:1.65;font-size:14px;white-space:pre-wrap}.meta{padding:14px 17px}.meta-row{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px solid #f0f0f0;font-size:13px}.meta-row:last-child{border:0}.label{color:#687386}.classification{display:inline-block;background:#fff3e0;color:#a85c00;padding:3px 8px;border-radius:9px;font-size:11px;font-weight:700}.attachment{display:flex;align-items:center;gap:8px;padding:9px 11px;border:1px solid #e7eaf0;border-radius:6px;margin-bottom:8px;font-size:12px;color:#1a73e8}.attachment i{color:#8993a4}.empty{padding:16px;color:#8b95a5;font-size:13px}@media(max-width:760px){.layout{grid-template-columns:1fr}.page{padding:20px}}
+  </style>
+</head>
+<body>
+  <header class="topbar"><i class="fa fa-robot"></i> Endpoint Central</header>
+  <main class="page">
+    <a class="back" id="backLink" href="ai-discovery.html"><i class="fa fa-arrow-left"></i>Back to agent</a>
+    <div class="breadcrumb"><a href="ai-discovery.html">AI Governance</a> › <a id="agentLink" href="ai-discovery.html">AI Discovery</a> › Prompt details</div>
+    <h1 class="title">Prompt details</h1><p class="subtitle" id="promptMeta"></p>
+    <div class="layout"><section><div class="card"><div class="card-title">Prompt</div><div class="content" id="promptText"></div></div><div class="card"><div class="card-title">AI response</div><div class="content" id="responseText"></div></div></section><aside><div class="card"><div class="card-title">Classification</div><div class="meta"><span class="classification" id="classification"></span></div></div><div class="card"><div class="card-title">Attached files</div><div class="meta" id="attachments"></div></div><div class="card"><div class="card-title">Activity</div><div class="meta" id="activity"></div></div></aside></div>
+  </main>
+  <script>
+    const params = new URLSearchParams(location.search), agentId = params.get('agent') || 'AI-001', promptId = params.get('prompt') || 'P-001';
+    const promptData = {
+      'P-001': {prompt:'Summarize the customer escalation and propose a response.',response:'The escalation concerns an outage affecting account provisioning. Recommend acknowledging the impact, confirming the incident owner, and sharing the next update time. Draft response:\n\nThank you for reporting this issue. We are actively investigating the provisioning delay and will provide an update within two hours.',files:['customer-escalation.docx'],classification:'Confidential',computer:'WIN-DEV-001',user:'john.doe',time:'Jun 2, 2026 14:23'},
+      'P-002': {prompt:'Review this deployment configuration for security issues.',response:'The configuration exposes a secret through an environment variable and permits unauthenticated inbound traffic. Store the secret in the approved vault and restrict the inbound rule to the service network.',files:['deployment-config.yaml','.env.example'],classification:'Internal',computer:'WIN-DEV-001',user:'john.doe',time:'Jun 2, 2026 11:08'},
+      'P-003': {prompt:'Create a concise summary of the attached project plan.',response:'The project plan proposes a phased rollout: discovery, pilot deployment, organization-wide enablement, and post-launch review. Key dependencies are endpoint inventory accuracy and policy approval.',files:['project-plan.pdf'],classification:'Internal',computer:'MAC-ENG-003',user:'ben.t',time:'Jun 1, 2026 16:42'}
+    };
+    const p = promptData[promptId] || promptData['P-001'], agentURL = `agent-details.html?agent=${agentId}`;
+    document.getElementById('backLink').href = agentURL; document.getElementById('agentLink').href = agentURL; document.getElementById('promptText').textContent = p.prompt; document.getElementById('responseText').textContent = p.response; document.getElementById('classification').textContent = p.classification; document.getElementById('promptMeta').textContent = `${p.computer} · ${p.user} · ${p.time}`;
+    document.getElementById('attachments').innerHTML = p.files.length ? p.files.map(file => `<div class="attachment"><i class="fa fa-paperclip"></i>${file}</div>`).join('') : '<div class="empty">No attachments</div>';
+    document.getElementById('activity').innerHTML = `<div class="meta-row"><span class="label">Computer</span><span>${p.computer}</span></div><div class="meta-row"><span class="label">User</span><span>${p.user}</span></div><div class="meta-row"><span class="label">Time</span><span>${p.time}</span></div>`;
+  </script>
+</body>
+</html>
