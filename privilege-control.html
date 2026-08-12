@@ -49,7 +49,16 @@
     .main-wrapper{display:flex;margin-top:48px;height:calc(100vh - 48px)}
 
     /* === SIDEBAR === */
-    .sidebar{width:240px;min-width:240px;background:#fff;border-right:1px solid #e8e8e8;display:flex;flex-direction:column;overflow-y:auto;transition:width .2s,min-width .2s;position:relative}
+    .sidebar{width:232px;min-width:232px;background:#101d34;border-right:none;display:flex;flex-direction:column;overflow-y:auto;transition:width .2s,min-width .2s;position:relative}
+    .sidebar .sidebar-nav{padding:9px 14px}
+    .sidebar-top-item,.sidebar-group:not(#aiGovGroup){display:none}
+    #aiGovGroup .sidebar-group-header{display:none}
+    #aiGovItems .sidebar-sub-label{padding:0 10px 7px;color:#8390aa;font-size:10px;font-weight:500;letter-spacing:1.25px}
+    #aiGovItems li a{justify-content:flex-start;padding:11px 14px;border-left:0;border-radius:6px;color:#c5ccdb;font-size:14px;font-weight:600}
+    #aiGovItems li a:hover{background:#1b2b49;color:#fff}
+    #aiGovItems li a.active{background:#263a5b;border-left:0;color:#fff;font-weight:700}
+    #aiGovItems li a i{width:14px;margin-right:10px;color:#a9a2ff;font-size:12px;text-align:center}
+    #aiGovItems .nav-badge{margin-left:auto;background:#ef5b6a !important;color:#fff;font-size:10px;min-width:22px;padding:1px 6px}
     .sidebar.collapsed{width:0;min-width:0;overflow:hidden;border:none}
     .sidebar-nav{flex:1;padding:8px 0}
     .sidebar-top-item{display:flex;align-items:center;gap:10px;padding:10px 20px;font-size:13px;color:#555;cursor:pointer;transition:background .1s;white-space:nowrap}
@@ -301,14 +310,13 @@
             <i class="fa fa-chevron-down arrow" id="aiGovArrow"></i>
           </div>
           <ul class="sidebar-group-items" id="aiGovItems">
-            <span class="sidebar-sub-label">Agent Governance</span>
-            <li><a href="ai-discovery.html"><span>AI Discovery</span><span class="nav-badge" style="background:#e53935">3</span></a></li>
-            <li><a href="data-access-audit.html"><span>Data Access Audit</span><span class="nav-badge" style="background:#e53935">8</span></a></li>
-            <li><a href="privilege-control.html" class="active"><span>Privilege Control</span></a></li>
-            <li><a href="#"><span>Removal Policies</span></a></li>
-            <span class="sidebar-sub-label">Shadow AI</span>
-            <li><a href="#"><span>Browser Usage</span><span class="nav-badge" style="background:#e53935">2</span></a></li>
-            <li><a href="#"><span>DLP for AI Apps</span></a></li>
+            <li><span class="sidebar-sub-label">Governance</span></li>
+            <li><a href="ai-discovery.html"><i class="fa fa-house"></i><span>Overview</span></a></li>
+            <li><a href="ai-discovery.html"><i class="fa fa-circle"></i><span>Discovery</span></a></li>
+            <li><a href="privilege-control.html" class="active"><i class="fa fa-ban"></i><span>Policies</span></a></li>
+            <li><span class="sidebar-sub-label" style="margin-top:20px">Intelligence</span></li>
+            <li><a href="data-access-audit.html"><i class="fa fa-chart-pie"></i><span>Observability</span></a></li>
+            <li><a href="#"><i class="fa fa-exclamation"></i><span>Alerts</span><span class="nav-badge">12</span></a></li>
           </ul>
         </div>
 

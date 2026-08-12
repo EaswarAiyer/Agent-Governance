@@ -49,7 +49,16 @@
     .main-wrapper{display:flex;margin-top:48px;height:calc(100vh - 48px)}
 
     /* === SIDEBAR === */
-    .sidebar{width:240px;min-width:240px;background:#fff;border-right:1px solid #e8e8e8;display:flex;flex-direction:column;overflow-y:auto;transition:width .2s,min-width .2s;position:relative}
+    .sidebar{width:232px;min-width:232px;background:#101d34;border-right:none;display:flex;flex-direction:column;overflow-y:auto;transition:width .2s,min-width .2s;position:relative}
+    .sidebar .sidebar-nav{padding:9px 14px}
+    .sidebar-top-item,.sidebar-group:not(#aiGovGroup){display:none}
+    #aiGovGroup .sidebar-group-header{display:none}
+    #aiGovItems .sidebar-sub-label{padding:0 10px 7px;color:#8390aa;font-size:10px;font-weight:500;letter-spacing:1.25px}
+    #aiGovItems li a{justify-content:flex-start;padding:11px 14px;border-left:0;border-radius:6px;color:#c5ccdb;font-size:14px;font-weight:600}
+    #aiGovItems li a:hover{background:#1b2b49;color:#fff}
+    #aiGovItems li a.active{background:#263a5b;border-left:0;color:#fff;font-weight:700}
+    #aiGovItems li a i{width:14px;margin-right:10px;color:#a9a2ff;font-size:12px;text-align:center}
+    #aiGovItems .nav-badge{margin-left:auto;background:#ef5b6a !important;color:#fff;font-size:10px;min-width:22px;padding:1px 6px}
     .sidebar.collapsed{width:0;min-width:0;overflow:hidden;border:none}
     .sidebar-nav{flex:1;padding:8px 0}
     .sidebar-top-item{display:flex;align-items:center;gap:10px;padding:10px 20px;font-size:13px;color:#555;cursor:pointer;transition:background .1s;white-space:nowrap}
@@ -91,6 +100,12 @@
     .filter-tab{padding:10px 18px;font-size:13px;font-weight:500;color:#666;background:none;border:none;border-bottom:3px solid transparent;margin-bottom:-2px;cursor:pointer;transition:all .15s;white-space:nowrap}
     .filter-tab:hover{color:#1a73e8}
     .filter-tab.active{color:#1a73e8;border-bottom-color:#1a73e8;font-weight:600}
+
+    /* AI discovery is intentionally an inventory: one row per detected agent. */
+    .filter-tabs-bar,#countCardsRow,#unauthSubtabBar,#portableView{display:none !important}
+    .inventory-note{font-size:12px;color:#6b7280;margin-left:auto}
+    .agent-name{display:flex;align-items:center;gap:9px;font-weight:600;color:#1a73e8}
+    .computer-count{display:inline-flex;align-items:center;gap:6px;color:#1a73e8;font-weight:600}
 
     /* === TOOLBAR === */
     .toolbar{display:flex;align-items:center;gap:8px;padding:10px 28px;background:#fff;border-bottom:1px solid #e8e8e8;flex-shrink:0}
@@ -422,31 +437,13 @@
             <i class="fa fa-chevron-down arrow" id="aiGovArrow"></i>
           </div>
           <ul class="sidebar-group-items" id="aiGovItems">
-            <!-- AGENT GOVERNANCE sub-label -->
-            <li><span class="sidebar-sub-label">Agent Governance</span></li>
-            <li>
-              <a href="ai-discovery.html" class="active">
-                <span>AI Discovery</span>
-                <span class="nav-badge" style="background:#e53935">3</span>
-              </a>
-            </li>
-            <li>
-              <a href="data-access-audit.html">
-                <span>Data Access Audit</span>
-                <span class="nav-badge" style="background:#e53935">8</span>
-              </a>
-            </li>
-            <li><a href="privilege-control.html"><span>Privilege Control</span></a></li>
-            <li><a href="#"><span>Removal Policies</span></a></li>
-            <!-- SHADOW AI sub-label -->
-            <li><span class="sidebar-sub-label">Shadow AI</span></li>
-            <li>
-              <a href="#">
-                <span>Browser Usage</span>
-                <span class="nav-badge" style="background:#e53935">2</span>
-              </a>
-            </li>
-            <li><a href="#"><span>DLP for AI Apps</span></a></li>
+            <li><span class="sidebar-sub-label">Governance</span></li>
+            <li><a href="ai-discovery.html"><i class="fa fa-house"></i><span>Overview</span></a></li>
+            <li><a href="ai-discovery.html" class="active"><i class="fa fa-circle"></i><span>Discovery</span></a></li>
+            <li><a href="privilege-control.html"><i class="fa fa-ban"></i><span>Policies</span></a></li>
+            <li><span class="sidebar-sub-label" style="margin-top:20px">Intelligence</span></li>
+            <li><a href="data-access-audit.html"><i class="fa fa-chart-pie"></i><span>Observability</span></a></li>
+            <li><a href="#"><i class="fa fa-exclamation"></i><span>Alerts</span><span class="nav-badge">12</span></a></li>
           </ul>
         </div>
 
@@ -469,10 +466,10 @@
           <span>AI Discovery</span>
         </div>
         <div class="page-title">AI Discovery</div>
-        <div class="page-subtitle">AI agents and tools detected on managed endpoints via software inventory and network telemetry.</div>
+        <div class="page-subtitle">AI agents detected on managed computers across your network.</div>
       </div>
 
-      <!-- FILTER TABS -->
+      <!-- Legacy filter controls are retained in the document for compatibility, but hidden for the streamlined inventory. -->
       <div class="filter-tabs-bar">
         <button class="filter-tab active" onclick="setFilter('software',this)">Software-Based</button>
         <button class="filter-tab" onclick="setFilter('portable',this)">Portable Applications</button>
@@ -507,14 +504,7 @@
         <!-- TOOLBAR -->
         <div class="toolbar">
           <div class="toolbar-right">
-            <div class="icon-btn" title="Search"><i class="fa fa-search"></i></div>
-            <div class="icon-btn" title="Export"><i class="fa fa-file-export"></i></div>
-            <div class="icon-btn" title="Refresh"><i class="fa fa-rotate"></i></div>
-            <div class="toolbar-sep"></div>
-            <button class="btn" title="Run a discovery scan across all managed endpoints">
-              <i class="fa fa-rotate"></i>
-              Run Discovery Scan
-            </button>
+            <span class="inventory-note">Select an AI agent to view installed computers</span>
           </div>
         </div>
 
@@ -523,12 +513,9 @@
           <table class="data-table" id="mainTable">
             <thead id="mainTableHead">
               <tr>
-                <th>Tool Name</th>
-                <th>Provider</th>
-                <th>Detection Source</th>
-                <th>Endpoints</th>
-                <th>Status</th>
-                <th>Actions</th>
+                <th>AI Agent</th>
+                <th>Publisher</th>
+                <th>Computers Installed</th>
               </tr>
             </thead>
             <tbody id="toolTableBody"></tbody>
@@ -614,18 +601,13 @@
       <div class="panel-header">
         <button class="panel-close-btn" onclick="closePanel()" title="Close"><i class="fa fa-xmark"></i></button>
         <span class="panel-patch-name" id="panelToolName">—</span>
-        <span class="sev-badge" id="panelSevBadge"></span>
       </div>
       <!-- Panel internal tab bar -->
       <div class="panel-tab-bar">
-        <button class="panel-tab active" onclick="switchPanelTab('overview',this)">Overview</button>
-        <button class="panel-tab" onclick="switchPanelTab('computers',this)">Computers</button>
-        <button class="panel-tab" onclick="switchPanelTab('sensitiveData',this)">Sensitive Data</button>
+        <button class="panel-tab active">Installed Computers</button>
       </div>
       <!-- Tab bodies -->
-      <div id="panelOverview" class="panel-body"><!-- populated by JS --></div>
-      <div id="panelComputers" style="display:none;flex-direction:column;flex:1;overflow:hidden"><!-- populated by JS --></div>
-      <div id="panelSensitiveData" style="display:none;flex-direction:column;flex:1;overflow:hidden"><!-- populated by JS --></div>
+      <div id="panelComputers" style="display:flex;flex-direction:column;flex:1;overflow:hidden"><!-- populated by JS --></div>
     </aside>
 
   </div><!-- /main-wrapper -->
@@ -888,15 +870,11 @@
 
     /* ===== RENDER STANDARD TABLE ===== */
     function renderTools(data) {
-      // Restore standard header (no enforcement column)
       const head = document.getElementById('mainTableHead');
       head.innerHTML = `<tr>
-        <th>Tool Name</th>
-        <th>Provider</th>
-        <th>Detection Source</th>
-        <th>Endpoints</th>
-        <th>Status</th>
-        <th>Actions</th>
+        <th>AI Agent</th>
+        <th>Publisher</th>
+        <th>Computers Installed</th>
       </tr>`;
 
       const tbody = document.getElementById('toolTableBody');
@@ -904,42 +882,23 @@
       document.getElementById('totalCount').textContent = data.length;
 
       if (!data.length) {
-        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:40px;color:#999;font-size:13px">No tools found for this filter.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="3" style="text-align:center;padding:40px;color:#999;font-size:13px">No AI agents detected.</td></tr>`;
         return;
       }
 
       tbody.innerHTML = data.map(t => {
-        const toolIdx   = TOOLS.findIndex(x => x.id === t.id);
-        const iconColor = ICON_COLORS[toolIdx % ICON_COLORS.length];
         const isSelected = t.id === currentToolId ? 'selected' : '';
-        const unauthAction = t.source === 'portable'
-          ? `onclick="markUnauthorizedConfirm('${t.id}','${t.name}','portable')"`
-          : `onclick="markUnauthorizedConfirm('${t.id}','${t.name}','installed')"`;
+        const installedCount = (COMPUTER_DATA[t.id] || []).length;
         return `
           <tr class="${isSelected}" onclick="openPanel('${t.id}')">
             <td>
-              <div class="patch-id-cell">
-                <i class="fa fa-square patch-icon ${iconColor}"></i>
-                <a href="#" onclick="event.stopPropagation()">${t.name}</a>
+              <div class="agent-name">
+                <i class="fa fa-robot"></i>
+                <span>${t.name}</span>
               </div>
             </td>
             <td>${t.provider}</td>
-            <td>${sourcePill(t.source)}</td>
-            <td><a href="#" onclick="event.stopPropagation()">${t.endpoints}</a></td>
-            <td>${statusPill(t.status)}</td>
-            <td onclick="event.stopPropagation()">
-              <div class="kebab-wrap" id="kebab-${t.id}">
-                <button class="kebab-btn" onclick="toggleKebab('kebab-${t.id}',event)" title="Actions">•••</button>
-                <div class="kebab-menu">
-                  <button onclick="applyAction('${t.id}','approved')">
-                    <i class="fa fa-circle-check" style="color:#2e7d32"></i> Approve
-                  </button>
-                  <button class="danger" ${unauthAction}>
-                    <i class="fa fa-ban"></i> Mark Unauthorized
-                  </button>
-                </div>
-              </div>
-            </td>
+            <td><span class="computer-count"><i class="fa fa-desktop"></i>${installedCount} computer${installedCount === 1 ? '' : 's'}</span></td>
           </tr>`;
       }).join('');
     }
@@ -1457,54 +1416,9 @@
       currentToolId = toolId;
 
       document.getElementById('panelToolName').textContent = t.name;
-      const sevBadge = document.getElementById('panelSevBadge');
-      sevBadge.textContent = panelSevLabel(t.source);
-      sevBadge.className   = 'sev-badge ' + panelSevClass(t.source);
-
-      // Reset panel tabs to Overview
-      document.querySelectorAll('.panel-tab').forEach((tab, i) => tab.classList.toggle('active', i === 0));
-      document.getElementById('panelOverview').style.display      = 'flex';
       document.getElementById('panelComputers').style.display     = 'none';
-      document.getElementById('panelSensitiveData').style.display = 'none';
-
-      const urls        = NETWORK_URLS[t.id] || [];
-      const showNetwork = (t.source === 'portable' || t.source === 'both') && urls.length;
-      const networkHtml = showNetwork ? `
-        <div class="panel-network-box">
-          <div class="network-title"><i class="fa fa-satellite-dish"></i> API Endpoints Called</div>
-          <ul>${urls.map(u => `<li>${u}</li>`).join('')}</ul>
-        </div>` : '';
-
-      const unauthType = t.source === 'portable' ? 'portable' : 'installed';
-
-      document.getElementById('panelOverview').innerHTML = `
-        <div style="display:flex;flex-direction:column;gap:10px">
-          <div class="panel-info-row"><i class="fa fa-building"></i><span>${t.provider}</span></div>
-          <div class="panel-info-row"><i class="fa fa-satellite-dish"></i><span>Detected via ${sourceLabel(t.source)}</span></div>
-          <div class="panel-info-row"><i class="fa fa-calendar"></i><span>Last seen: May 29, 2026</span></div>
-          <div class="panel-info-row"><i class="fa fa-desktop"></i><span>${t.endpoints} managed endpoints</span></div>
-        </div>
-        ${networkHtml}
-        <hr class="panel-divider" />
-        <div>
-          <div class="panel-section-label">Actions</div>
-          <div class="panel-actions-col" style="margin-top:8px">
-            <button class="panel-action-btn btn-success" onclick="applyActionFromPanel('${t.id}','approved')">
-              <i class="fa fa-circle-check"></i> Approve Tool
-            </button>
-            <button class="panel-action-btn btn-danger" onclick="markUnauthorizedConfirm('${t.id}','${t.name}','${unauthType}')">
-              <i class="fa fa-ban"></i> Mark Unauthorized
-            </button>
-            <button class="panel-action-btn btn-muted">
-              <i class="fa fa-clock-rotate-left"></i> View Audit Trail
-            </button>
-          </div>
-        </div>
-      `;
-
-      // Pre-render the other two tabs
       renderPanelComputers(t.id);
-      renderPanelSensitiveData(t.id);
+      document.getElementById('panelComputers').style.display = 'flex';
 
       document.getElementById('detailPanel').classList.add('open');
       document.getElementById('mainContent').classList.add('panel-active');
@@ -1649,7 +1563,8 @@
     }
 
     /* ===== INIT ===== */
-    setFilter('software', document.querySelector('.filter-tab.active'));
+    currentFilter = 'all';
+    renderTools(TOOLS);
   </script>
 
   <!-- EXCLUDE FOR GROUP MODAL -->
