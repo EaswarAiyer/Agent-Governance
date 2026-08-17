@@ -42,7 +42,7 @@ List managed Windows, macOS, and Linux endpoints and expose AI-agent and policy 
 - Controls: All endpoints, With AI agents, Protected, and search by endpoint/user/IP/OS.
 
 ### Endpoint table
-- Displays: endpoint, OS, logged-in user, IP, number of AI agents, number of applied policies, last seen, and status.
+- Displays: endpoint name, OS, logged-in user, IP, number of AI agents, number of applied policies, last contact time
 - Controls: clickable endpoint rows.
 - Number of AI agents displays the actual value with AI Discovery Read; otherwise it is `0` in any limited endpoint projection reached from another authorized module.
 - Number of applied policies displays the actual value with AI Agent Policy Read; otherwise it is `0`.
