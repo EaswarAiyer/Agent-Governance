@@ -18,6 +18,11 @@ pages:
 
 # Refresh AI Agent and Endpoint Inventory
 
+> [!info] Related specifications
+> **Map:** [[AI-Governance-Map|AI Governance Specification Map]]
+> **Features:** [[features/endpoint/ai-governance/discovery/feature|Discovery]] · [[features/endpoint/ai-governance/endpoint-coverage/feature|Endpoint Coverage]] · [[features/endpoint/ai-governance/rbac/feature|Role-Based Access]]
+> **Pages:** [[pages/endpoint/ai-governance/overview|Overview]] · [[pages/endpoint/ai-governance/agent-details|Agent Details]] · [[pages/endpoint/ai-governance/endpoints|Endpoints]] · [[pages/endpoint/ai-governance/endpoint-details|Endpoint Details]]
+
 ## Purpose
 Maintain the server-side inventory used to show managed endpoints, installed AI agents, installation metadata, and discovery timestamps.
 

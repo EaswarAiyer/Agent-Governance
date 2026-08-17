@@ -19,6 +19,12 @@ navigates_to:
 
 # Prompt Observability
 
+> [!info] Related specifications
+> **Map:** [[AI-Governance-Map|AI Governance Specification Map]]
+> **Features:** [[features/endpoint/ai-governance/prompt-observability/feature|Prompt Monitoring and Classification]] · [[features/endpoint/ai-governance/rbac/feature|Role-Based Access]]
+> **Workflows:** [[workflows/endpoint/ai-governance/prompt-collect-classify|Prompt Collection and Classification]] · [[workflows/endpoint/ai-governance/prompt-review|Prompt Review]] · [[workflows/endpoint/ai-governance/authorize-access|Access Authorization]]
+> **Navigation:** [[pages/endpoint/ai-governance/prompt-details|Prompt Details]] · [[pages/endpoint/ai-governance/overview|Overview]]
+
 ## Purpose
 Provide a global prompt log across all monitored AI agents and support sensitive-data investigation.
 

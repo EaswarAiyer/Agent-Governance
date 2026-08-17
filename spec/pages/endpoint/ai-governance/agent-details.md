@@ -20,6 +20,12 @@ navigates_to:
 
 # AI Agent Details
 
+> [!info] Related specifications
+> **Map:** [[AI-Governance-Map|AI Governance Specification Map]]
+> **Features:** [[features/endpoint/ai-governance/discovery/feature|Discovery]] · [[features/endpoint/ai-governance/prompt-observability/feature|Prompt Observability]] · [[features/endpoint/ai-governance/rbac/feature|Role-Based Access]]
+> **Workflows:** [[workflows/endpoint/ai-governance/inventory-refresh|Inventory Refresh]] · [[workflows/endpoint/ai-governance/prompt-review|Prompt Review]] · [[workflows/endpoint/ai-governance/authorize-access|Access Authorization]]
+> **Navigation:** [[pages/endpoint/ai-governance/overview|Overview]] · [[pages/endpoint/ai-governance/prompt-details|Prompt Details]]
+
 ## Purpose
 Show where one AI agent is installed and the prompt activity attributed to that agent.
 
@@ -38,9 +44,9 @@ Show where one AI agent is installed and the prompt activity attributed to that 
 - Controls: breadcrumb and Back to Overview.
 
 ### Installed computers tab
-- Displays: computer name, OS, logged-in user, install location, and agent version.
+- Displays: computer name, OS, Last logged-in user,  Last Contact Time
 
-### Prompt log tab
+### Prompt log tab [TBD]
 - Displays: prompt preview, attached files, general Data Group classification, computer, and time.
 - Controls: clickable prompt rows.
 
@@ -52,7 +58,7 @@ Show where one AI agent is installed and the prompt activity attributed to that 
 - On success: selected content is shown.
 - On failure: keep the prior tab and show an access/load error.
 
-### Open prompt details
+### Open prompt details [TBD]
 - Available when: the user can view prompt metadata.
 - Triggers: `workflow.endpoint.ai-governance.prompt-review`.
 - UX feedback: navigate to the selected interaction.
@@ -83,3 +89,4 @@ Show where one AI agent is installed and the prompt activity attributed to that 
 
 ## Open questions
 - Should computer rows navigate to endpoint details?
+	- Yes computer rows should navigate to endpoint details

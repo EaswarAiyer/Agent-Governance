@@ -19,6 +19,12 @@ navigates_to:
 
 # AI Governance Overview
 
+> [!info] Related specifications
+> **Map:** [[AI-Governance-Map|AI Governance Specification Map]]
+> **Features:** [[features/endpoint/ai-governance/discovery/feature|Discovery]] · [[features/endpoint/ai-governance/endpoint-coverage/feature|Endpoint Coverage]] · [[features/endpoint/ai-governance/rbac/feature|Role-Based Access]]
+> **Workflows:** [[workflows/endpoint/ai-governance/inventory-refresh|Inventory Refresh]] · [[workflows/endpoint/ai-governance/authorize-access|Access Authorization]]
+> **Navigation:** [[pages/endpoint/ai-governance/agent-details|Agent Details]] · [[pages/endpoint/ai-governance/endpoints|Endpoints]]
+
 ## Purpose
 Provide the primary AI Governance landing page, combining coverage KPIs with the discovered AI-agent inventory.
 

@@ -14,6 +14,11 @@ pages:
 
 # AI Agent Discovery and Inventory
 
+> [!info] Related specifications
+> **Map:** [[AI-Governance-Map|AI Governance Specification Map]]
+> **Workflow:** [[workflows/endpoint/ai-governance/inventory-refresh|Inventory Refresh]]
+> **Pages:** [[pages/endpoint/ai-governance/overview|Overview]] · [[pages/endpoint/ai-governance/agent-details|Agent Details]]
+
 ## Problem
 Administrators need to know which AI agents exist across managed computers and where each agent is installed.
 

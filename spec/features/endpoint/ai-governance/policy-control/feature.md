@@ -17,6 +17,11 @@ pages:
 
 # AI Agent Policy Control
 
+> [!info] Related specifications
+> **Map:** [[AI-Governance-Map|AI Governance Specification Map]]
+> **Workflows:** [[workflows/endpoint/ai-governance/policy-save|Policy Save]] · [[workflows/endpoint/ai-governance/effective-policy-resolve|Effective Policy Resolution]] · [[workflows/endpoint/ai-governance/prompt-collect-classify|Prompt Collection and Classification]]
+> **Pages:** [[pages/endpoint/ai-governance/policy-list|Policy List]] · [[pages/endpoint/ai-governance/policy-details|Policy Details]] · [[pages/endpoint/ai-governance/endpoint-details|Endpoint Details]]
+
 ## Problem
 Administrators need a repeatable way to control which AI agents may run, what resources allowed agents may access, and how prompt data is monitored or blocked.
 

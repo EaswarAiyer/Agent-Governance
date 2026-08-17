@@ -22,6 +22,12 @@ navigates_to:
 
 # AI Governance Endpoint Details
 
+> [!info] Related specifications
+> **Map:** [[AI-Governance-Map|AI Governance Specification Map]]
+> **Features:** [[features/endpoint/ai-governance/endpoint-coverage/feature|Endpoint Coverage]] · [[features/endpoint/ai-governance/policy-control/feature|Policy Control]] · [[features/endpoint/ai-governance/policy-deployment/feature|Policy Deployment]] · [[features/endpoint/ai-governance/rbac/feature|Role-Based Access]]
+> **Workflows:** [[workflows/endpoint/ai-governance/inventory-refresh|Inventory Refresh]] · [[workflows/endpoint/ai-governance/effective-policy-resolve|Effective Policy Resolution]] · [[workflows/endpoint/ai-governance/authorize-access|Access Authorization]]
+> **Navigation:** [[pages/endpoint/ai-governance/endpoints|Endpoints]] · [[pages/endpoint/ai-governance/agent-details|Agent Details]] · [[pages/endpoint/ai-governance/policy-details|Policy Details]]
+
 ## Purpose
 Explain an endpoint's installed AI agents, applied policies, and final merged controls.
 
@@ -41,11 +47,11 @@ Explain an endpoint's installed AI agents, applied policies, and final merged co
 - AI-agent count is `0` without AI Discovery Read. Policy count is `0` without AI Agent Policy Read.
 
 ### Installed AI Agents
-- Displays: agent, version, install location, and effective control (Allowed, Blocked, or Unmanaged).
+- Displays: agent and effective control (Allowed, Blocked, or Unmanaged).
 - Requires AI Discovery Read; without it the section is empty/hidden and no underlying rows are returned.
 
 ### Applied AI Agent Policies
-- Displays: policy, agent mode, prompt collection, DLP mode, and auto-uninstallation.
+- Displays: policy
 - Requires AI Agent Policy Read; without it the section is empty/hidden and no underlying rows are returned.
 
 ### Merged Effective Policy
@@ -94,3 +100,4 @@ Explain an endpoint's installed AI agents, applied policies, and final merged co
 
 ## Open questions
 - Should the page show field-level merge provenance and deployment history?
+	- Yes it should show the final result in each field.

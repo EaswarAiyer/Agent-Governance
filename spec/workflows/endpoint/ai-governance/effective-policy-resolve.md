@@ -16,6 +16,11 @@ pages:
 
 # Resolve an Endpoint's Effective AI Policy
 
+> [!info] Related specifications
+> **Map:** [[AI-Governance-Map|AI Governance Specification Map]]
+> **Features:** [[features/endpoint/ai-governance/endpoint-coverage/feature|Endpoint Coverage]] · [[features/endpoint/ai-governance/policy-control/feature|Policy Control]] · [[features/endpoint/ai-governance/policy-deployment/feature|Policy Deployment]] · [[features/endpoint/ai-governance/rbac/feature|Role-Based Access]]
+> **Page:** [[pages/endpoint/ai-governance/endpoint-details|Endpoint Details]]
+
 ## Purpose
 Produce one deterministic set of final AI-agent and prompt-DLP controls from all policies successfully applied to an endpoint.
 

@@ -15,6 +15,11 @@ pages:
 
 # Create or Modify an AI Agent Policy
 
+> [!info] Related specifications
+> **Map:** [[AI-Governance-Map|AI Governance Specification Map]]
+> **Features:** [[features/endpoint/ai-governance/policy-control/feature|Policy Control]] · [[features/endpoint/ai-governance/rbac/feature|Role-Based Access]]
+> **Pages:** [[pages/endpoint/ai-governance/policy-list|Policy List]] · [[pages/endpoint/ai-governance/policy-details|Policy Details]]
+
 ## Purpose
 Validate and persist a reusable, OS-specific AI-agent control and prompt-DLP policy.
 

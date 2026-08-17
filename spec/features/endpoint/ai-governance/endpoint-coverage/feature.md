@@ -16,6 +16,11 @@ pages:
 
 # Endpoint Coverage and Effective Controls
 
+> [!info] Related specifications
+> **Map:** [[AI-Governance-Map|AI Governance Specification Map]]
+> **Workflows:** [[workflows/endpoint/ai-governance/inventory-refresh|Inventory Refresh]] · [[workflows/endpoint/ai-governance/effective-policy-resolve|Effective Policy Resolution]]
+> **Pages:** [[pages/endpoint/ai-governance/overview|Overview]] · [[pages/endpoint/ai-governance/endpoints|Endpoints]] · [[pages/endpoint/ai-governance/endpoint-details|Endpoint Details]]
+
 ## Problem
 Administrators need to understand AI-agent coverage and the final controls that apply to every managed Windows, macOS, and Linux endpoint.
 

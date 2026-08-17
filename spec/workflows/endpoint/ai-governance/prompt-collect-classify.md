@@ -17,6 +17,11 @@ pages:
 
 # Collect and Classify AI Prompt Activity
 
+> [!info] Related specifications
+> **Map:** [[AI-Governance-Map|AI Governance Specification Map]]
+> **Features:** [[features/endpoint/ai-governance/policy-control/feature|Policy Control]] · [[features/endpoint/ai-governance/prompt-observability/feature|Prompt Monitoring and Classification]]
+> **Pages:** [[pages/endpoint/ai-governance/policy-details|Policy Details]] · [[pages/endpoint/ai-governance/agent-details|Agent Details]] · [[pages/endpoint/ai-governance/observability|Observability]] · [[pages/endpoint/ai-governance/prompt-details|Prompt Details]]
+
 ## Purpose
 Capture policy-enabled AI interactions, classify sensitive data with selected Data Groups, and apply the configured DLP behavior.
 

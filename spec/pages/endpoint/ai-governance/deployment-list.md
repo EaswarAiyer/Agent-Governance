@@ -18,6 +18,12 @@ navigates_to:
 
 # Policy Deployment
 
+> [!info] Related specifications
+> **Map:** [[AI-Governance-Map|AI Governance Specification Map]]
+> **Features:** [[features/endpoint/ai-governance/policy-deployment/feature|Policy Deployment]] · [[features/endpoint/ai-governance/rbac/feature|Role-Based Access]]
+> **Workflows:** [[workflows/endpoint/ai-governance/policy-deploy|Policy Deployment]] · [[workflows/endpoint/ai-governance/authorize-access|Access Authorization]]
+> **Navigation:** [[pages/endpoint/ai-governance/deployment-details|Deployment Details]] · [[pages/endpoint/ai-governance/overview|Overview]]
+
 ## Purpose
 List and manage tasks that associate one AI-agent policy with a target endpoint group.
 
@@ -94,4 +100,6 @@ List and manage tasks that associate one AI-agent policy with a target endpoint 
 
 ## Open questions
 - Should create/modify be a dedicated page rather than a dialog?
+	- Yes it should be a dedicated page
 - What is the task lifecycle: Draft, Scheduled, Running, Completed, Failed, Canceled?
+	- Yet to start, in progress and completed are the only states. Since it's simply a policy and waits for the endpoints to read the policy.

@@ -1,5 +1,8 @@
 # AI Governance product specification
 
+> [!tip] Obsidian navigation
+> Open [[AI-Governance-Map|AI Governance Specification Map]] to browse linked features, workflows, pages, and product flows.
+
 This specification describes the behavior represented by the static AI Governance prototype. It separates product intent (features), system behavior (workflows), and user experience (pages). Prototype sample values are illustrative and are not contractual limits.
 
 ## Product boundary

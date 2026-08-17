@@ -16,6 +16,11 @@ pages:
 
 # Deploy an AI Agent Policy to Endpoints
 
+> [!info] Related specifications
+> **Map:** [[AI-Governance-Map|AI Governance Specification Map]]
+> **Features:** [[features/endpoint/ai-governance/policy-deployment/feature|Policy Deployment]] · [[features/endpoint/ai-governance/rbac/feature|Role-Based Access]]
+> **Pages:** [[pages/endpoint/ai-governance/deployment-list|Deployment List]] · [[pages/endpoint/ai-governance/deployment-details|Deployment Details]] · [[pages/endpoint/ai-governance/endpoint-details|Endpoint Details]]
+
 ## Purpose
 Associate one policy with a target endpoint group, deliver it to eligible endpoints, and track endpoint-level results.
 

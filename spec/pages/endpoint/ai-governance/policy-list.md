@@ -18,6 +18,12 @@ navigates_to:
 
 # AI Agent Policies
 
+> [!info] Related specifications
+> **Map:** [[AI-Governance-Map|AI Governance Specification Map]]
+> **Features:** [[features/endpoint/ai-governance/policy-control/feature|Policy Control]] · [[features/endpoint/ai-governance/rbac/feature|Role-Based Access]]
+> **Workflows:** [[workflows/endpoint/ai-governance/policy-save|Policy Save]] · [[workflows/endpoint/ai-governance/authorize-access|Access Authorization]]
+> **Navigation:** [[pages/endpoint/ai-governance/policy-details|Policy Details]] · [[pages/endpoint/ai-governance/overview|Overview]]
+
 ## Purpose
 List AI-agent policies and provide OS-specific creation and modification entry points.
 
@@ -36,7 +42,7 @@ List AI-agent policies and provide OS-specific creation and modification entry p
 - Controls: Create policy menu with Windows, Mac, and Linux.
 
 ### Policy table
-- Displays: policy name, OS platform, mode, Allow List, Block List, auto-uninstall, modified by, last modified, and action.
+- Displays: policy name, OS platform, mode, modified by, last modified, and action.
 - Controls: policy link and per-row action menu.
 
 ## User actions
@@ -88,3 +94,4 @@ List AI-agent policies and provide OS-specific creation and modification entry p
 
 ## Open questions
 - What blocks or warns on deleting a deployed policy?
+	- Don't allow to delete a policy if it is mapped with a deployment task.

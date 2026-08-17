@@ -19,6 +19,12 @@ navigates_to:
 
 # Deployment Task Details
 
+> [!info] Related specifications
+> **Map:** [[AI-Governance-Map|AI Governance Specification Map]]
+> **Features:** [[features/endpoint/ai-governance/policy-deployment/feature|Policy Deployment]] · [[features/endpoint/ai-governance/policy-control/feature|Policy Control]] · [[features/endpoint/ai-governance/rbac/feature|Role-Based Access]]
+> **Workflows:** [[workflows/endpoint/ai-governance/policy-deploy|Policy Deployment]] · [[workflows/endpoint/ai-governance/authorize-access|Access Authorization]]
+> **Navigation:** [[pages/endpoint/ai-governance/deployment-list|Deployment List]] · [[pages/endpoint/ai-governance/endpoint-details|Endpoint Details]]
+
 ## Purpose
 Show the task summary, endpoint-level rollout results, and complete associated-policy configuration.
 
@@ -85,4 +91,6 @@ Show the task summary, endpoint-level rollout results, and complete associated-p
 
 ## Open questions
 - Which retry, cancel, or rollback actions belong on this page?
+	- No rollback actions needed.
 - Should target membership reflect the original execution snapshot or current group membership?
+	- No
