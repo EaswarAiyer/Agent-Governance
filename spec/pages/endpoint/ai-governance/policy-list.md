@@ -7,8 +7,10 @@ domain: endpoint
 module: ai-governance
 features:
   - feature.endpoint.ai-governance.policy-control
+  - feature.endpoint.ai-governance.rbac
 workflows:
   - workflow.endpoint.ai-governance.policy-save
+  - workflow.endpoint.ai-governance.authorize-access
 navigates_to:
   - page.endpoint.ai-governance.policy-details
   - page.endpoint.ai-governance.overview
@@ -20,8 +22,9 @@ navigates_to:
 List AI-agent policies and provide OS-specific creation and modification entry points.
 
 ## Access / roles
-- Policies View to list and inspect policies.
-- Policies Manage to create, modify, duplicate, or delete.
+- AI Agent Policy Read or higher to list and inspect policies.
+- AI Agent Policy Write or higher to create, duplicate, and modify policies.
+- AI Agent Policy Full to delete policies.
 
 ## Entry points
 - Main AI Governance navigation -> Policies.
@@ -38,21 +41,21 @@ List AI-agent policies and provide OS-specific creation and modification entry p
 
 ## User actions
 ### Create policy
-- Available when: user has Policies Manage.
+- Available when: user has AI Agent Policy Write or Full.
 - Triggers: begins `workflow.endpoint.ai-governance.policy-save` after editing.
 - UX feedback: require platform selection.
 - On success: open `page.endpoint.ai-governance.policy-details` as a new policy.
 - On failure: remain on the list and explain the error.
 
 ### Modify policy
-- Available when: user has Policies Manage.
+- Available when: user has AI Agent Policy Write or Full.
 - Triggers: `workflow.endpoint.ai-governance.policy-save` when saved.
 - UX feedback: open the selected policy.
 - On success: return to the updated list after save.
 - On failure: preserve unsaved edits on details.
 
 ### Delete policy
-- Available when: user has the destructive policy permission `[TBD]`.
+- Available when: user has AI Agent Policy Full.
 - Triggers: policy deletion workflow `[TBD]`.
 - UX feedback: require confirmation and disclose deployment impact.
 - On success: remove or archive the row.
@@ -73,7 +76,8 @@ List AI-agent policies and provide OS-specific creation and modification entry p
 - Show retry without losing current list context.
 
 ### Permission / disabled
-- Hide mutation actions for view-only users.
+- Deny the page without AI Agent Policy Read.
+- Hide create/duplicate/modify actions for Read-only users and delete for users below Full.
 
 ## Validation and feedback
 - Counts and mode summaries must reflect the saved policy version.

@@ -7,6 +7,7 @@ domain: endpoint
 module: ai-governance
 features:
   - feature.endpoint.ai-governance.policy-control
+  - feature.endpoint.ai-governance.rbac
 pages:
   - page.endpoint.ai-governance.policy-list
   - page.endpoint.ai-governance.policy-details
@@ -18,10 +19,10 @@ pages:
 Validate and persist a reusable, OS-specific AI-agent control and prompt-DLP policy.
 
 ## Trigger
-A user with Policies Manage permission selects Save policy on `page.endpoint.ai-governance.policy-details`.
+A user with AI Agent Policy Write or Full selects Save policy on `page.endpoint.ai-governance.policy-details`.
 
 ## Preconditions
-- The user is authorized to create or modify policies.
+- The user has AI Agent Policy Write or Full; Read alone cannot submit a mutation.
 - The selected Data, Website, and Application Groups still exist and are accessible.
 - Every advanced rule references an agent currently in the Allow List.
 - Administrative-group support for shared CG/DCG access by scoped technicians is not available in the current release.
@@ -39,7 +40,7 @@ A user with Policies Manage permission selects Save policy on `page.endpoint.ai-
 2. Submit the complete policy definition and, for modification, its identity/version.
 
 ### Server behavior
-1. Authorize the mutation and validate all identifiers and combinations.
+1. Authorize the mutation through `workflow.endpoint.ai-governance.authorize-access` and validate all identifiers and combinations.
 2. Reject allow/block overlap and advanced rules for non-allowlisted agents.
 3. Persist the new policy or a new version of the existing policy; versioning is `[TBD]`.
 4. Record who modified the policy and when.

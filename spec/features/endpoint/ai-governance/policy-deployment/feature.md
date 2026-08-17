@@ -37,8 +37,10 @@ Users can manage deployment tasks, each mapping exactly one policy to a target e
 - General-purpose software deployment.
 
 ## Users / Roles
-- Deployments View for read access.
-- Deployments Manage for create, modify, execute, retry, and delete capabilities; the exact split is `[TBD]`.
+- AI Agent Policy Deployment Read or higher for task lists, task details, and endpoint rollout results.
+- AI Agent Policy Deployment Write or Full for create, modify, execute, and retry.
+- AI Agent Policy Deployment Full for delete/cancel lifecycle actions.
+- AI Agent Policy Read or higher is additionally required to inspect granular policy content from deployment details.
 
 ## Product behavior
 Clicking a task opens its dedicated details page. Endpoint results distinguish successful, pending, and failed application and include operational remarks.
@@ -56,6 +58,7 @@ Clicking a task opens its dedicated details page. Endpoint results distinguish s
 - Requires an existing policy and target endpoint group.
 - Target endpoints must be within the technician's existing Endpoint Central scope.
 - Offline and stale endpoints require explicit delivery semantics.
+- Access and linked endpoint field projection follow `feature.endpoint.ai-governance.rbac`.
 
 ## Release / completion criteria
 - Each task maps exactly one policy.

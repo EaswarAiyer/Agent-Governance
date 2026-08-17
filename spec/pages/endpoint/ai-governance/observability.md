@@ -7,9 +7,11 @@ domain: endpoint
 module: ai-governance
 features:
   - feature.endpoint.ai-governance.prompt-observability
+  - feature.endpoint.ai-governance.rbac
 workflows:
   - workflow.endpoint.ai-governance.prompt-collect-classify
   - workflow.endpoint.ai-governance.prompt-review
+  - workflow.endpoint.ai-governance.authorize-access
 navigates_to:
   - page.endpoint.ai-governance.prompt-details
   - page.endpoint.ai-governance.overview
@@ -21,9 +23,9 @@ navigates_to:
 Provide a global prompt log across all monitored AI agents and support sensitive-data investigation.
 
 ## Access / roles
-- Observability Metadata View for prompt-list fields permitted by policy.
-- Observability Sensitive Content View for unredacted prompt previews/attachments when classified as sensitive.
-- Prompt Export is separate.
+- AI DLP Observability Read or higher for global and agent-specific prompt logs and prompt details, including authorized captured content.
+- AI DLP Observability Write includes Read; no additional observability mutation is part of the current release.
+- AI DLP Observability Full for export.
 - Every insight and record is derived only from endpoints in the technician's existing Endpoint Central scope.
 
 ## Entry points
@@ -40,7 +42,7 @@ Provide a global prompt log across all monitored AI agents and support sensitive
 
 ## User actions
 ### Open prompt details
-- Available when: user has prompt metadata access.
+- Available when: user has AI DLP Observability Read or higher.
 - Triggers: `workflow.endpoint.ai-governance.prompt-review`.
 - UX feedback: navigate to the selected record.
 - On success: open `page.endpoint.ai-governance.prompt-details`.
@@ -54,7 +56,7 @@ Provide a global prompt log across all monitored AI agents and support sensitive
 - On failure: preserve the prior result set.
 
 ### Export
-- Available when: user has Prompt Export.
+- Available when: user has AI DLP Observability Full.
 - Triggers: export workflow `[TBD]`.
 - UX feedback: disclose scope and sensitive-content handling before export.
 - On success: provide the generated artifact and audit the action.
@@ -71,7 +73,8 @@ Provide a global prompt log across all monitored AI agents and support sensitive
 - Distinguish retrieval failure from permission-based redaction.
 
 ### Permission / disabled
-- Redact or omit sensitive columns according to permissions and product decision `[TBD]`.
+- Deny the page and APIs without AI DLP Observability Read.
+- Hide export for Read and Write users; Full is required.
 - Exclude records from endpoints outside the technician's scope before calculating insights or returning rows.
 
 ## Validation and feedback

@@ -8,8 +8,10 @@ module: ai-governance
 features:
   - feature.endpoint.ai-governance.discovery
   - feature.endpoint.ai-governance.endpoint-coverage
+  - feature.endpoint.ai-governance.rbac
 workflows:
   - workflow.endpoint.ai-governance.inventory-refresh
+  - workflow.endpoint.ai-governance.authorize-access
 navigates_to:
   - page.endpoint.ai-governance.agent-details
   - page.endpoint.ai-governance.endpoints
@@ -21,7 +23,8 @@ navigates_to:
 Provide the primary AI Governance landing page, combining coverage KPIs with the discovered AI-agent inventory.
 
 ## Access / roles
-- Overview/Discovery View permission.
+- AI Discovery Read or higher is required to open the Overview and discovered-agent inventory.
+- AI Agent Policy Read or higher is required to show the actual Protected Endpoints count and governance values derived from policy state.
 - KPI and row visibility include only endpoints in the technician's existing Endpoint Central scope.
 
 ## Entry points
@@ -32,6 +35,7 @@ Provide the primary AI Governance landing page, combining coverage KPIs with the
 ### KPI strip
 - Displays: AI Agents Discovered, Endpoints with AI Agents, Managed Endpoints, Protected Endpoints.
 - Controls: each count is a navigation link; endpoint KPIs apply the corresponding endpoint filter.
+- Without AI Agent Policy Read, Protected Endpoints displays `0` and its filter returns no rows; the underlying applied-policy count is not returned to the client.
 
 ### Discovered AI Agents
 - Displays: agent, publisher, detection source, endpoint count, governance status, first detected, last seen.
@@ -69,6 +73,8 @@ Provide the primary AI Governance landing page, combining coverage KPIs with the
 
 ### Permission / disabled
 - Exclude endpoints outside the technician's scope from counts and rows rather than calculating and then redacting them.
+- Deny the page without AI Discovery Read.
+- Calculate policy-derived KPI values and filters from permission-projected counts returned by `workflow.endpoint.ai-governance.authorize-access`.
 
 ### Existing-customer introduction
 - On upgrade, show a New indicator on the AI Governance tab and an information box introducing the feature.
@@ -77,6 +83,7 @@ Provide the primary AI Governance landing page, combining coverage KPIs with the
 ## Validation and feedback
 - Search is case-insensitive and updates visible count.
 - KPI predicates must match endpoint-page filters exactly.
+- Project unauthorized policy counts to zero before KPI aggregation; zero must not be used while authorized data is merely loading or unavailable.
 
 ## Navigation
 - Agent row -> `page.endpoint.ai-governance.agent-details`.

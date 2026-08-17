@@ -8,9 +8,11 @@ module: ai-governance
 features:
   - feature.endpoint.ai-governance.discovery
   - feature.endpoint.ai-governance.prompt-observability
+  - feature.endpoint.ai-governance.rbac
 workflows:
   - workflow.endpoint.ai-governance.inventory-refresh
   - workflow.endpoint.ai-governance.prompt-review
+  - workflow.endpoint.ai-governance.authorize-access
 navigates_to:
   - page.endpoint.ai-governance.overview
   - page.endpoint.ai-governance.prompt-details
@@ -22,9 +24,8 @@ navigates_to:
 Show where one AI agent is installed and the prompt activity attributed to that agent.
 
 ## Access / roles
-- Overview/Discovery View for agent and installation data.
-- Observability Metadata View for the Prompt Log tab.
-- Sensitive prompt content requires separate permission on details.
+- AI Discovery Read or higher for agent identity and installation data.
+- AI DLP Observability Read or higher for the Prompt Log tab and prompt details.
 - Installation and prompt records include only endpoints in the technician's Endpoint Central scope.
 
 ## Entry points
@@ -70,7 +71,8 @@ Show where one AI agent is installed and the prompt activity attributed to that 
 - Keep agent identity visible and localize the failed tab.
 
 ### Permission / disabled
-- Hide or disable Prompt Log when metadata permission is absent.
+- Deny the agent-details page without AI Discovery Read.
+- Hide the Prompt Log tab and return no prompt records without AI DLP Observability Read.
 
 ## Validation and feedback
 - Agent identity must resolve from a stable ID; unknown IDs show not-found instead of silently choosing another agent.

@@ -8,6 +8,7 @@ module: ai-governance
 features:
   - feature.endpoint.ai-governance.discovery
   - feature.endpoint.ai-governance.endpoint-coverage
+  - feature.endpoint.ai-governance.rbac
 pages:
   - page.endpoint.ai-governance.overview
   - page.endpoint.ai-governance.agent-details
@@ -39,7 +40,7 @@ The workflow starts when a managed endpoint reports inventory during its normal 
 3. Reconcile added, changed, and removed installations.
 4. Recalculate agent endpoint counts and coverage KPIs.
 5. Store first-detected and last-seen timestamps.
-6. Apply technician scope when producing insights and inventory views; never use out-of-scope endpoints in displayed counts.
+6. Apply technician scope when producing insights and inventory views; never use out-of-scope endpoints in displayed counts. Apply interactive role-based field projection through `workflow.endpoint.ai-governance.authorize-access` at request time without altering the stored inventory.
 7. In MSP, partition inventory and home-page counts by customer. In Summary Server, retain probe-level handling without requiring complete consolidated visibility.
 8. Send aggregate adoption and ingestion-failure signals to ME tracking without endpoint-sensitive inventory values.
 
@@ -60,7 +61,7 @@ No server-to-agent payload is required by the represented inventory update. Scan
 | Detection evidence/source | Explain classification | Yes | Taxonomy is `[TBD]` |
 
 ## Success state
-The server accepts the report, updates the endpoint and agent inventories, and returns internally consistent, technician-scoped KPI and detail counts in the supported product topology.
+The server accepts the report and updates the endpoint and agent inventories. Interactive requests receive internally consistent, technician-scoped, permission-projected KPI and detail counts through `workflow.endpoint.ai-governance.authorize-access`.
 
 ## Failure, retry, and recovery
 ### Invalid report

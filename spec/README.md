@@ -32,6 +32,7 @@ All insights, inventory counts, endpoint lists, and observability records must b
 - `feature.endpoint.ai-governance.policy-control` — AI agent policy control
 - `feature.endpoint.ai-governance.policy-deployment` — policy deployment
 - `feature.endpoint.ai-governance.prompt-observability` — prompt monitoring and classification
+- `feature.endpoint.ai-governance.rbac` — feature-level roles, action authorization, and endpoint field projection
 
 ## Workflows
 
@@ -41,6 +42,7 @@ All insights, inventory counts, endpoint lists, and observability records must b
 - `workflow.endpoint.ai-governance.effective-policy-resolve`
 - `workflow.endpoint.ai-governance.prompt-collect-classify`
 - `workflow.endpoint.ai-governance.prompt-review`
+- `workflow.endpoint.ai-governance.authorize-access`
 
 ## Pages
 
@@ -57,7 +59,18 @@ All insights, inventory counts, endpoint lists, and observability records must b
 
 ## Feature-based access model
 
-The product should use composable feature permissions instead of fixed job personas. The minimum permission families implied by the prototype are Overview/Discovery View, Endpoints View, Policies View/Manage, Deployments View/Manage, Observability Metadata View, Observability Sensitive Content View, Prompt Export, Groups View/Manage, Auto-uninstall Execute, and RBAC Administration. Feature permissions operate within the technician's existing Endpoint Central scope. Exact permission names remain `[TBD]`.
+The product uses four composable feature-permission families rather than fixed job personas:
+
+| Permission family | Read | Write | Full |
+|---|---|---|---|
+| AI Discovery | View discovery, agent installations, and AI Governance endpoint inventory. | Includes Read; no additional discovery mutation exists today. | Includes Write; no Full-only discovery action exists today. |
+| AI Agent Policy | View policies, applied-policy state, and merged effective controls. | Includes Read; create, duplicate, and modify policies. | Includes Write; delete policies. |
+| AI Agent Policy Deployment | View deployment tasks and endpoint results. | Includes Read; create, modify, execute, and retry tasks. | Includes Write; delete/cancel tasks where supported. |
+| AI DLP Observability | View global/agent prompt logs and prompt details. | Includes Read; no additional prompt mutation exists today. | Includes Write; export observability data. |
+
+Write always includes Read, and Full always includes Write and Read. Permissions are additive and operate within the technician's existing Endpoint Central scope.
+
+Endpoint-derived columns are projected on the server according to these roles. The Number of AI Agents Installed column requires AI Discovery Read; without it the value is `0` and installed-agent rows are empty. The Number of Policies Applied column requires AI Agent Policy Read; without it the value is `0`, policy rows and merged controls are hidden, and Protected Endpoint counts/filters use zero rather than the underlying policy state. Filters, sorting, pagination totals, exports, and APIs must use the projected values to prevent permission side channels. Detailed behavior is authoritative in `feature.endpoint.ai-governance.rbac` and `workflow.endpoint.ai-governance.authorize-access`.
 
 ## Notifications, audit, and telemetry
 

@@ -33,8 +33,9 @@ The product presents a current, searchable inventory of discovered AI agents and
 - Manual refresh controls in the UI.
 
 ## Users / Roles
-- Users with Overview/Discovery View permission.
-- Users need Observability permissions to view prompt activity or sensitive prompt content.
+- AI Discovery Read or higher grants discovery KPIs, agent inventory, installations, and the AI Governance endpoint list.
+- AI Discovery Write and Full include Read; no user-initiated discovery mutation or Full-only action exists in the current release.
+- AI DLP Observability Read or higher is additionally required to view prompt activity and prompt details.
 - Discovery records and counts include only endpoints in the technician's Endpoint Central scope.
 
 ## Product behavior
@@ -49,6 +50,7 @@ Overview and Discovery are a single experience named Overview. Selecting an agen
 
 ## Dependencies and constraints
 - Requires managed endpoint inventory and endpoint telemetry.
+- Access and endpoint field projection follow `feature.endpoint.ai-governance.rbac`.
 - Agent identity normalization rules are `[TBD]`.
 - MSP aggregation is customer-specific. Summary Server support is probe-level without complete consolidated visibility.
 

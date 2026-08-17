@@ -39,9 +39,10 @@ Users can create multiple OS-specific policies containing agent control, remedia
 - General software restriction policies outside AI agents.
 
 ## Users / Roles
-- Policies View for read access.
-- Policies Manage for create, modify, duplicate, and delete operations.
-- Auto-uninstall Execute is a separate sensitive capability at enforcement time.
+- AI Agent Policy Read or higher for policy lists/details, applied-policy data, and merged effective controls.
+- AI Agent Policy Write or Full for create, duplicate, modify, and auto-uninstallation configuration.
+- AI Agent Policy Full for delete.
+- Endpoint enforcement executes the saved/deployed policy as a system operation; no separate interactive auto-uninstall role is introduced in this module.
 
 ## Product behavior
 Agent Strict mode permits only Allow List agents. Agent Audit mode blocks Block List agents and allows all others, even when Allow List is empty. DLP Strict mode collects/classifies prompts and blocks transfers matching selected Data Groups. DLP Audit mode collects/classifies without blocking. Agent and DLP modes are independent.
@@ -58,6 +59,7 @@ Agent Strict mode permits only Allow List agents. Agent Audit mode blocks Block 
 
 ## Dependencies and constraints
 - Available endpoints and reusable objects must respect the technician's existing Endpoint Central scope.
+- Access and endpoint policy-field projection follow `feature.endpoint.ai-governance.rbac`.
 - Advanced rules can reference only allowlisted agents.
 - Accessible domains use Website Groups only; allowed child processes use Application Groups only.
 - Classifiers use Data Groups.

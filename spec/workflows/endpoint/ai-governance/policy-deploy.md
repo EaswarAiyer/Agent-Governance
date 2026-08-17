@@ -7,6 +7,7 @@ domain: endpoint
 module: ai-governance
 features:
   - feature.endpoint.ai-governance.policy-deployment
+  - feature.endpoint.ai-governance.rbac
 pages:
   - page.endpoint.ai-governance.deployment-list
   - page.endpoint.ai-governance.deployment-details
@@ -19,10 +20,11 @@ pages:
 Associate one policy with a target endpoint group, deliver it to eligible endpoints, and track endpoint-level results.
 
 ## Trigger
-A user with Deployments Manage permission saves or executes a deployment task from `page.endpoint.ai-governance.deployment-list`. Whether Save and Execute are the same action is `[TBD]`.
+A user with AI Agent Policy Deployment Write or Full saves, executes, or retries a deployment task from `page.endpoint.ai-governance.deployment-list`. Whether Save and Execute are the same action is `[TBD]`.
 
 ## Preconditions
 - The selected policy exists and is valid.
+- The user has AI Agent Policy Deployment Write or Full; Read alone cannot mutate or execute a task.
 - Exactly one policy is mapped to the task.
 - The target endpoint group exists and contains endpoints.
 - The user can access both the policy and the target group.
@@ -37,7 +39,7 @@ A user with Deployments Manage permission saves or executes a deployment task fr
 
 ## Flow
 ### Server behavior
-1. Validate authorization, policy, target group, and platform compatibility.
+1. Validate authorization through `workflow.endpoint.ai-governance.authorize-access`, then validate the policy, target group, and platform compatibility.
 2. Resolve target membership within the technician's Endpoint Central scope and snapshot it for the execution `[TBD]`.
 3. Create per-endpoint deployment records in Pending state.
 4. Queue the policy for endpoint delivery.

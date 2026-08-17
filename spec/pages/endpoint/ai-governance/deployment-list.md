@@ -7,8 +7,10 @@ domain: endpoint
 module: ai-governance
 features:
   - feature.endpoint.ai-governance.policy-deployment
+  - feature.endpoint.ai-governance.rbac
 workflows:
   - workflow.endpoint.ai-governance.policy-deploy
+  - workflow.endpoint.ai-governance.authorize-access
 navigates_to:
   - page.endpoint.ai-governance.deployment-details
   - page.endpoint.ai-governance.overview
@@ -20,8 +22,9 @@ navigates_to:
 List and manage tasks that associate one AI-agent policy with a target endpoint group.
 
 ## Access / roles
-- Deployments View for list access.
-- Deployments Manage for create and modify; delete/execute separation is `[TBD]`.
+- AI Agent Policy Deployment Read or higher for list and task-detail access.
+- AI Agent Policy Deployment Write or Full for create, modify, execute, and retry.
+- AI Agent Policy Deployment Full for delete or cancel lifecycle actions.
 - Target choices and task results are constrained to endpoints in the technician's existing Endpoint Central scope.
 
 ## Entry points
@@ -41,7 +44,7 @@ List and manage tasks that associate one AI-agent policy with a target endpoint 
 
 ## User actions
 ### Create or modify deployment
-- Available when: user has Deployments Manage.
+- Available when: user has AI Agent Policy Deployment Write or Full.
 - Triggers: `workflow.endpoint.ai-governance.policy-deploy` on the execution action; whether Save executes is `[TBD]`.
 - UX feedback: validate required fields and single-policy constraint.
 - On success: update the task row and timestamps.
@@ -55,7 +58,7 @@ List and manage tasks that associate one AI-agent policy with a target endpoint 
 - On failure: show task unavailable.
 
 ### Delete deployment task
-- Available when: user has deletion permission.
+- Available when: user has AI Agent Policy Deployment Full.
 - Triggers: deployment deletion/cancellation behavior `[TBD]`.
 - UX feedback: confirm and describe effect on active endpoint policy.
 - On success: remove/archive the task as defined.
@@ -76,7 +79,8 @@ List and manage tasks that associate one AI-agent policy with a target endpoint 
 - Preserve current rows and show retry where possible.
 
 ### Permission / disabled
-- View-only users cannot create, modify, or delete.
+- Deny the page without AI Agent Policy Deployment Read.
+- Read-only users cannot create, modify, execute, retry, or delete; Write users cannot delete/cancel.
 
 ## Validation and feedback
 - Task name requirements are `[TBD]`.

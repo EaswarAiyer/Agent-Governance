@@ -8,8 +8,10 @@ module: ai-governance
 features:
   - feature.endpoint.ai-governance.policy-deployment
   - feature.endpoint.ai-governance.policy-control
+  - feature.endpoint.ai-governance.rbac
 workflows:
   - workflow.endpoint.ai-governance.policy-deploy
+  - workflow.endpoint.ai-governance.authorize-access
 navigates_to:
   - page.endpoint.ai-governance.deployment-list
   - page.endpoint.ai-governance.endpoint-details
@@ -21,8 +23,8 @@ navigates_to:
 Show the task summary, endpoint-level rollout results, and complete associated-policy configuration.
 
 ## Access / roles
-- Deployments View.
-- Policy content visibility follows Policies View or a defined deployment-specific read entitlement `[TBD]`.
+- AI Agent Policy Deployment Read or higher is required for the task summary and endpoint rollout results.
+- AI Agent Policy Read or higher is required for the granular Policy Details tab. The deployment task may still show its associated policy name as task metadata without granting policy-content access.
 - Target endpoint rows include only endpoints in the technician's existing Endpoint Central scope.
 
 ## Entry points
@@ -39,6 +41,7 @@ Show the task summary, endpoint-level rollout results, and complete associated-p
 ### Policy Details tab
 - Displays: Agent Control, Auto Uninstallation, Advanced Execution Rules, and Prompt Monitoring & Classification for the single associated policy.
 - Controls: read-only.
+- Requires AI Agent Policy Read; otherwise the tab is hidden/disabled and no policy definition is returned.
 
 ## User actions
 ### Switch tabs
@@ -66,7 +69,10 @@ Show the task summary, endpoint-level rollout results, and complete associated-p
 - Partial endpoint results remain visible with failed-section feedback.
 
 ### Permission / disabled
-- Redact policy detail if permission design requires it; endpoint identities remain scoped.
+- Deny the page without AI Agent Policy Deployment Read.
+- Keep deployment-relevant endpoint identity and rollout results available with Deployment Read.
+- Without AI Agent Policy Read, hide granular policy content and project policy-derived counts to `0` on any linked endpoint view.
+- Without AI Discovery Read, linked endpoint details display deployment-relevant identity/status only; installed-agent count is `0` and agent rows are empty.
 
 ## Validation and feedback
 - Status uses a defined taxonomy including Success, Pending, and Failed.

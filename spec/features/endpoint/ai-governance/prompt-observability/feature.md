@@ -36,9 +36,9 @@ The product collects policy-enabled prompt activity, classifies it with selected
 - Retention and legal-hold behavior until defined.
 
 ## Users / Roles
-- Observability Metadata View for list-level metadata.
-- Observability Sensitive Content View for prompt, response, attachments, and reasoning summary.
-- Prompt Export as a separate permission.
+- AI DLP Observability Read or higher for prompt logs and captured prompt details, including available prompt, response, attachment, finding, reasoning-summary, and tool-call content.
+- AI DLP Observability Write includes Read; no additional prompt mutation exists in the current release.
+- AI DLP Observability Full for export.
 - All observability results are limited to endpoints in the technician's Endpoint Central scope.
 
 ## Product behavior
@@ -56,7 +56,8 @@ Prompt monitoring begins only when a deployed policy enables prompt-data collect
 ## Dependencies and constraints
 - Depends on deployed policy settings and Data Group definitions.
 - Model providers may not expose reasoning information; availability must be represented honestly.
-- Sensitive content requires stronger authorization than aggregate metadata.
+- Sensitive content requires AI DLP Observability Read and access auditing; export requires Full.
+- Access follows `feature.endpoint.ai-governance.rbac`; sensitive views remain Action Log events even though both metadata and captured content use AI DLP Observability Read.
 - Notifications and alerts are not required in the current release.
 
 ## Release / completion criteria

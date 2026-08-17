@@ -8,9 +8,11 @@ module: ai-governance
 features:
   - feature.endpoint.ai-governance.policy-control
   - feature.endpoint.ai-governance.prompt-observability
+  - feature.endpoint.ai-governance.rbac
 workflows:
   - workflow.endpoint.ai-governance.policy-save
   - workflow.endpoint.ai-governance.prompt-collect-classify
+  - workflow.endpoint.ai-governance.authorize-access
 navigates_to:
   - page.endpoint.ai-governance.policy-list
 ---
@@ -21,9 +23,9 @@ navigates_to:
 Create or modify all control, execution, remediation, and prompt-DLP settings for one OS-specific AI-agent policy.
 
 ## Access / roles
-- Policies View for read-only access.
-- Policies Manage for editable access.
-- Auto-uninstall configuration may require an additional sensitive permission `[TBD]`.
+- AI Agent Policy Read or higher for read-only access.
+- AI Agent Policy Write or Full for creation, duplication, and editable access, including auto-uninstallation configuration.
+- AI Agent Policy Full is required only for policy deletion, which is initiated from the policy list.
 - Referenced endpoints and reusable objects must remain within the technician's existing Endpoint Central scope; shared CG/DCG administrative-group support is not part of the current release.
 
 ## Entry points
@@ -50,7 +52,7 @@ Create or modify all control, execution, remediation, and prompt-DLP settings fo
 
 ## User actions
 ### Save policy
-- Available when: user has Policies Manage and inputs are valid.
+- Available when: user has AI Agent Policy Write or Full and inputs are valid.
 - Triggers: `workflow.endpoint.ai-governance.policy-save`.
 - UX feedback: show submitting and field-level validation.
 - On success: return to `page.endpoint.ai-governance.policy-list` with saved confirmation.
@@ -75,7 +77,7 @@ Create or modify all control, execution, remediation, and prompt-DLP settings fo
 - Preserve recoverable draft state and show retry.
 
 ### Permission / disabled
-- View-only users see controls as read-only.
+- Users with AI Agent Policy Read see controls as read-only; users without Read are denied the page.
 - Classifier and DLP controls are disabled when prompt collection is off.
 
 ## Validation and feedback

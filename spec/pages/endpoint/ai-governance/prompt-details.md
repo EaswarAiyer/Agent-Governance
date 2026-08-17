@@ -7,8 +7,10 @@ domain: endpoint
 module: ai-governance
 features:
   - feature.endpoint.ai-governance.prompt-observability
+  - feature.endpoint.ai-governance.rbac
 workflows:
   - workflow.endpoint.ai-governance.prompt-review
+  - workflow.endpoint.ai-governance.authorize-access
 navigates_to:
   - page.endpoint.ai-governance.agent-details
   - page.endpoint.ai-governance.observability
@@ -20,8 +22,8 @@ navigates_to:
 Give an authorized investigator the available context for one AI interaction, its data classifications, and its outcome.
 
 ## Access / roles
-- Observability Metadata View for permitted session metadata.
-- Observability Sensitive Content View for prompt, response, attachments, findings, and reasoning summary.
+- AI DLP Observability Read or higher for session metadata, prompt, response, attachments, findings, reasoning summary, and tool calls that were captured under policy.
+- AI DLP Observability Full for export; viewing does not require Full.
 - Every sensitive-content view should be access-audited.
 - The associated endpoint must be within the technician's existing Endpoint Central scope.
 
@@ -65,7 +67,8 @@ Give an authorized investigator the available context for one AI interaction, it
 - Localize partial-data failures and preserve available metadata.
 
 ### Permission / disabled
-- Redacted sections explain that additional permission is required without revealing their contents.
+- Deny the page and direct API access without AI DLP Observability Read; do not disclose whether the interaction exists.
+- Hide export controls below AI DLP Observability Full.
 
 ## Validation and feedback
 - Interaction identity must be globally unambiguous; the prototype's agent-plus-prompt composite is not assumed to be the production key.
