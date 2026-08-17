@@ -17,11 +17,11 @@
   <header class="topbar"><i class="fa fa-robot"></i> Endpoint Central</header>
   <div class="layout">
     <aside class="sidebar">
-      <a class="nav-link" href="overview.html"><i class="fa fa-house"></i>Overview</a>
-      <a class="nav-link active" href="ai-discovery.html"><i class="fa fa-circle"></i>Discovery</a>
+      <a class="nav-link active" href="overview.html"><i class="fa fa-house"></i>Overview</a>
       <a class="nav-link" href="privilege-control.html"><i class="fa fa-ban"></i>Policies</a>
       <a class="nav-link" href="deployment.html"><i class="fa fa-rocket"></i>Deployment</a>
       <a class="nav-link" href="data-access-audit.html"><i class="fa fa-chart-pie"></i>Observability</a>
+      <a class="nav-link" href="endpoints.html"><i class="fa fa-desktop"></i>Endpoints</a>
       <div class="section-label intelligence">Groups</div>
       <a class="nav-link" href="#"><i class="fa fa-database"></i>Data Groups</a>
       <a class="nav-link" href="#"><i class="fa fa-cubes"></i>Application Groups</a>
@@ -29,11 +29,11 @@
     </aside>
     <main class="content">
       <div class="page-header">
-        <div class="breadcrumb"><a href="ai-discovery.html">AI Governance</a><span>›</span><a href="ai-discovery.html">Discovery</a><span>›</span><span id="crumbName">Agent details</span></div>
+        <div class="breadcrumb"><a href="overview.html">AI Governance</a><span>›</span><a href="overview.html#discoveredAgents">Overview</a><span>›</span><span id="crumbName">Agent details</span></div>
         <div class="title-row"><div class="agent-icon"><i class="fa fa-robot"></i></div><div><div class="page-title" id="agentName">AI Agent</div><div class="subtitle" id="agentPublisher"></div></div></div>
       </div>
       <div class="body">
-        <a class="back-link" href="ai-discovery.html"><i class="fa fa-arrow-left"></i>Back to AI Discovery</a>
+        <a class="back-link" href="overview.html#discoveredAgents"><i class="fa fa-arrow-left"></i>Back to Overview</a>
         <section class="card">
           <div class="tab-bar"><button class="tab active" data-tab="computers">Installed computers</button><button class="tab" data-tab="prompts">Prompt log</button></div>
           <div id="computersTab"><div class="card-header"><span class="card-title">Installed computers</span><span class="computer-total"><strong id="computerCount">0</strong> computers</span></div><div class="table-wrap"><table><thead><tr><th>Computer name</th><th>Operating system</th><th>Logged-in user</th><th>Install location</th><th>Agent version</th></tr></thead><tbody id="computerRows"></tbody></table></div></div>
@@ -60,7 +60,7 @@
       {id:'P-002',text:'Review this deployment configuration for security issues.',files:['deployment-config.yaml','.env.example'],classification:'Credentials & Secrets',computer:agent.computers[0][0],time:'Jun 2, 2026 11:08'},
       {id:'P-003',text:'Create a concise summary of the attached project plan.',files:['project-plan.pdf','rollout-owners.csv'],classification:'Internal Documents',computer:agent.computers.at(-1)[0],time:'Jun 1, 2026 16:42'}
     ];
-    document.title = `${agent.name} — AI Discovery`;
+    document.title = `${agent.name} — AI Governance Overview`;
     document.getElementById('agentName').textContent = agent.name;
     document.getElementById('crumbName').textContent = agent.name;
     document.getElementById('agentPublisher').textContent = agent.provider;
