@@ -47,6 +47,45 @@ List managed Windows, macOS, and Linux endpoints and expose AI-agent and policy 
 - Number of AI agents displays the actual value with AI Discovery Read; otherwise it is `0` in any limited endpoint projection reached from another authorized module.
 - Number of applied policies displays the actual value with AI Agent Policy Read; otherwise it is `0`.
 
+## UI content contract
+### Page-level copy
+| Element | Final text |
+|---|---|
+| Page title | Endpoints |
+| Page description | View managed Windows, Mac, and Linux endpoints with AI-agent and policy coverage. |
+| Search placeholder | Search endpoint, user, IP address, or operating system |
+| All filter | All Endpoints |
+| AI-agent filter | With AI Agents |
+| Policy filter | Protected |
+
+### Endpoints table
+The table columns must appear in this order.
+
+| # | Column header | Content |
+|---:|---|---|
+| 1 | Endpoint Name | Endpoint display name; clickable to open Endpoint Details. |
+| 2 | Operating System | Endpoint operating system and version when available. |
+| 3 | Logged-in User | Most recently reported logged-in user. |
+| 4 | IP Address | Most recently reported endpoint IP address. |
+| 5 | AI Agents Installed | Permission-projected count of installed AI agents. |
+| 6 | Policies Applied | Permission-projected count of applied AI-agent policies. |
+| 7 | Last Contact Time | Most recent successful endpoint contact date and time. |
+
+### Filter summary text
+| Filter | Final text |
+|---|---|
+| All Endpoints | Showing all managed endpoints. |
+| With AI Agents | Showing endpoints with one or more installed AI agents. |
+| Protected | Showing endpoints with one or more applied AI-agent policies. |
+
+### State text
+| State | Final text |
+|---|---|
+| Empty scope | No managed endpoints are available in your scope. |
+| No filter results | No endpoints match the current search or filter. |
+| Error | Unable to load endpoints. Try again. |
+| Permission | You do not have permission to view AI Governance endpoints. |
+
 ## User actions
 ### Filter endpoints
 - Available when: page is loaded.

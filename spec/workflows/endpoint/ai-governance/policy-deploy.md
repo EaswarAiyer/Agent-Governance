@@ -10,6 +10,7 @@ features:
   - feature.endpoint.ai-governance.rbac
 pages:
   - page.endpoint.ai-governance.deployment-list
+  - page.endpoint.ai-governance.deployment-editor
   - page.endpoint.ai-governance.deployment-details
   - page.endpoint.ai-governance.endpoint-details
 ---
@@ -19,13 +20,13 @@ pages:
 > [!info] Related specifications
 > **Map:** [[AI-Governance-Map|AI Governance Specification Map]]
 > **Features:** [[features/endpoint/ai-governance/policy-deployment/feature|Policy Deployment]] · [[features/endpoint/ai-governance/rbac/feature|Role-Based Access]]
-> **Pages:** [[pages/endpoint/ai-governance/deployment-list|Deployment List]] · [[pages/endpoint/ai-governance/deployment-details|Deployment Details]] · [[pages/endpoint/ai-governance/endpoint-details|Endpoint Details]]
+> **Pages:** [[pages/endpoint/ai-governance/deployment-list|Deployment List]] · [[pages/endpoint/ai-governance/deployment-editor|Deployment Editor]] · [[pages/endpoint/ai-governance/deployment-details|Deployment Details]] · [[pages/endpoint/ai-governance/endpoint-details|Endpoint Details]]
 
 ## Purpose
 Associate one policy with a target endpoint group, deliver it to eligible endpoints, and track endpoint-level results.
 
 ## Trigger
-A user with AI Agent Policy Deployment Write or Full saves, executes, or retries a deployment task from `page.endpoint.ai-governance.deployment-list`. Whether Save and Execute are the same action is `[TBD]`.
+A user with AI Agent Policy Deployment Write or Full saves, executes, or retries a deployment task from `page.endpoint.ai-governance.deployment-editor`. Whether Save and Execute are the same action is `[TBD]`.
 
 ## Preconditions
 - The selected policy exists and is valid.
@@ -45,12 +46,13 @@ A user with AI Agent Policy Deployment Write or Full saves, executes, or retries
 ## Flow
 ### Server behavior
 1. Validate authorization through `workflow.endpoint.ai-governance.authorize-access`, then validate the policy, target group, and platform compatibility.
-2. Resolve target membership within the technician's Endpoint Central scope and snapshot it for the execution `[TBD]`.
-3. Create per-endpoint deployment records in Pending state.
-4. Queue the policy for endpoint delivery.
-5. Process acknowledgements and update status, remarks, and task summary.
-6. Record deployment create/modify/delete and auto-uninstallation as applicable in the Endpoint Central Action Log.
-7. Send aggregate deployment adoption and failure metrics to ME tracking without policy or endpoint-sensitive values.
+2. Resolve the target group's current membership within the technician's Endpoint Central scope; do not use an immutable creation-time endpoint snapshot.
+3. Create per-endpoint deployment records in Pending state and set a newly saved task to Yet to start until endpoints begin reading the policy.
+4. Queue or expose the policy for endpoint delivery and move the task to In progress when endpoint processing begins.
+5. Process acknowledgements and update per-endpoint status, remarks, and task summary.
+6. Set the task to Completed when every endpoint in the currently resolved target membership has reported a terminal result; per-endpoint failures remain visible and do not create a separate Failed task state.
+7. Record deployment create/modify/delete and auto-uninstallation as applicable in the Endpoint Central Action Log.
+8. Send aggregate deployment adoption and failure metrics to ME tracking without policy or endpoint-sensitive values.
 
 ### Server -> Agent data
 | Field / data | Purpose | Required | Notes |
@@ -79,7 +81,7 @@ A user with AI Agent Policy Deployment Write or Full saves, executes, or retries
 | Applied time | Establish recency | Yes | |
 
 ## Success state
-Every resolved target endpoint reaches a terminal result, successful endpoints report the intended policy version, and effective controls are recalculated.
+The task is Completed when every endpoint in the currently resolved target-group membership reaches a terminal result. Successful endpoints report the intended policy version, failed endpoint results remain visible, and effective controls are recalculated for successful applications.
 
 ## Failure, retry, and recovery
 ### Offline endpoint
@@ -95,10 +97,10 @@ Every resolved target endpoint reaches a terminal result, successful endpoints r
 ### Partial deployment
 - Condition: Some endpoints succeed and others do not.
 - Behavior: Preserve per-endpoint results; do not represent the task as wholly successful.
-- Recovery: Retry or rollback behavior is `[TBD]`.
+- Recovery: Retry behavior is `[TBD]`; rollback is not provided in the current release.
 
 ## Edge cases
-- Endpoint changes group membership during deployment.
+- Endpoint changes group membership during deployment; current group membership is authoritative rather than the original membership.
 - Endpoint leaves the technician's scope after task creation.
 - Policy is edited, deleted, or superseded during delivery.
 - Duplicate delivery or acknowledgement.
@@ -106,9 +108,11 @@ Every resolved target endpoint reaches a terminal result, successful endpoints r
 
 ## Related pages
 - `page.endpoint.ai-governance.deployment-list` - Creates/modifies the task.
+- `page.endpoint.ai-governance.deployment-editor` - Provides the dedicated task creation/modification form and initiates save/deploy.
 - `page.endpoint.ai-governance.deployment-details` - Shows status and remarks.
 - `page.endpoint.ai-governance.endpoint-details` - Shows applied policy state.
 
 ## Open questions
 - What acknowledgement means Success: received, validated, activated, or verified?
-- What are retry intervals, expiration, scheduling, cancellation, and rollback rules?
+- What are retry intervals, eligibility, limits, and expiration behavior?
+- If current group membership changes after a task reaches Completed, does the task return to In progress until the new targets report?

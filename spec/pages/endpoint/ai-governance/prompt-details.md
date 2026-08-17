@@ -53,6 +53,56 @@ Give an authorized investigator the available context for one AI interaction, it
 ### Classification and attachments
 - Displays: general Data Group classification; multiple files with type, independent classification, sensitive-data status, and findings.
 
+## UI content contract
+### Page-level copy
+| Element | Final text |
+|---|---|
+| Page title | Prompt Details |
+| Page description | Captured AI interaction from `{AI Agent}` on `{Computer}`. |
+| Back link from global log | Back to Prompt Observability |
+| Back link from agent log | Back to `{AI Agent}` |
+
+### Section titles
+Show these sections when authorized data is available: Prompt; AI Response; Reasoning Trace; Tool Calls; Session Details; Data Classification; Attached Files.
+
+Use **Reasoning Trace** as the UI label, but show only a recorded reasoning summary or supported trace data. Never synthesize hidden model reasoning.
+
+### Session Details labels
+Display these labels in order: AI Agent; Model; Session ID; Account; User; Computer; Time.
+
+### Tool Calls table
+The table columns must appear in this order.
+
+| # | Column header | Content |
+|---:|---|---|
+| 1 | Tool Name | Name of the invoked tool. |
+| 2 | Action | Operation requested from the tool. |
+| 3 | Target | Resource acted on, with sensitive values redacted as required. |
+| 4 | Status | Recorded tool-call outcome. |
+| 5 | Time | Tool-call date and time. |
+
+### Attached Files table
+The table columns must appear in this order.
+
+| # | Column header | Content |
+|---:|---|---|
+| 1 | File Name | Captured attachment name. |
+| 2 | File Type | Detected file type. |
+| 3 | Data Classification | Data Group classification for this file. |
+| 4 | Sensitive Data | Yes, No, or Unavailable. |
+| 5 | Findings | Authorized sensitive-data finding summary. |
+
+### State text
+| State | Final text |
+|---|---|
+| No response | No AI response was captured. |
+| No reasoning trace | Reasoning trace is unavailable for this interaction. |
+| No tool calls | No tool calls were recorded for this interaction. |
+| No attached files | No files were attached to this prompt. |
+| Partial data | Some interaction data is unavailable. |
+| Permission | You do not have permission to view this interaction. |
+| Not found | The requested interaction could not be found or is outside your scope. |
+
 ## User actions
 ### View interaction
 - Available when: user passes `workflow.endpoint.ai-governance.prompt-review` authorization.

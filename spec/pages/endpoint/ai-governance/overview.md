@@ -46,11 +46,48 @@ Provide the primary AI Governance landing page, combining coverage KPIs with the
 ### Discovered AI Agents
 - Displays: agent, publisher, detection source, endpoint count, governance status, first detected, last seen.
 - Controls: agent/publisher search and governance-status filter.
+- Governance status is informational and cannot be edited from the Overview.
 
 ### Product topology behavior
 - Endpoint Central Cloud and on-premises Security Edition show the complete Overview.
 - MSP shows customer-specific AI Agents Discovered and Endpoints with AI Agents counts on the home page; the other KPI cards are not required there.
 - Summary Server provides probe-level handling only; complete consolidated visibility is not required.
+
+## UI content contract
+### Page-level copy
+| Element                       | Final text                                                                                                        |
+| ----------------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| Page title                    | AI Governance Overview                                                                                            |
+| Page description              | Discover AI agents and understand their coverage across managed endpoints.                                        |
+| Inventory section title       | Discovered AI Agents                                                                                              |
+| Inventory section description | AI agents detected across managed endpoints. Select an agent to view its installed computers and prompt activity. |
+| Search placeholder            | Search AI agents or publishers                                                                                    |
+
+### KPI labels
+| KPI                      | Supporting text                                              |
+| ------------------------ | ------------------------------------------------------------ |
+| AI Agents Discovered     | View the discovered-agent inventory below.                   |
+| Endpoints with AI Agents | Endpoints where at least one AI agent is installed.          |
+| Managed Endpoints        | Windows, Mac, and Linux endpoints in the technician's scope. |
+| Protected Endpoints      | Endpoints where at least one AI-agent policy is applied.     |
+
+### Discovered AI Agents table
+The table columns must appear in this order.
+
+|   # | Column header | Content                                                  |
+| --: | ------------- | -------------------------------------------------------- |
+|   1 | AI Agent      | Agent name; clickable to open Agent Details.             |
+|   2 | Publisher     | Normalized publisher or provider name.                   |
+|   4 | Endpoints     | Number of scoped endpoints where the agent is installed. |
+
+### State text
+| State                    | Final text                                                                                                |
+| ------------------------ | --------------------------------------------------------------------------------------------------------- |
+| Empty inventory          | No AI agents have been discovered in your managed endpoints.                                              |
+| No search/filter results | No AI agents match the current search or filter.                                                          |
+| Inventory error          | Unable to load discovered AI agents. Try again.                                                           |
+| Introduction title       | Govern AI agents across your organization                                                                 |
+| Introduction message     | Discover AI agents, apply control policies, deploy protection, and review prompt activity from one place. |
 
 ## User actions
 ### Open an agent
@@ -90,10 +127,8 @@ Provide the primary AI Governance landing page, combining coverage KPIs with the
 - Search is case-insensitive and updates visible count.
 - KPI predicates must match endpoint-page filters exactly.
 - Project unauthorized policy counts to zero before KPI aggregation; zero must not be used while authorized data is merely loading or unavailable.
+- Governance-status controls filter the inventory only; they do not mutate agent or policy state.
 
 ## Navigation
 - Agent row -> `page.endpoint.ai-governance.agent-details`.
 - Endpoint KPI -> `page.endpoint.ai-governance.endpoints`.
-
-## Open questions
-- Should governance status be editable from this page or remain informational?

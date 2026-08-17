@@ -44,7 +44,7 @@ The product presents a current, searchable inventory of discovered AI agents and
 - Discovery records and counts include only endpoints in the technician's Endpoint Central scope.
 
 ## Product behavior
-Overview and Discovery are a single experience named Overview. Selecting an agent opens its dedicated details page rather than a side panel. Search and governance-status filters only change the visible inventory. On upgrade, discovery begins automatically, and the AI Governance tab carries a New indicator with an informational introduction box.
+Overview and Discovery are a single experience named Overview. Selecting an agent opens its dedicated details page rather than a side panel. Governance status is informational only; search and governance-status filters change the visible inventory without mutating agent or policy state. On upgrade, discovery begins automatically, and the AI Governance tab carries a New indicator with an informational introduction box.
 
 ## Workflows
 - `workflow.endpoint.ai-governance.inventory-refresh` - Supplies agent and installation inventory.
@@ -62,6 +62,7 @@ Overview and Discovery are a single experience named Overview. Selecting an agen
 ## Release / completion criteria
 - Each distinct detected agent links to a dedicated details page.
 - Installation counts reconcile with endpoint-level records.
+- Governance status cannot be edited from the Overview.
 - Empty, loading, error, and permission states are defined before production release.
 - Upgrade discovery does not activate policy enforcement, prompt collection, DLP blocking, or auto-uninstallation.
 

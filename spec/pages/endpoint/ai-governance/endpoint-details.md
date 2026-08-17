@@ -55,9 +55,55 @@ Explain an endpoint's installed AI agents, applied policies, and final merged co
 - Requires AI Agent Policy Read; without it the section is empty/hidden and no underlying rows are returned.
 
 ### Merged Effective Policy
-- Displays: final control values and explains restrictive precedence.
+- Displays: the final effective result for every supported control field and explains restrictive precedence.
 - Controls: read-only.
-- Requires AI Agent Policy Read; without it the merged result and contributing-policy provenance are not returned.
+- Requires AI Agent Policy Read; without it the merged result is not returned.
+- The merged section does not add field-level contributing-policy provenance or deployment history; applied policies remain listed in their separate section.
+
+## UI content contract
+### Page-level copy
+| Element | Final text |
+|---|---|
+| Page title | `{Endpoint Name}` |
+| Page description | AI-agent inventory and effective policy controls for this endpoint. |
+| Back link | Back to Endpoints |
+| Installed-agents section | Installed AI Agents |
+| Applied-policies section | Applied AI Agent Policies |
+| Merged-policy section | Merged Effective Policy |
+| Merged-policy description | Final controls calculated from all successfully applied AI-agent policies. More restrictive settings take precedence. |
+
+### Summary labels
+| Label | Content |
+|---|---|
+| AI Agents Installed | Permission-projected installed-agent count. |
+| Policies Applied | Permission-projected applied-policy count. |
+| Operating System | Endpoint operating system and version. |
+| Endpoint Status | Current endpoint management status. |
+
+### Installed AI Agents table
+The table columns must appear in this order.
+
+| # | Column header | Content |
+|---:|---|---|
+| 1 | AI Agent | Agent name; clickable to open Agent Details. |
+| 2 | Effective Control | Allowed, Blocked, or Unmanaged. |
+
+### Applied AI Agent Policies table
+| # | Column header | Content |
+|---:|---|---|
+| 1 | Policy Name | Applied policy name; clickable according to AI Agent Policy permission. |
+
+### Merged Effective Policy fields
+Use a read-only label-and-value layout rather than a data table. Show each supported final field, including Agent Enforcement Mode, Allow List, Block List, Auto Uninstallation, Advanced Execution Rules, Prompt Data Collection, Data Groups, and DLP Mode.
+
+### State text
+| State | Final text |
+|---|---|
+| No installed agents | No AI agents are installed on this endpoint. |
+| No applied policies | No AI-agent policies are applied to this endpoint. |
+| No merged policy | This endpoint is not currently protected by an AI-agent policy. |
+| Partial error | Some endpoint details could not be loaded. Try again. |
+| Not found | The requested endpoint could not be found or is outside your scope. |
 
 ## User actions
 ### Open installed agent
@@ -91,13 +137,10 @@ Explain an endpoint's installed AI agents, applied policies, and final merged co
 
 ## Validation and feedback
 - Effective statuses must derive from the same result as the merged-policy section.
+- Every supported control field must show its final resolved value, including explicit empty, disabled, or unmanaged results.
 - Unknown endpoint IDs display not-found.
 
 ## Navigation
 - Agent -> `page.endpoint.ai-governance.agent-details`.
 - Policy -> `page.endpoint.ai-governance.policy-details`.
 - Back/breadcrumb -> `page.endpoint.ai-governance.endpoints`.
-
-## Open questions
-- Should the page show field-level merge provenance and deployment history?
-	- Yes it should show the final result in each field.

@@ -46,6 +46,39 @@ Provide a global prompt log across all monitored AI agents and support sensitive
 - The prototype also contains file/classification event filters, comments, status actions, export, and a detail panel.
 - Whether this remains, moves, or is removed is deliberately deferred for a later decision.
 
+## UI content contract
+### Page-level copy
+| Element | Final text |
+|---|---|
+| Page title | Prompt Observability |
+| Page description | Review prompt activity and sensitive-data classifications across monitored AI agents. |
+| Search placeholder | Search prompts, AI agents, computers, or files |
+| Classification filter default | All Classifications |
+| Export action | Export |
+
+### Global prompt log table
+The table columns must appear in this order.
+
+| # | Column header | Content |
+|---:|---|---|
+| 1 | AI Agent | Agent used for the interaction. |
+| 2 | Prompt | Truncated prompt preview; clickable to open Prompt Details. |
+| 3 | Attached Files | File count and names when available. |
+| 4 | Data Classification | General Data Group classification. |
+| 5 | Computer | Endpoint where the interaction occurred. |
+| 6 | Time | Interaction date and time. |
+
+### State text
+| State | Final text |
+|---|---|
+| No collected activity | No prompt activity has been collected. Deploy a policy with Prompt Data Collection enabled to begin monitoring. |
+| No filter results | No prompt activity matches the current search or filter. |
+| Retrieval error | Unable to load prompt activity. Try again. |
+| Permission | You do not have permission to view prompt activity. |
+| Export failure | Unable to export prompt activity. Try again. |
+
+The deferred Classification event view is outside this finalized content contract until its product behavior is decided.
+
 ## User actions
 ### Open prompt details
 - Available when: user has AI DLP Observability Read or higher.

@@ -20,6 +20,7 @@ pages:
   - page.endpoint.ai-governance.policy-list
   - page.endpoint.ai-governance.policy-details
   - page.endpoint.ai-governance.deployment-list
+  - page.endpoint.ai-governance.deployment-editor
   - page.endpoint.ai-governance.deployment-details
   - page.endpoint.ai-governance.observability
   - page.endpoint.ai-governance.prompt-details
@@ -31,7 +32,7 @@ pages:
 > **Map:** [[AI-Governance-Map|AI Governance Specification Map]]
 > **Core workflow:** [[workflows/endpoint/ai-governance/authorize-access|Access Authorization and Field Projection]]
 > **Connected workflows:** [[workflows/endpoint/ai-governance/inventory-refresh|Inventory Refresh]] · [[workflows/endpoint/ai-governance/policy-save|Policy Save]] · [[workflows/endpoint/ai-governance/policy-deploy|Policy Deployment]] · [[workflows/endpoint/ai-governance/effective-policy-resolve|Effective Policy Resolution]] · [[workflows/endpoint/ai-governance/prompt-review|Prompt Review]]
-> **Pages:** [[pages/endpoint/ai-governance/overview|Overview]] · [[pages/endpoint/ai-governance/agent-details|Agent Details]] · [[pages/endpoint/ai-governance/endpoints|Endpoints]] · [[pages/endpoint/ai-governance/endpoint-details|Endpoint Details]] · [[pages/endpoint/ai-governance/policy-list|Policy List]] · [[pages/endpoint/ai-governance/policy-details|Policy Details]] · [[pages/endpoint/ai-governance/deployment-list|Deployment List]] · [[pages/endpoint/ai-governance/deployment-details|Deployment Details]] · [[pages/endpoint/ai-governance/observability|Observability]] · [[pages/endpoint/ai-governance/prompt-details|Prompt Details]]
+> **Pages:** [[pages/endpoint/ai-governance/overview|Overview]] · [[pages/endpoint/ai-governance/agent-details|Agent Details]] · [[pages/endpoint/ai-governance/endpoints|Endpoints]] · [[pages/endpoint/ai-governance/endpoint-details|Endpoint Details]] · [[pages/endpoint/ai-governance/policy-list|Policy List]] · [[pages/endpoint/ai-governance/policy-details|Policy Details]] · [[pages/endpoint/ai-governance/deployment-list|Deployment List]] · [[pages/endpoint/ai-governance/deployment-editor|Deployment Editor]] · [[pages/endpoint/ai-governance/deployment-details|Deployment Details]] · [[pages/endpoint/ai-governance/observability|Observability]] · [[pages/endpoint/ai-governance/prompt-details|Prompt Details]]
 
 ## Problem
 AI Governance combines discovery, policy administration, deployment, and sensitive prompt investigation. Technicians must receive only the feature access and endpoint-derived values authorized for their job, without learning hidden inventory or policy state through counts, filters, or detail pages.
@@ -66,7 +67,7 @@ Endpoint Central administrators can assign four composable AI Governance permiss
 |---|---|---|---|
 | AI Discovery | View discovery KPIs, discovered agents, installations, and the AI Governance endpoint inventory. | Includes Read. Discovery has no user-initiated mutation in the current release. | Includes Write. Discovery has no Full-only action in the current release. |
 | AI Agent Policy | View policy lists, policy details, applied-policy data, and merged effective controls. | Includes Read; create, duplicate, and modify policies. | Includes Write; delete policies. |
-| AI Agent Policy Deployment | View deployment tasks and endpoint-level deployment results. | Includes Read; create, modify, execute, and retry deployment tasks. | Includes Write; delete or cancel deployment tasks when those lifecycle actions are supported. |
+| AI Agent Policy Deployment | View deployment tasks and endpoint-level deployment results. | Includes Read; create, modify, execute, and retry deployment tasks. | Includes Write; delete deployment tasks. Cancel is not supported in the current lifecycle. |
 | AI DLP Observability | View global and agent-specific prompt logs and prompt details, including authorized captured content. | Includes Read. No additional prompt mutation is in the current release. | Includes Write; export prompt-observability data. |
 
 ### Endpoint-derived field projection
@@ -96,6 +97,7 @@ Projection occurs on the server before values are aggregated or returned. The UI
 - `page.endpoint.ai-governance.endpoint-details` - Independently gates agent, policy, merged-control, and prompt sections.
 - `page.endpoint.ai-governance.policy-list` and `page.endpoint.ai-governance.policy-details` - Apply Policy Read/Write/Full actions.
 - `page.endpoint.ai-governance.deployment-list` and `page.endpoint.ai-governance.deployment-details` - Apply Deployment Read/Write/Full actions and policy-detail gating.
+- `page.endpoint.ai-governance.deployment-editor` - Requires Deployment Write or Full for task creation and modification.
 - `page.endpoint.ai-governance.observability` and `page.endpoint.ai-governance.prompt-details` - Apply DLP Observability Read/Write/Full access.
 
 ## Dependencies and constraints

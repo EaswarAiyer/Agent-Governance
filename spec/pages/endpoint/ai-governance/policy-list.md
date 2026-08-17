@@ -45,6 +45,38 @@ List AI-agent policies and provide OS-specific creation and modification entry p
 - Displays: policy name, OS platform, mode, modified by, last modified, and action.
 - Controls: policy link and per-row action menu.
 
+## UI content contract
+### Page-level copy
+| Element | Final text |
+|---|---|
+| Page title | AI Agent Policies |
+| Page description | Create and manage policies that control AI-agent execution, access, remediation, and prompt monitoring. |
+| List label | All Policies |
+| Primary action | Create Policy |
+| Platform options | Windows; Mac; Linux |
+
+### Policies table
+The table columns must appear in this order.
+
+| # | Column header | Content |
+|---:|---|---|
+| 1 | Policy Name | Policy name; clickable to open Policy Details. |
+| 2 | OS Platform | Windows, Mac, or Linux. |
+| 3 | Mode | Saved Agent Enforcement Mode. |
+| 4 | Modified By | User who last modified the policy. |
+| 5 | Last Modified | Most recent modification date and time. |
+| 6 | Action | Row menu containing Modify and Delete according to permission. |
+
+### Dialog and state text
+| Context | Final text |
+|---|---|
+| Delete action | Delete Policy |
+| Delete confirmation | Delete this policy? This action cannot be undone. |
+| Mapped-policy deletion | This policy cannot be deleted because it is mapped to one or more deployment tasks. |
+| Empty list | No AI-agent policies have been created. |
+| List error | Unable to load AI-agent policies. Try again. |
+| Permission | You do not have permission to view AI-agent policies. |
+
 ## User actions
 ### Create policy
 - Available when: user has AI Agent Policy Write or Full.
@@ -61,11 +93,11 @@ List AI-agent policies and provide OS-specific creation and modification entry p
 - On failure: preserve unsaved edits on details.
 
 ### Delete policy
-- Available when: user has AI Agent Policy Full.
+- Available when: user has AI Agent Policy Full and the policy is not mapped to a deployment task.
 - Triggers: policy deletion workflow `[TBD]`.
-- UX feedback: require confirmation and disclose deployment impact.
+- UX feedback: require confirmation. If the policy is mapped to a deployment task, block deletion and identify the dependency.
 - On success: remove or archive the row.
-- On failure: retain the row and explain dependencies.
+- On failure: retain the row and explain the deployment-task dependency or other failure.
 
 ### Administrative logging
 - Create, modify, and delete actions are recorded in the Endpoint Central Action Log.
@@ -87,11 +119,8 @@ List AI-agent policies and provide OS-specific creation and modification entry p
 
 ## Validation and feedback
 - Counts and mode summaries must reflect the saved policy version.
+- A policy referenced by one or more deployment tasks cannot be deleted; the user must first remove or change those mappings.
 
 ## Navigation
 - Policy/create/modify -> `page.endpoint.ai-governance.policy-details`.
 - Breadcrumb -> `page.endpoint.ai-governance.overview`.
-
-## Open questions
-- What blocks or warns on deleting a deployed policy?
-	- Don't allow to delete a policy if it is mapped with a deployment task.

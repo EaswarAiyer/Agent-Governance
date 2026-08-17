@@ -46,6 +46,7 @@ Start with [[README|AI Governance product specification]].
 - [[pages/endpoint/ai-governance/policy-list|AI Agent Policies]]
 - [[pages/endpoint/ai-governance/policy-details|AI Agent Policy Details]]
 - [[pages/endpoint/ai-governance/deployment-list|Policy Deployment]]
+- [[pages/endpoint/ai-governance/deployment-editor|Deployment Task Editor]]
 - [[pages/endpoint/ai-governance/deployment-details|Deployment Task Details]]
 
 ### DLP observability
@@ -57,7 +58,7 @@ Start with [[README|AI Governance product specification]].
 
 1. [[workflows/endpoint/ai-governance/inventory-refresh|Inventory refresh]] supplies [[pages/endpoint/ai-governance/overview|Overview]], [[pages/endpoint/ai-governance/agent-details|Agent Details]], and endpoint coverage.
 2. Administrators define controls in [[pages/endpoint/ai-governance/policy-details|Policy Details]] through [[workflows/endpoint/ai-governance/policy-save|Policy Save]].
-3. [[pages/endpoint/ai-governance/deployment-list|Deployment]] applies one policy through [[workflows/endpoint/ai-governance/policy-deploy|Policy Deploy]].
+3. [[pages/endpoint/ai-governance/deployment-list|Deployment]] opens the [[pages/endpoint/ai-governance/deployment-editor|Deployment Editor]] to map one policy to a target group through [[workflows/endpoint/ai-governance/policy-deploy|Policy Deploy]].
 4. [[workflows/endpoint/ai-governance/effective-policy-resolve|Effective Policy Resolution]] produces the final controls shown in [[pages/endpoint/ai-governance/endpoint-details|Endpoint Details]].
 5. Deployed prompt-DLP settings drive [[workflows/endpoint/ai-governance/prompt-collect-classify|Prompt Collection and Classification]], surfaced in [[pages/endpoint/ai-governance/observability|Observability]] and [[pages/endpoint/ai-governance/prompt-details|Prompt Details]].
 6. [[workflows/endpoint/ai-governance/authorize-access|Access Authorization]] applies the RBAC rules in [[features/endpoint/ai-governance/rbac/feature|Role-Based Access]] across every page and workflow.

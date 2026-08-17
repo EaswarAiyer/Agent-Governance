@@ -5,6 +5,16 @@
 
 This specification describes the behavior represented by the static AI Governance prototype. It separates product intent (features), system behavior (workflows), and user experience (pages). Prototype sample values are illustrative and are not contractual limits.
 
+## UI content contracts
+
+Every page specification contains a **UI content contract**. Development and design must treat that section as the authoritative source for page titles, descriptions, section and field labels, helper text, action labels, validation messages, state text, and table column names.
+
+- Table columns must use the documented labels and order.
+- Text enclosed in braces, such as `{Endpoint Name}`, is a runtime value placeholder.
+- Text marked `[TBD]` is unresolved and must not be inferred from prototype copy.
+- When prototype markup and a page's UI content contract differ, the page specification takes precedence.
+- New or changed UI copy must be updated in the applicable page specification before implementation handoff.
+
 ## Product boundary
 
 AI Governance is part of Software Asset Management in Endpoint Central Security Edition. It discovers AI agents on managed endpoints, controls their execution and data access through policies, deploys one policy per deployment task, and provides prompt-level observability and data-loss prevention context.
@@ -56,6 +66,7 @@ All insights, inventory counts, endpoint lists, and observability records must b
 - `page.endpoint.ai-governance.policy-list`
 - `page.endpoint.ai-governance.policy-details`
 - `page.endpoint.ai-governance.deployment-list`
+- `page.endpoint.ai-governance.deployment-editor`
 - `page.endpoint.ai-governance.deployment-details`
 - `page.endpoint.ai-governance.observability`
 - `page.endpoint.ai-governance.prompt-details`
@@ -68,7 +79,7 @@ The product uses four composable feature-permission families rather than fixed j
 |---|---|---|---|
 | AI Discovery | View discovery, agent installations, and AI Governance endpoint inventory. | Includes Read; no additional discovery mutation exists today. | Includes Write; no Full-only discovery action exists today. |
 | AI Agent Policy | View policies, applied-policy state, and merged effective controls. | Includes Read; create, duplicate, and modify policies. | Includes Write; delete policies. |
-| AI Agent Policy Deployment | View deployment tasks and endpoint results. | Includes Read; create, modify, execute, and retry tasks. | Includes Write; delete/cancel tasks where supported. |
+| AI Agent Policy Deployment | View deployment tasks and endpoint results. | Includes Read; create, modify, execute, and retry tasks. | Includes Write; delete tasks. Cancel is not supported in the current lifecycle. |
 | AI DLP Observability | View global/agent prompt logs and prompt details. | Includes Read; no additional prompt mutation exists today. | Includes Write; export observability data. |
 
 Write always includes Read, and Full always includes Write and Read. Permissions are additive and operate within the technician's existing Endpoint Central scope.
@@ -86,7 +97,7 @@ Endpoint-derived columns are projected on the server according to these roles. T
 1. The endpoint-to-server discovery transport, refresh cadence, and stale-data threshold.
 2. Policy versioning, approval, conflict validation, and rollback behavior.
 3. Whether saving a deployment task immediately deploys it or creates a separately executable draft.
-4. Agent acknowledgement semantics, retry limits, offline handling, and deployment cancellation.
+4. Agent acknowledgement semantics, retry limits, and offline handling.
 5. Prompt retention, redaction, model reasoning availability, export controls, and jurisdictional requirements.
 6. Management workflows and pages for Data Groups, Application Groups, Website Groups, and endpoint groups.
 7. Whether customer-facing APIs are required or the first release uses only internal Endpoint Central APIs.

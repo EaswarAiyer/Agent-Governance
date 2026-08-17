@@ -44,14 +44,14 @@ The workflow runs when an endpoint's applied-policy set or any contributing poli
 5. Enable auto-uninstallation when any contributing policy enables it.
 6. Enable prompt collection when any contributing policy enables it.
 7. Choose Strict DLP when any contributing prompt policy uses Strict; union monitored Data Groups.
-8. Persist or return the effective result with contributing-policy provenance.
+8. Persist or return the final effective value for every supported control field. Keep the applied-policy list separate; do not require field-level merge provenance or deployment history in the merged result.
 9. When serving an interactive endpoint request, return the result only with AI Agent Policy Read or higher; otherwise `workflow.endpoint.ai-governance.authorize-access` projects the policy count to `0` and returns no applied/merged policy detail.
 
 ### Agent behavior
 If effective resolution occurs on the agent instead, the division of responsibility and signed input format are `[TBD]`. The prototype represents a server-readable result.
 
 ## Success state
-A deterministic effective policy is available for the endpoint, and each installed agent can be labeled Allowed, Blocked, or Unmanaged.
+A deterministic effective policy containing the final result for every supported control field is available for the endpoint, and each installed agent can be labeled Allowed, Blocked, or Unmanaged.
 
 ## Failure, retry, and recovery
 ### Missing or invalid contributing policy
@@ -70,4 +70,3 @@ A deterministic effective policy is available for the endpoint, and each install
 
 ## Open questions
 - Are all controls merged using the prototype's restrictive precedence, or can policies have priority/order?
-- Should users see a field-level explanation of contributing policies?

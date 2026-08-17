@@ -50,7 +50,7 @@ Users can create multiple OS-specific policies containing agent control, remedia
 - Endpoint enforcement executes the saved/deployed policy as a system operation; no separate interactive auto-uninstall role is introduced in this module.
 
 ## Product behavior
-Agent Strict mode permits only Allow List agents. Agent Audit mode blocks Block List agents and allows all others, even when Allow List is empty. DLP Strict mode collects/classifies prompts and blocks transfers matching selected Data Groups. DLP Audit mode collects/classifies without blocking. Agent and DLP modes are independent.
+All policy configuration fields are optional. Agent Strict mode permits only Allow List agents; when Strict mode is selected with an empty Allow List, the policy remains valid but the user is warned that all AI agents will be blocked. Agent Audit mode blocks Block List agents and allows all others, even when Allow List is empty. DLP Strict mode collects/classifies prompts and blocks transfers matching selected Data Groups. DLP Audit mode collects/classifies without blocking. Agent and DLP modes are independent. Folder wildcard syntax is platform-specific and limited to a supported set for each policy OS. A policy mapped to any deployment task cannot be deleted until those mappings are removed or changed.
 
 ## Workflows
 - `workflow.endpoint.ai-governance.policy-save` - Validates and persists a policy.
@@ -68,15 +68,20 @@ Agent Strict mode permits only Allow List agents. Agent Audit mode blocks Block 
 - Advanced rules can reference only allowlisted agents.
 - Accessible domains use Website Groups only; allowed child processes use Application Groups only.
 - Classifiers use Data Groups.
+- Unsupported folder wildcard patterns are rejected for the selected policy OS.
+- Policy deletion depends on deployment-task references; mapped policies are retained.
 
 ## Release / completion criteria
 - Invalid overlap between Allow List and Block List is prevented.
+- Strict mode with an empty Allow List remains saveable and produces an explicit all-agents-blocked warning.
+- Platform-specific folder wildcard validation accepts only the supported set.
 - Prompt collection dependencies are disabled when collection is off.
 - Saved policy detail is available to deployment and endpoint views.
 - Authorization and audit logging are enforced for mutations.
 - Policy create, modify, and delete operations are recorded in the Endpoint Central Action Log and aggregated through ME tracking without policy-sensitive values.
+- Deletion is blocked while any deployment task references the policy.
 
 ## Open questions
 - Are policy names unique globally or per OS?
-- What validation applies to folder patterns and incompatible settings?
+- Which folder wildcard patterns are supported on Windows, macOS, and Linux, and what other setting combinations are incompatible?
 - Are approvals, drafts, versions, and rollback required?

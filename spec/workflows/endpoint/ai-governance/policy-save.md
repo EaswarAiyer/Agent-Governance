@@ -33,6 +33,7 @@ A user with AI Agent Policy Write or Full selects Save policy on `page.endpoint.
 - Administrative-group support for shared CG/DCG access by scoped technicians is not available in the current release.
 
 ## Inputs
+- All configurable policy fields are optional; the OS platform is established by the creation context.
 - Policy name and OS platform.
 - Allow List, Block List, and agent enforcement mode.
 - Auto-uninstallation setting.
@@ -41,12 +42,13 @@ A user with AI Agent Policy Write or Full selects Save policy on `page.endpoint.
 
 ## Flow
 ### Client behavior
-1. Validate required fields and mutually exclusive agent lists.
-2. Submit the complete policy definition and, for modification, its identity/version.
+1. Validate mutually exclusive agent lists, reference integrity, and platform-specific folder wildcard patterns against the supported set.
+2. When Strict agent mode has an empty Allow List, warn that all AI agents will be blocked; this warning does not prevent save.
+3. Submit the complete policy definition and, for modification, its identity/version.
 
 ### Server behavior
 1. Authorize the mutation through `workflow.endpoint.ai-governance.authorize-access` and validate all identifiers and combinations.
-2. Reject allow/block overlap and advanced rules for non-allowlisted agents.
+2. Reject allow/block overlap, advanced rules for non-allowlisted agents, and folder wildcard patterns unsupported by the policy OS.
 3. Persist the new policy or a new version of the existing policy; versioning is `[TBD]`.
 4. Record who modified the policy and when.
 5. Record successful create/modify operations in the Endpoint Central Action Log and aggregate operation success/failure through ME tracking without sensitive policy values.
@@ -57,7 +59,7 @@ The policy list displays the saved policy with its platform, modes, counts/setti
 
 ## Failure, retry, and recovery
 ### Validation failure
-- Condition: Required, conflicting, invalid, or inaccessible references are submitted.
+- Condition: Conflicting or invalid values, unsupported platform-specific wildcard patterns, or inaccessible references are submitted.
 - Behavior: Do not persist; return field-level errors.
 - Recovery: Preserve the draft and focus the first invalid section.
 
@@ -67,7 +69,7 @@ The policy list displays the saved policy with its platform, modes, counts/setti
 - Recovery: Conflict and merge behavior is `[TBD]`.
 
 ## Edge cases
-- Empty Allow List in Strict mode blocks all agents.
+- Empty Allow List in Strict mode blocks all agents; the client warns before save but does not reject the policy.
 - Empty Allow List in Audit mode does not block agents not on the Block List.
 - Turning prompt collection off disables dependent classifier and DLP controls.
 - Removing an allowlisted agent invalidates or removes its advanced rules.
