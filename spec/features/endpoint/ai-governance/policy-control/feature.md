@@ -35,6 +35,7 @@ Users can create multiple OS-specific policies containing agent control, remedia
 ### Out of scope
 - Deployment targeting; this belongs to policy deployment.
 - Definition and membership management for reusable groups; pages are `[TBD]`.
+- Administrative-group handling for shared CG/DCG access by scoped technicians.
 - General software restriction policies outside AI agents.
 
 ## Users / Roles
@@ -56,6 +57,7 @@ Agent Strict mode permits only Allow List agents. Agent Audit mode blocks Block 
 - `page.endpoint.ai-governance.endpoint-details` - Displays applied and merged policy state.
 
 ## Dependencies and constraints
+- Available endpoints and reusable objects must respect the technician's existing Endpoint Central scope.
 - Advanced rules can reference only allowlisted agents.
 - Accessible domains use Website Groups only; allowed child processes use Application Groups only.
 - Classifiers use Data Groups.
@@ -65,6 +67,7 @@ Agent Strict mode permits only Allow List agents. Agent Audit mode blocks Block 
 - Prompt collection dependencies are disabled when collection is off.
 - Saved policy detail is available to deployment and endpoint views.
 - Authorization and audit logging are enforced for mutations.
+- Policy create, modify, and delete operations are recorded in the Endpoint Central Action Log and aggregated through ME tracking without policy-sensitive values.
 
 ## Open questions
 - Are policy names unique globally or per OS?

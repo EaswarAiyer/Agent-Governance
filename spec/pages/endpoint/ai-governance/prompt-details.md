@@ -23,6 +23,7 @@ Give an authorized investigator the available context for one AI interaction, it
 - Observability Metadata View for permitted session metadata.
 - Observability Sensitive Content View for prompt, response, attachments, findings, and reasoning summary.
 - Every sensitive-content view should be access-audited.
+- The associated endpoint must be within the technician's existing Endpoint Central scope.
 
 ## Entry points
 - `page.endpoint.ai-governance.agent-details` -> select an agent-scoped prompt.
@@ -51,6 +52,7 @@ Give an authorized investigator the available context for one AI interaction, it
 - UX feedback: show authorized fields and explicit redactions.
 - On success: investigation context is complete for available data.
 - On failure: show not-found, expired, unavailable, or permission state without leakage.
+- Logging: record authorized sensitive-content access in the Endpoint Central Action Log; ME tracking records only aggregate usage/failure signals.
 
 ## States
 ### Loading

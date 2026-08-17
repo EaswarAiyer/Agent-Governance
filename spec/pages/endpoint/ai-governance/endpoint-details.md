@@ -26,6 +26,7 @@ Explain an endpoint's installed AI agents, applied policies, and final merged co
 ## Access / roles
 - Endpoints View permission.
 - Policies View may be required to open a policy; field-level visibility rules are `[TBD]`.
+- The endpoint must be within the technician's existing Endpoint Central scope.
 
 ## Entry points
 - `page.endpoint.ai-governance.endpoints` -> select an endpoint.
@@ -48,14 +49,14 @@ Explain an endpoint's installed AI agents, applied policies, and final merged co
 ## User actions
 ### Open installed agent
 - Available when: agent row is visible.
-- Triggers: no mutation.
+- Triggers: no backend workflow; navigation reads existing agent data.
 - UX feedback: navigate immediately.
 - On success: open `page.endpoint.ai-governance.agent-details`.
 - On failure: show agent unavailable.
 
 ### Open applied policy
 - Available when: user has Policies View.
-- Triggers: no mutation.
+- Triggers: no backend workflow; navigation reads the existing policy.
 - UX feedback: navigate immediately.
 - On success: open `page.endpoint.ai-governance.policy-details` in view/edit mode according to permission.
 - On failure: show permission or not-found feedback.

@@ -58,6 +58,10 @@ List AI-agent policies and provide OS-specific creation and modification entry p
 - On success: remove or archive the row.
 - On failure: retain the row and explain dependencies.
 
+### Administrative logging
+- Create, modify, and delete actions are recorded in the Endpoint Central Action Log.
+- Aggregate adoption and failure data is recorded through ME tracking without policy-sensitive values.
+
 ## States
 ### Loading
 - Show table skeleton and disable mutations.

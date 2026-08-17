@@ -39,6 +39,7 @@ The product collects policy-enabled prompt activity, classifies it with selected
 - Observability Metadata View for list-level metadata.
 - Observability Sensitive Content View for prompt, response, attachments, and reasoning summary.
 - Prompt Export as a separate permission.
+- All observability results are limited to endpoints in the technician's Endpoint Central scope.
 
 ## Product behavior
 Prompt monitoring begins only when a deployed policy enables prompt-data collection. General classification uses configured Data Groups. Multiple attached files retain independent classifications and findings.
@@ -56,14 +57,17 @@ Prompt monitoring begins only when a deployed policy enables prompt-data collect
 - Depends on deployed policy settings and Data Group definitions.
 - Model providers may not expose reasoning information; availability must be represented honestly.
 - Sensitive content requires stronger authorization than aggregate metadata.
+- Notifications and alerts are not required in the current release.
 
 ## Release / completion criteria
 - Collection honors deployed policy state and DLP mode.
 - Every prompt row links to details when the user has permission.
 - Attachments show per-file classifications and findings.
 - Retention, redaction, export, and access audit requirements are defined.
+- Sensitive prompt views and exports are recorded in the Endpoint Central Action Log; ME tracking excludes prompt, response, and attachment content.
 
 ## Open questions
 - What exact content is collected from each agent and model integration?
 - What is blocked in DLP Strict mode: submission, attachment, tool call, response, or all applicable transfers?
 - What retention and masking defaults apply?
+- Whether the existing classification-event view remains within Observability is deferred.

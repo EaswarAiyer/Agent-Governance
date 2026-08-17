@@ -35,9 +35,10 @@ The product identifies endpoints with AI agents, protected endpoints, installed 
 
 ## Users / Roles
 - Users with Endpoints View permission.
+- Endpoint counts and records are limited to the technician's Endpoint Central scope.
 
 ## Product behavior
-An endpoint is “with AI agents” when its installed-agent count is greater than zero. An endpoint is “protected” when one or more AI-agent policies are applied. The merged effective policy is explanatory and read-only.
+An endpoint is “with AI agents” when its installed-agent count is greater than zero. An endpoint is “protected” when one or more AI-agent policies are applied. The merged effective policy is explanatory and read-only. MSP calculations run inside one customer's context. Summary Server exposes probe-level handling only in the current scope.
 
 ## Workflows
 - `workflow.endpoint.ai-governance.inventory-refresh` - Supplies endpoint and agent state.
@@ -54,6 +55,7 @@ An endpoint is “with AI agents” when its installed-agent count is greater th
 
 ## Release / completion criteria
 - KPI counts and endpoint filters use the same predicates.
+- KPI counts and endpoint filters use only endpoints visible to the technician.
 - Every endpoint row links to endpoint details.
 - Effective policy output identifies all contributing policies and the final value of every supported control.
 

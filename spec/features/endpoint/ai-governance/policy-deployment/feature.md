@@ -33,6 +33,7 @@ Users can manage deployment tasks, each mapping exactly one policy to a target e
 ### Out of scope
 - Mapping multiple policies within one deployment task.
 - Direct endpoint selection in the current prototype.
+- Deployment through shared CG/DCG administrative-group handling for scoped technicians.
 - General-purpose software deployment.
 
 ## Users / Roles
@@ -53,6 +54,7 @@ Clicking a task opens its dedicated details page. Endpoint results distinguish s
 
 ## Dependencies and constraints
 - Requires an existing policy and target endpoint group.
+- Target endpoints must be within the technician's existing Endpoint Central scope.
 - Offline and stale endpoints require explicit delivery semantics.
 
 ## Release / completion criteria
@@ -60,6 +62,7 @@ Clicking a task opens its dedicated details page. Endpoint results distinguish s
 - Status and remarks are available per targeted endpoint.
 - Failed and pending results have defined recovery behavior.
 - Deletion behavior preserves required audit history.
+- Deployment create, modify, and delete operations and auto-uninstallation are recorded in the Endpoint Central Action Log and aggregated through ME tracking.
 
 ## Open questions
 - Does Save immediately deploy or create a draft task?

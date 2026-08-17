@@ -22,6 +22,7 @@ List and manage tasks that associate one AI-agent policy with a target endpoint 
 ## Access / roles
 - Deployments View for list access.
 - Deployments Manage for create and modify; delete/execute separation is `[TBD]`.
+- Target choices and task results are constrained to endpoints in the technician's existing Endpoint Central scope.
 
 ## Entry points
 - Main AI Governance navigation -> Deployment.
@@ -48,7 +49,7 @@ List and manage tasks that associate one AI-agent policy with a target endpoint 
 
 ### Open deployment task
 - Available when: row is visible.
-- Triggers: no mutation.
+- Triggers: no backend workflow; navigation reads the existing deployment task.
 - UX feedback: navigate immediately.
 - On success: open `page.endpoint.ai-governance.deployment-details`.
 - On failure: show task unavailable.
@@ -59,6 +60,10 @@ List and manage tasks that associate one AI-agent policy with a target endpoint 
 - UX feedback: confirm and describe effect on active endpoint policy.
 - On success: remove/archive the task as defined.
 - On failure: retain row and explain why.
+
+### Administrative logging
+- Create, modify, and delete actions are recorded in the Endpoint Central Action Log.
+- Aggregate deployment adoption and failure data is recorded through ME tracking.
 
 ## States
 ### Loading
@@ -77,6 +82,7 @@ List and manage tasks that associate one AI-agent policy with a target endpoint 
 - Task name requirements are `[TBD]`.
 - Exactly one policy and one target group are required.
 - Platform compatibility is validated before execution.
+- Shared CG/DCG administrative-group deployment for scoped technicians is not supported in the current release.
 
 ## Navigation
 - Task row -> `page.endpoint.ai-governance.deployment-details`.

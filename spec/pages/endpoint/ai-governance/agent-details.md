@@ -25,6 +25,7 @@ Show where one AI agent is installed and the prompt activity attributed to that 
 - Overview/Discovery View for agent and installation data.
 - Observability Metadata View for the Prompt Log tab.
 - Sensitive prompt content requires separate permission on details.
+- Installation and prompt records include only endpoints in the technician's Endpoint Central scope.
 
 ## Entry points
 - `page.endpoint.ai-governance.overview` -> select a discovered-agent row.
@@ -45,7 +46,7 @@ Show where one AI agent is installed and the prompt activity attributed to that 
 ## User actions
 ### Switch tabs
 - Available when: the user has access to the selected tab.
-- Triggers: no workflow mutation.
+- Triggers: no backend workflow; the tab switch changes only the current read-only view.
 - UX feedback: selected tab is highlighted.
 - On success: selected content is shown.
 - On failure: keep the prior tab and show an access/load error.

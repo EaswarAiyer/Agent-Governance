@@ -21,6 +21,7 @@ List managed Windows, macOS, and Linux endpoints and expose AI-agent and policy 
 
 ## Access / roles
 - Endpoints View permission.
+- The table and all counts include only endpoints in the technician's existing Endpoint Central scope.
 
 ## Entry points
 - Main navigation -> Endpoints.
@@ -38,14 +39,14 @@ List managed Windows, macOS, and Linux endpoints and expose AI-agent and policy 
 ## User actions
 ### Filter endpoints
 - Available when: page is loaded.
-- Triggers: no mutation; filters `workflow.endpoint.ai-governance.inventory-refresh` output.
+- Triggers: no backend workflow; filters `workflow.endpoint.ai-governance.inventory-refresh` output in a read-only view.
 - UX feedback: active filter and result count update.
 - On success: matching rows remain.
 - On failure: invalid filter defaults to All.
 
 ### Open endpoint
 - Available when: a row is visible.
-- Triggers: no mutation.
+- Triggers: no backend workflow; navigation reads existing endpoint data.
 - UX feedback: navigate immediately.
 - On success: open `page.endpoint.ai-governance.endpoint-details`.
 - On failure: show endpoint unavailable.
@@ -61,7 +62,7 @@ List managed Windows, macOS, and Linux endpoints and expose AI-agent and policy 
 - Show retry and preserve filter/search state.
 
 ### Permission / disabled
-- Return only endpoints in the user's authorized scope.
+- Return only endpoints in the technician's authorized Endpoint Central scope.
 
 ## Validation and feedback
 - With AI agents means installed-agent count greater than zero.

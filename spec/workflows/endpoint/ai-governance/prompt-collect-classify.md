@@ -40,6 +40,8 @@ An endpoint observes a prompt-related interaction after a successfully deployed 
 2. Receive the interaction event and classification results.
 3. Validate, authorize, and store permitted fields under retention controls.
 4. Index list metadata and detailed investigation content separately where required.
+5. Apply technician endpoint scope before returning observability insights or records.
+6. Send aggregate collection, classification, block, and failure counts to ME tracking without prompt, response, attachment, finding, or session content.
 
 ### Server -> Agent data
 | Field / data | Purpose | Required | Notes |
@@ -87,6 +89,7 @@ The interaction is allowed or blocked according to DLP mode, and an authorized u
 - Multiple Data Groups match one item.
 - Encrypted, unsupported, oversized, or password-protected attachment.
 - Prompt content is unavailable but metadata is observable.
+- The observing technician's scope changes after the interaction is stored.
 
 ## Related pages
 - `page.endpoint.ai-governance.policy-details` - Configures collection and DLP.

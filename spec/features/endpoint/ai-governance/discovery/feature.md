@@ -25,6 +25,7 @@ The product presents a current, searchable inventory of discovered AI agents and
 - Aggregate endpoint detections into distinct AI-agent records.
 - Show publisher, detection source, endpoint count, governance status, and discovery timestamps.
 - Drill into an agent's installed computers and prompt activity.
+- Support Endpoint Central Security Edition in Cloud, on-premises, customer-specific MSP context, and Summary Server probes.
 
 ### Out of scope
 - Software licensing, purchasing, reclamation, and chargeback behavior.
@@ -34,9 +35,10 @@ The product presents a current, searchable inventory of discovered AI agents and
 ## Users / Roles
 - Users with Overview/Discovery View permission.
 - Users need Observability permissions to view prompt activity or sensitive prompt content.
+- Discovery records and counts include only endpoints in the technician's Endpoint Central scope.
 
 ## Product behavior
-Overview and Discovery are a single experience named Overview. Selecting an agent opens its dedicated details page rather than a side panel. Search and governance-status filters only change the visible inventory.
+Overview and Discovery are a single experience named Overview. Selecting an agent opens its dedicated details page rather than a side panel. Search and governance-status filters only change the visible inventory. On upgrade, discovery begins automatically, and the AI Governance tab carries a New indicator with an informational introduction box.
 
 ## Workflows
 - `workflow.endpoint.ai-governance.inventory-refresh` - Supplies agent and installation inventory.
@@ -48,11 +50,13 @@ Overview and Discovery are a single experience named Overview. Selecting an agen
 ## Dependencies and constraints
 - Requires managed endpoint inventory and endpoint telemetry.
 - Agent identity normalization rules are `[TBD]`.
+- MSP aggregation is customer-specific. Summary Server support is probe-level without complete consolidated visibility.
 
 ## Release / completion criteria
 - Each distinct detected agent links to a dedicated details page.
 - Installation counts reconcile with endpoint-level records.
 - Empty, loading, error, and permission states are defined before production release.
+- Upgrade discovery does not activate policy enforcement, prompt collection, DLP blocking, or auto-uninstallation.
 
 ## Open questions
 - What signals qualify software as an AI agent?

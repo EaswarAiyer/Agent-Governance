@@ -24,6 +24,7 @@ A user with Policies Manage permission selects Save policy on `page.endpoint.ai-
 - The user is authorized to create or modify policies.
 - The selected Data, Website, and Application Groups still exist and are accessible.
 - Every advanced rule references an agent currently in the Allow List.
+- Administrative-group support for shared CG/DCG access by scoped technicians is not available in the current release.
 
 ## Inputs
 - Policy name and OS platform.
@@ -42,7 +43,8 @@ A user with Policies Manage permission selects Save policy on `page.endpoint.ai-
 2. Reject allow/block overlap and advanced rules for non-allowlisted agents.
 3. Persist the new policy or a new version of the existing policy; versioning is `[TBD]`.
 4. Record who modified the policy and when.
-5. Return the saved identity and state.
+5. Record successful create/modify operations in the Endpoint Central Action Log and aggregate operation success/failure through ME tracking without sensitive policy values.
+6. Return the saved identity and state.
 
 ## Success state
 The policy list displays the saved policy with its platform, modes, counts/settings, modifier, and last-modified time.

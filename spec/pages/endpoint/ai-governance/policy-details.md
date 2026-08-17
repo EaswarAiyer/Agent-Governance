@@ -24,6 +24,7 @@ Create or modify all control, execution, remediation, and prompt-DLP settings fo
 - Policies View for read-only access.
 - Policies Manage for editable access.
 - Auto-uninstall configuration may require an additional sensitive permission `[TBD]`.
+- Referenced endpoints and reusable objects must remain within the technician's existing Endpoint Central scope; shared CG/DCG administrative-group support is not part of the current release.
 
 ## Entry points
 - `page.endpoint.ai-governance.policy-list` -> create for Windows/Mac/Linux or modify a row.
@@ -54,6 +55,7 @@ Create or modify all control, execution, remediation, and prompt-DLP settings fo
 - UX feedback: show submitting and field-level validation.
 - On success: return to `page.endpoint.ai-governance.policy-list` with saved confirmation.
 - On failure: preserve all edits and identify invalid sections.
+- Logging: record successful create or modify actions in the Endpoint Central Action Log and ME tracking; do not include sensitive policy values in telemetry.
 
 ### Add or remove an advanced rule
 - Available when: an agent exists in the Allow List.

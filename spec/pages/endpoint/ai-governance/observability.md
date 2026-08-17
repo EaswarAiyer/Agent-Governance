@@ -24,6 +24,7 @@ Provide a global prompt log across all monitored AI agents and support sensitive
 - Observability Metadata View for prompt-list fields permitted by policy.
 - Observability Sensitive Content View for unredacted prompt previews/attachments when classified as sensitive.
 - Prompt Export is separate.
+- Every insight and record is derived only from endpoints in the technician's existing Endpoint Central scope.
 
 ## Entry points
 - Main AI Governance navigation -> Observability.
@@ -35,7 +36,7 @@ Provide a global prompt log across all monitored AI agents and support sensitive
 
 ### Classification event view
 - The prototype also contains file/classification event filters, comments, status actions, export, and a detail panel.
-- Whether this remains on the same production page or becomes a separate view is `[TBD]`.
+- Whether this remains, moves, or is removed is deliberately deferred for a later decision.
 
 ## User actions
 ### Open prompt details
@@ -47,7 +48,7 @@ Provide a global prompt log across all monitored AI agents and support sensitive
 
 ### Filter prompt/classification activity
 - Available when: log data is loaded.
-- Triggers: no mutation.
+- Triggers: no backend workflow; filtering changes only the read-only result view.
 - UX feedback: active filter and record count update.
 - On success: show matching records.
 - On failure: preserve the prior result set.
@@ -71,6 +72,7 @@ Provide a global prompt log across all monitored AI agents and support sensitive
 
 ### Permission / disabled
 - Redact or omit sensitive columns according to permissions and product decision `[TBD]`.
+- Exclude records from endpoints outside the technician's scope before calculating insights or returning rows.
 
 ## Validation and feedback
 - Agent name is mandatory in the global log.
@@ -80,6 +82,11 @@ Provide a global prompt log across all monitored AI agents and support sensitive
 - Prompt row -> `page.endpoint.ai-governance.prompt-details`.
 - Breadcrumb -> `page.endpoint.ai-governance.overview`.
 
+## Logging, telemetry, and notifications
+- Record views and exports of sensitive prompt content in the Endpoint Central Action Log.
+- Record aggregate feature usage and failures through ME tracking without prompt, response, attachment, or sensitive finding content.
+- Do not generate notifications or alerts in the current release.
+
 ## Open questions
-- Should classification events and prompt activity be separate tabs/pages?
+- The classification-event experience is deferred for later review.
 - Which fields are included in export and how are they redacted?

@@ -22,12 +22,11 @@ Provide the primary AI Governance landing page, combining coverage KPIs with the
 
 ## Access / roles
 - Overview/Discovery View permission.
-- KPI and row visibility must honor the user's accessible endpoint scope.
+- KPI and row visibility include only endpoints in the technician's existing Endpoint Central scope.
 
 ## Entry points
-- Software Asset Management navigation -> AI Governance Overview.
-- Product root (`index.html`) -> Overview.
-- Legacy Discovery link -> the Discovered AI Agents section.
+- AI Governance primary tab
+- Existing-customer upgrade -> AI Governance tab with a New indicator and an informational introduction box.
 
 ## Page structure
 ### KPI strip
@@ -38,17 +37,22 @@ Provide the primary AI Governance landing page, combining coverage KPIs with the
 - Displays: agent, publisher, detection source, endpoint count, governance status, first detected, last seen.
 - Controls: agent/publisher search and governance-status filter.
 
+### Product topology behavior
+- Endpoint Central Cloud and on-premises Security Edition show the complete Overview.
+- MSP shows customer-specific AI Agents Discovered and Endpoints with AI Agents counts on the home page; the other KPI cards are not required there.
+- Summary Server provides probe-level handling only; complete consolidated visibility is not required.
+
 ## User actions
 ### Open an agent
 - Available when: a row is visible.
-- Triggers: no mutation; represents `workflow.endpoint.ai-governance.inventory-refresh` output.
+- Triggers: no backend workflow; navigation reads `workflow.endpoint.ai-governance.inventory-refresh` output.
 - UX feedback: navigate immediately.
 - On success: open `page.endpoint.ai-governance.agent-details`.
 - On failure: show a non-destructive navigation or load error.
 
 ### Open endpoint coverage
 - Available when: a KPI count is visible.
-- Triggers: no mutation.
+- Triggers: no backend workflow; navigation applies a read-only endpoint filter.
 - UX feedback: apply All, With AI agents, or Protected filter.
 - On success: open `page.endpoint.ai-governance.endpoints`.
 - On failure: default to All only if the requested filter is invalid.
@@ -64,7 +68,11 @@ Provide the primary AI Governance landing page, combining coverage KPIs with the
 - Preserve navigation and show which aggregate or inventory failed to load.
 
 ### Permission / disabled
-- Hide or redact counts outside the user's endpoint scope.
+- Exclude endpoints outside the technician's scope from counts and rows rather than calculating and then redacting them.
+
+### Existing-customer introduction
+- On upgrade, show a New indicator on the AI Governance tab and an information box introducing the feature.
+- Discovery starts automatically. Policy deployment, prompt collection, DLP blocking, and auto-uninstallation remain inactive until configured and deployed.
 
 ## Validation and feedback
 - Search is case-insensitive and updates visible count.

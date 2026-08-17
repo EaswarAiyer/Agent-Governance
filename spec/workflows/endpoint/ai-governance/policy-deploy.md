@@ -26,6 +26,8 @@ A user with Deployments Manage permission saves or executes a deployment task fr
 - Exactly one policy is mapped to the task.
 - The target endpoint group exists and contains endpoints.
 - The user can access both the policy and the target group.
+- Every resolved target endpoint is within the technician's existing Endpoint Central scope.
+- Shared CG/DCG administrative-group deployment for scoped technicians is not supported in the current release.
 
 ## Inputs
 - Deployment task identity and name.
@@ -36,10 +38,12 @@ A user with Deployments Manage permission saves or executes a deployment task fr
 ## Flow
 ### Server behavior
 1. Validate authorization, policy, target group, and platform compatibility.
-2. Resolve and snapshot target membership for the execution `[TBD]`.
+2. Resolve target membership within the technician's Endpoint Central scope and snapshot it for the execution `[TBD]`.
 3. Create per-endpoint deployment records in Pending state.
 4. Queue the policy for endpoint delivery.
 5. Process acknowledgements and update status, remarks, and task summary.
+6. Record deployment create/modify/delete and auto-uninstallation as applicable in the Endpoint Central Action Log.
+7. Send aggregate deployment adoption and failure metrics to ME tracking without policy or endpoint-sensitive values.
 
 ### Server -> Agent data
 | Field / data | Purpose | Required | Notes |
@@ -88,6 +92,7 @@ Every resolved target endpoint reaches a terminal result, successful endpoints r
 
 ## Edge cases
 - Endpoint changes group membership during deployment.
+- Endpoint leaves the technician's scope after task creation.
 - Policy is edited, deleted, or superseded during delivery.
 - Duplicate delivery or acknowledgement.
 - Target OS does not match policy OS.

@@ -23,6 +23,7 @@ Show the task summary, endpoint-level rollout results, and complete associated-p
 ## Access / roles
 - Deployments View.
 - Policy content visibility follows Policies View or a defined deployment-specific read entitlement `[TBD]`.
+- Target endpoint rows include only endpoints in the technician's existing Endpoint Central scope.
 
 ## Entry points
 - `page.endpoint.ai-governance.deployment-list` -> select a task row.
@@ -42,14 +43,14 @@ Show the task summary, endpoint-level rollout results, and complete associated-p
 ## User actions
 ### Switch tabs
 - Available when: task is loaded.
-- Triggers: no mutation.
+- Triggers: no backend workflow; the page switches between already authorized task data.
 - UX feedback: selected tab and content update.
 - On success: preserve task context.
 - On failure: keep the prior tab.
 
 ### Open targeted endpoint
 - Available when: endpoint row is visible.
-- Triggers: no mutation.
+- Triggers: no backend workflow; navigation reads existing endpoint data.
 - UX feedback: navigate immediately.
 - On success: open `page.endpoint.ai-governance.endpoint-details`.
 - On failure: show endpoint unavailable.
