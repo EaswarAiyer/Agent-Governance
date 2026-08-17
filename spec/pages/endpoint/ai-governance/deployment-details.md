@@ -8,8 +8,10 @@ module: ai-governance
 features:
   - feature.endpoint.ai-governance.policy-deployment
   - feature.endpoint.ai-governance.policy-control
+  - feature.endpoint.ai-governance.rbac
 workflows:
   - workflow.endpoint.ai-governance.policy-deploy
+  - workflow.endpoint.ai-governance.authorize-access
 navigates_to:
   - page.endpoint.ai-governance.deployment-list
   - page.endpoint.ai-governance.endpoint-details
@@ -17,12 +19,19 @@ navigates_to:
 
 # Deployment Task Details
 
+> [!info] Related specifications
+> **Map:** [[AI-Governance-Map|AI Governance Specification Map]]
+> **Features:** [[features/endpoint/ai-governance/policy-deployment/feature|Policy Deployment]] · [[features/endpoint/ai-governance/policy-control/feature|Policy Control]] · [[features/endpoint/ai-governance/rbac/feature|Role-Based Access]]
+> **Workflows:** [[workflows/endpoint/ai-governance/policy-deploy|Policy Deployment]] · [[workflows/endpoint/ai-governance/authorize-access|Access Authorization]]
+> **Navigation:** [[pages/endpoint/ai-governance/deployment-list|Deployment List]] · [[pages/endpoint/ai-governance/endpoint-details|Endpoint Details]]
+
 ## Purpose
 Show the task summary, endpoint-level rollout results, and complete associated-policy configuration.
 
 ## Access / roles
-- Deployments View.
-- Policy content visibility follows Policies View or a defined deployment-specific read entitlement `[TBD]`.
+- AI Agent Policy Deployment Read or higher is required for the task summary and endpoint rollout results.
+- AI Agent Policy Read or higher is required for the granular Policy Details tab. The deployment task may still show its associated policy name as task metadata without granting policy-content access.
+- Target endpoint rows include only endpoints in the technician's existing Endpoint Central scope.
 
 ## Entry points
 - `page.endpoint.ai-governance.deployment-list` -> select a task row.
@@ -38,18 +47,19 @@ Show the task summary, endpoint-level rollout results, and complete associated-p
 ### Policy Details tab
 - Displays: Agent Control, Auto Uninstallation, Advanced Execution Rules, and Prompt Monitoring & Classification for the single associated policy.
 - Controls: read-only.
+- Requires AI Agent Policy Read; otherwise the tab is hidden/disabled and no policy definition is returned.
 
 ## User actions
 ### Switch tabs
 - Available when: task is loaded.
-- Triggers: no mutation.
+- Triggers: no backend workflow; the page switches between already authorized task data.
 - UX feedback: selected tab and content update.
 - On success: preserve task context.
 - On failure: keep the prior tab.
 
 ### Open targeted endpoint
 - Available when: endpoint row is visible.
-- Triggers: no mutation.
+- Triggers: no backend workflow; navigation reads existing endpoint data.
 - UX feedback: navigate immediately.
 - On success: open `page.endpoint.ai-governance.endpoint-details`.
 - On failure: show endpoint unavailable.
@@ -65,7 +75,10 @@ Show the task summary, endpoint-level rollout results, and complete associated-p
 - Partial endpoint results remain visible with failed-section feedback.
 
 ### Permission / disabled
-- Redact policy detail if permission design requires it; endpoint identities remain scoped.
+- Deny the page without AI Agent Policy Deployment Read.
+- Keep deployment-relevant endpoint identity and rollout results available with Deployment Read.
+- Without AI Agent Policy Read, hide granular policy content and project policy-derived counts to `0` on any linked endpoint view.
+- Without AI Discovery Read, linked endpoint details display deployment-relevant identity/status only; installed-agent count is `0` and agent rows are empty.
 
 ## Validation and feedback
 - Status uses a defined taxonomy including Success, Pending, and Failed.
@@ -78,4 +91,6 @@ Show the task summary, endpoint-level rollout results, and complete associated-p
 
 ## Open questions
 - Which retry, cancel, or rollback actions belong on this page?
+	- No rollback actions needed.
 - Should target membership reflect the original execution snapshot or current group membership?
+	- No

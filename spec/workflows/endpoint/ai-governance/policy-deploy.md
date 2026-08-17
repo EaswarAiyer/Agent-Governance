@@ -7,6 +7,7 @@ domain: endpoint
 module: ai-governance
 features:
   - feature.endpoint.ai-governance.policy-deployment
+  - feature.endpoint.ai-governance.rbac
 pages:
   - page.endpoint.ai-governance.deployment-list
   - page.endpoint.ai-governance.deployment-details
@@ -15,17 +16,25 @@ pages:
 
 # Deploy an AI Agent Policy to Endpoints
 
+> [!info] Related specifications
+> **Map:** [[AI-Governance-Map|AI Governance Specification Map]]
+> **Features:** [[features/endpoint/ai-governance/policy-deployment/feature|Policy Deployment]] · [[features/endpoint/ai-governance/rbac/feature|Role-Based Access]]
+> **Pages:** [[pages/endpoint/ai-governance/deployment-list|Deployment List]] · [[pages/endpoint/ai-governance/deployment-details|Deployment Details]] · [[pages/endpoint/ai-governance/endpoint-details|Endpoint Details]]
+
 ## Purpose
 Associate one policy with a target endpoint group, deliver it to eligible endpoints, and track endpoint-level results.
 
 ## Trigger
-A user with Deployments Manage permission saves or executes a deployment task from `page.endpoint.ai-governance.deployment-list`. Whether Save and Execute are the same action is `[TBD]`.
+A user with AI Agent Policy Deployment Write or Full saves, executes, or retries a deployment task from `page.endpoint.ai-governance.deployment-list`. Whether Save and Execute are the same action is `[TBD]`.
 
 ## Preconditions
 - The selected policy exists and is valid.
+- The user has AI Agent Policy Deployment Write or Full; Read alone cannot mutate or execute a task.
 - Exactly one policy is mapped to the task.
 - The target endpoint group exists and contains endpoints.
 - The user can access both the policy and the target group.
+- Every resolved target endpoint is within the technician's existing Endpoint Central scope.
+- Shared CG/DCG administrative-group deployment for scoped technicians is not supported in the current release.
 
 ## Inputs
 - Deployment task identity and name.
@@ -35,11 +44,13 @@ A user with Deployments Manage permission saves or executes a deployment task fr
 
 ## Flow
 ### Server behavior
-1. Validate authorization, policy, target group, and platform compatibility.
-2. Resolve and snapshot target membership for the execution `[TBD]`.
+1. Validate authorization through `workflow.endpoint.ai-governance.authorize-access`, then validate the policy, target group, and platform compatibility.
+2. Resolve target membership within the technician's Endpoint Central scope and snapshot it for the execution `[TBD]`.
 3. Create per-endpoint deployment records in Pending state.
 4. Queue the policy for endpoint delivery.
 5. Process acknowledgements and update status, remarks, and task summary.
+6. Record deployment create/modify/delete and auto-uninstallation as applicable in the Endpoint Central Action Log.
+7. Send aggregate deployment adoption and failure metrics to ME tracking without policy or endpoint-sensitive values.
 
 ### Server -> Agent data
 | Field / data | Purpose | Required | Notes |
@@ -88,6 +99,7 @@ Every resolved target endpoint reaches a terminal result, successful endpoints r
 
 ## Edge cases
 - Endpoint changes group membership during deployment.
+- Endpoint leaves the technician's scope after task creation.
 - Policy is edited, deleted, or superseded during delivery.
 - Duplicate delivery or acknowledgement.
 - Target OS does not match policy OS.

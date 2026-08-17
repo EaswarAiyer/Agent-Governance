@@ -7,9 +7,11 @@ domain: endpoint
 module: ai-governance
 features:
   - feature.endpoint.ai-governance.prompt-observability
+  - feature.endpoint.ai-governance.rbac
 workflows:
   - workflow.endpoint.ai-governance.prompt-collect-classify
   - workflow.endpoint.ai-governance.prompt-review
+  - workflow.endpoint.ai-governance.authorize-access
 navigates_to:
   - page.endpoint.ai-governance.prompt-details
   - page.endpoint.ai-governance.overview
@@ -17,13 +19,20 @@ navigates_to:
 
 # Prompt Observability
 
+> [!info] Related specifications
+> **Map:** [[AI-Governance-Map|AI Governance Specification Map]]
+> **Features:** [[features/endpoint/ai-governance/prompt-observability/feature|Prompt Monitoring and Classification]] · [[features/endpoint/ai-governance/rbac/feature|Role-Based Access]]
+> **Workflows:** [[workflows/endpoint/ai-governance/prompt-collect-classify|Prompt Collection and Classification]] · [[workflows/endpoint/ai-governance/prompt-review|Prompt Review]] · [[workflows/endpoint/ai-governance/authorize-access|Access Authorization]]
+> **Navigation:** [[pages/endpoint/ai-governance/prompt-details|Prompt Details]] · [[pages/endpoint/ai-governance/overview|Overview]]
+
 ## Purpose
 Provide a global prompt log across all monitored AI agents and support sensitive-data investigation.
 
 ## Access / roles
-- Observability Metadata View for prompt-list fields permitted by policy.
-- Observability Sensitive Content View for unredacted prompt previews/attachments when classified as sensitive.
-- Prompt Export is separate.
+- AI DLP Observability Read or higher for global and agent-specific prompt logs and prompt details, including authorized captured content.
+- AI DLP Observability Write includes Read; no additional observability mutation is part of the current release.
+- AI DLP Observability Full for export.
+- Every insight and record is derived only from endpoints in the technician's existing Endpoint Central scope.
 
 ## Entry points
 - Main AI Governance navigation -> Observability.
@@ -35,11 +44,11 @@ Provide a global prompt log across all monitored AI agents and support sensitive
 
 ### Classification event view
 - The prototype also contains file/classification event filters, comments, status actions, export, and a detail panel.
-- Whether this remains on the same production page or becomes a separate view is `[TBD]`.
+- Whether this remains, moves, or is removed is deliberately deferred for a later decision.
 
 ## User actions
 ### Open prompt details
-- Available when: user has prompt metadata access.
+- Available when: user has AI DLP Observability Read or higher.
 - Triggers: `workflow.endpoint.ai-governance.prompt-review`.
 - UX feedback: navigate to the selected record.
 - On success: open `page.endpoint.ai-governance.prompt-details`.
@@ -47,13 +56,13 @@ Provide a global prompt log across all monitored AI agents and support sensitive
 
 ### Filter prompt/classification activity
 - Available when: log data is loaded.
-- Triggers: no mutation.
+- Triggers: no backend workflow; filtering changes only the read-only result view.
 - UX feedback: active filter and record count update.
 - On success: show matching records.
 - On failure: preserve the prior result set.
 
 ### Export
-- Available when: user has Prompt Export.
+- Available when: user has AI DLP Observability Full.
 - Triggers: export workflow `[TBD]`.
 - UX feedback: disclose scope and sensitive-content handling before export.
 - On success: provide the generated artifact and audit the action.
@@ -70,7 +79,9 @@ Provide a global prompt log across all monitored AI agents and support sensitive
 - Distinguish retrieval failure from permission-based redaction.
 
 ### Permission / disabled
-- Redact or omit sensitive columns according to permissions and product decision `[TBD]`.
+- Deny the page and APIs without AI DLP Observability Read.
+- Hide export for Read and Write users; Full is required.
+- Exclude records from endpoints outside the technician's scope before calculating insights or returning rows.
 
 ## Validation and feedback
 - Agent name is mandatory in the global log.
@@ -80,6 +91,11 @@ Provide a global prompt log across all monitored AI agents and support sensitive
 - Prompt row -> `page.endpoint.ai-governance.prompt-details`.
 - Breadcrumb -> `page.endpoint.ai-governance.overview`.
 
+## Logging, telemetry, and notifications
+- Record views and exports of sensitive prompt content in the Endpoint Central Action Log.
+- Record aggregate feature usage and failures through ME tracking without prompt, response, attachment, or sensitive finding content.
+- Do not generate notifications or alerts in the current release.
+
 ## Open questions
-- Should classification events and prompt activity be separate tabs/pages?
+- The classification-event experience is deferred for later review.
 - Which fields are included in export and how are they redacted?

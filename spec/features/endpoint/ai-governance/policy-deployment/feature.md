@@ -16,6 +16,11 @@ pages:
 
 # AI Agent Policy Deployment
 
+> [!info] Related specifications
+> **Map:** [[AI-Governance-Map|AI Governance Specification Map]]
+> **Workflows:** [[workflows/endpoint/ai-governance/policy-deploy|Policy Deployment]] · [[workflows/endpoint/ai-governance/effective-policy-resolve|Effective Policy Resolution]]
+> **Pages:** [[pages/endpoint/ai-governance/deployment-list|Deployment List]] · [[pages/endpoint/ai-governance/deployment-details|Deployment Details]] · [[pages/endpoint/ai-governance/endpoint-details|Endpoint Details]]
+
 ## Problem
 Administrators need to associate an AI-agent policy with target computers and monitor the result on every endpoint.
 
@@ -33,11 +38,14 @@ Users can manage deployment tasks, each mapping exactly one policy to a target e
 ### Out of scope
 - Mapping multiple policies within one deployment task.
 - Direct endpoint selection in the current prototype.
+- Deployment through shared CG/DCG administrative-group handling for scoped technicians.
 - General-purpose software deployment.
 
 ## Users / Roles
-- Deployments View for read access.
-- Deployments Manage for create, modify, execute, retry, and delete capabilities; the exact split is `[TBD]`.
+- AI Agent Policy Deployment Read or higher for task lists, task details, and endpoint rollout results.
+- AI Agent Policy Deployment Write or Full for create, modify, execute, and retry.
+- AI Agent Policy Deployment Full for delete/cancel lifecycle actions.
+- AI Agent Policy Read or higher is additionally required to inspect granular policy content from deployment details.
 
 ## Product behavior
 Clicking a task opens its dedicated details page. Endpoint results distinguish successful, pending, and failed application and include operational remarks.
@@ -53,13 +61,16 @@ Clicking a task opens its dedicated details page. Endpoint results distinguish s
 
 ## Dependencies and constraints
 - Requires an existing policy and target endpoint group.
+- Target endpoints must be within the technician's existing Endpoint Central scope.
 - Offline and stale endpoints require explicit delivery semantics.
+- Access and linked endpoint field projection follow `feature.endpoint.ai-governance.rbac`.
 
 ## Release / completion criteria
 - Each task maps exactly one policy.
 - Status and remarks are available per targeted endpoint.
 - Failed and pending results have defined recovery behavior.
 - Deletion behavior preserves required audit history.
+- Deployment create, modify, and delete operations and auto-uninstallation are recorded in the Endpoint Central Action Log and aggregated through ME tracking.
 
 ## Open questions
 - Does Save immediately deploy or create a draft task?

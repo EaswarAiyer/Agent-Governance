@@ -8,6 +8,7 @@ module: ai-governance
 features:
   - feature.endpoint.ai-governance.discovery
   - feature.endpoint.ai-governance.endpoint-coverage
+  - feature.endpoint.ai-governance.rbac
 pages:
   - page.endpoint.ai-governance.overview
   - page.endpoint.ai-governance.agent-details
@@ -16,6 +17,11 @@ pages:
 ---
 
 # Refresh AI Agent and Endpoint Inventory
+
+> [!info] Related specifications
+> **Map:** [[AI-Governance-Map|AI Governance Specification Map]]
+> **Features:** [[features/endpoint/ai-governance/discovery/feature|Discovery]] · [[features/endpoint/ai-governance/endpoint-coverage/feature|Endpoint Coverage]] · [[features/endpoint/ai-governance/rbac/feature|Role-Based Access]]
+> **Pages:** [[pages/endpoint/ai-governance/overview|Overview]] · [[pages/endpoint/ai-governance/agent-details|Agent Details]] · [[pages/endpoint/ai-governance/endpoints|Endpoints]] · [[pages/endpoint/ai-governance/endpoint-details|Endpoint Details]]
 
 ## Purpose
 Maintain the server-side inventory used to show managed endpoints, installed AI agents, installation metadata, and discovery timestamps.
@@ -26,6 +32,7 @@ The workflow starts when a managed endpoint reports inventory during its normal 
 ## Preconditions
 - The endpoint is enrolled and identifiable by the management server.
 - The reporting component is authorized to submit inventory.
+- The product is Endpoint Central Security Edition running in Cloud, on premises, an MSP customer context, or a Summary Server probe.
 
 ## Inputs
 - Endpoint identity, domain, OS, logged-in user, IP address, contact time, and health status.
@@ -38,6 +45,9 @@ The workflow starts when a managed endpoint reports inventory during its normal 
 3. Reconcile added, changed, and removed installations.
 4. Recalculate agent endpoint counts and coverage KPIs.
 5. Store first-detected and last-seen timestamps.
+6. Apply technician scope when producing insights and inventory views; never use out-of-scope endpoints in displayed counts. Apply interactive role-based field projection through `workflow.endpoint.ai-governance.authorize-access` at request time without altering the stored inventory.
+7. In MSP, partition inventory and home-page counts by customer. In Summary Server, retain probe-level handling without requiring complete consolidated visibility.
+8. Send aggregate adoption and ingestion-failure signals to ME tracking without endpoint-sensitive inventory values.
 
 ### Server -> Agent data
 No server-to-agent payload is required by the represented inventory update. Scan instructions and signatures are `[TBD]`.
@@ -56,7 +66,7 @@ No server-to-agent payload is required by the represented inventory update. Scan
 | Detection evidence/source | Explain classification | Yes | Taxonomy is `[TBD]` |
 
 ## Success state
-The server accepts the report, updates the endpoint and agent inventories, and returns internally consistent KPI and detail counts.
+The server accepts the report and updates the endpoint and agent inventories. Interactive requests receive internally consistent, technician-scoped, permission-projected KPI and detail counts through `workflow.endpoint.ai-governance.authorize-access`.
 
 ## Failure, retry, and recovery
 ### Invalid report
@@ -73,6 +83,8 @@ The server accepts the report, updates the endpoint and agent inventories, and r
 - Multiple versions or installation locations for the same agent on one endpoint.
 - Renamed, portable, embedded, or extension-based agents.
 - Agent removed while the endpoint is offline.
+- A technician's scope changes between inventory refreshes.
+- MSP customer context or Summary Server probe context is missing or invalid.
 
 ## Related pages
 - `page.endpoint.ai-governance.overview` - Consumes aggregate inventory.

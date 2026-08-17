@@ -16,6 +16,11 @@ pages:
 
 # Prompt Monitoring and Classification
 
+> [!info] Related specifications
+> **Map:** [[AI-Governance-Map|AI Governance Specification Map]]
+> **Workflows:** [[workflows/endpoint/ai-governance/prompt-collect-classify|Prompt Collection and Classification]] · [[workflows/endpoint/ai-governance/prompt-review|Prompt Review]]
+> **Pages:** [[pages/endpoint/ai-governance/agent-details|Agent Details]] · [[pages/endpoint/ai-governance/observability|Observability]] · [[pages/endpoint/ai-governance/prompt-details|Prompt Details]]
+
 ## Problem
 Security and governance users need to understand sensitive information used with AI agents across the organization and investigate individual interactions.
 
@@ -36,9 +41,10 @@ The product collects policy-enabled prompt activity, classifies it with selected
 - Retention and legal-hold behavior until defined.
 
 ## Users / Roles
-- Observability Metadata View for list-level metadata.
-- Observability Sensitive Content View for prompt, response, attachments, and reasoning summary.
-- Prompt Export as a separate permission.
+- AI DLP Observability Read or higher for prompt logs and captured prompt details, including available prompt, response, attachment, finding, reasoning-summary, and tool-call content.
+- AI DLP Observability Write includes Read; no additional prompt mutation exists in the current release.
+- AI DLP Observability Full for export.
+- All observability results are limited to endpoints in the technician's Endpoint Central scope.
 
 ## Product behavior
 Prompt monitoring begins only when a deployed policy enables prompt-data collection. General classification uses configured Data Groups. Multiple attached files retain independent classifications and findings.
@@ -55,15 +61,19 @@ Prompt monitoring begins only when a deployed policy enables prompt-data collect
 ## Dependencies and constraints
 - Depends on deployed policy settings and Data Group definitions.
 - Model providers may not expose reasoning information; availability must be represented honestly.
-- Sensitive content requires stronger authorization than aggregate metadata.
+- Sensitive content requires AI DLP Observability Read and access auditing; export requires Full.
+- Access follows `feature.endpoint.ai-governance.rbac`; sensitive views remain Action Log events even though both metadata and captured content use AI DLP Observability Read.
+- Notifications and alerts are not required in the current release.
 
 ## Release / completion criteria
 - Collection honors deployed policy state and DLP mode.
 - Every prompt row links to details when the user has permission.
 - Attachments show per-file classifications and findings.
 - Retention, redaction, export, and access audit requirements are defined.
+- Sensitive prompt views and exports are recorded in the Endpoint Central Action Log; ME tracking excludes prompt, response, and attachment content.
 
 ## Open questions
 - What exact content is collected from each agent and model integration?
 - What is blocked in DLP Strict mode: submission, attachment, tool call, response, or all applicable transfers?
 - What retention and masking defaults apply?
+- Whether the existing classification-event view remains within Observability is deferred.

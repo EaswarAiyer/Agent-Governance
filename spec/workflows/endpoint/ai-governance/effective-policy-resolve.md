@@ -9,11 +9,17 @@ features:
   - feature.endpoint.ai-governance.endpoint-coverage
   - feature.endpoint.ai-governance.policy-control
   - feature.endpoint.ai-governance.policy-deployment
+  - feature.endpoint.ai-governance.rbac
 pages:
   - page.endpoint.ai-governance.endpoint-details
 ---
 
 # Resolve an Endpoint's Effective AI Policy
+
+> [!info] Related specifications
+> **Map:** [[AI-Governance-Map|AI Governance Specification Map]]
+> **Features:** [[features/endpoint/ai-governance/endpoint-coverage/feature|Endpoint Coverage]] · [[features/endpoint/ai-governance/policy-control/feature|Policy Control]] · [[features/endpoint/ai-governance/policy-deployment/feature|Policy Deployment]] · [[features/endpoint/ai-governance/rbac/feature|Role-Based Access]]
+> **Page:** [[pages/endpoint/ai-governance/endpoint-details|Endpoint Details]]
 
 ## Purpose
 Produce one deterministic set of final AI-agent and prompt-DLP controls from all policies successfully applied to an endpoint.
@@ -39,6 +45,7 @@ The workflow runs when an endpoint's applied-policy set or any contributing poli
 6. Enable prompt collection when any contributing policy enables it.
 7. Choose Strict DLP when any contributing prompt policy uses Strict; union monitored Data Groups.
 8. Persist or return the effective result with contributing-policy provenance.
+9. When serving an interactive endpoint request, return the result only with AI Agent Policy Read or higher; otherwise `workflow.endpoint.ai-governance.authorize-access` projects the policy count to `0` and returns no applied/merged policy detail.
 
 ### Agent behavior
 If effective resolution occurs on the agent instead, the division of responsibility and signed input format are `[TBD]`. The prototype represents a server-readable result.
