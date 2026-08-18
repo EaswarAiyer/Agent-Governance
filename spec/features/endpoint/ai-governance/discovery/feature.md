@@ -25,18 +25,6 @@ Administrators need to know which AI agents exist across managed computers and w
 ## Outcome
 The product presents a current, searchable inventory of discovered AI agents and the endpoints associated with each agent.
 
-## Scope
-### In scope
-- Aggregate endpoint detections into distinct AI-agent records.
-- Show publisher, detection source, endpoint count, governance status, and discovery timestamps.
-- Drill into an agent's installed computers and prompt activity.
-- Support Endpoint Central Security Edition in Cloud, on-premises, customer-specific MSP context, and Summary Server probes.
-
-### Out of scope
-- Software licensing, purchasing, reclamation, and chargeback behavior.
-- Discovery of unmanaged endpoints.
-- Manual refresh controls in the UI.
-
 ## Users / Roles
 - AI Discovery Read or higher grants discovery KPIs, agent inventory, installations, and the AI Governance endpoint list.
 - AI Discovery Write and Full include Read; no user-initiated discovery mutation or Full-only action exists in the current release.
@@ -44,7 +32,10 @@ The product presents a current, searchable inventory of discovered AI agents and
 - Discovery records and counts include only endpoints in the technician's Endpoint Central scope.
 
 ## Product behavior
-Overview and Discovery are a single experience named Overview. Selecting an agent opens its dedicated details page rather than a side panel. Governance status is informational only; search and governance-status filters change the visible inventory without mutating agent or policy state. On upgrade, discovery begins automatically, and the AI Governance tab carries a New indicator with an informational introduction box.
+- Overview and Discovery are a single experience named Overview.
+- Selecting an agent opens its dedicated details page rather than a side panel.
+- Governance status is informational; search and governance-status filters only change the visible inventory.
+- On upgrade, discovery begins automatically and the AI Governance tab shows a New indicator with an informational introduction box.
 
 ## Workflows
 - `workflow.endpoint.ai-governance.inventory-refresh` - Synchronizes Crawler rules, scans agents, and supplies agent and installation inventory.
@@ -52,20 +43,3 @@ Overview and Discovery are a single experience named Overview. Selecting an agen
 ## Pages
 - `page.endpoint.ai-governance.overview` - Presents KPIs and discovered agents.
 - `page.endpoint.ai-governance.agent-details` - Presents installations and agent-specific prompt logs.
-
-## Dependencies and constraints
-- Requires managed endpoint inventory and endpoint telemetry.
-- Access and endpoint field projection follow `feature.endpoint.ai-governance.rbac`.
-- Agent identity normalization rules are `[TBD]`.
-- MSP aggregation is customer-specific. Summary Server support is probe-level without complete consolidated visibility.
-
-## Release / completion criteria
-- Each distinct detected agent links to a dedicated details page.
-- Installation counts reconcile with endpoint-level records.
-- Governance status cannot be edited from the Overview.
-- Empty, loading, error, and permission states are defined before production release.
-- Upgrade discovery does not activate policy enforcement, prompt collection, DLP blocking, or auto-uninstallation.
-
-## Open questions
-- What signals qualify software as an AI agent?
-- How are renamed, bundled, portable, or multiple-version installations deduplicated?

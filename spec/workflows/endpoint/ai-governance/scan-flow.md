@@ -7,7 +7,7 @@ domain: endpoint
 module: ai-governance
 features:
   - feature.endpoint.ai-governance.discovery
-  - feature.endpoint.ai-governance.endpoint-coverage
+  - feature.endpoint.ai-governance.endpoint-details
   - feature.endpoint.ai-governance.rbac
 pages:
   - page.endpoint.ai-governance.overview

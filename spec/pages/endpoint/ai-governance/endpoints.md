@@ -6,7 +6,7 @@ status: draft
 domain: endpoint
 module: ai-governance
 features:
-  - feature.endpoint.ai-governance.endpoint-coverage
+  - feature.endpoint.ai-governance.endpoint-details
   - feature.endpoint.ai-governance.rbac
 workflows:
   - workflow.endpoint.ai-governance.inventory-refresh
@@ -20,7 +20,7 @@ navigates_to:
 
 > [!info] Related specifications
 > **Map:** [[AI-Governance-Map|AI Governance Specification Map]]
-> **Features:** [[features/endpoint/ai-governance/endpoint-coverage/feature|Endpoint Coverage]] · [[features/endpoint/ai-governance/rbac/feature|Role-Based Access]]
+> **Features:** [[features/endpoint/ai-governance/endpoint-details/feature|Endpoint Details]] · [[features/endpoint/ai-governance/rbac/feature|Role-Based Access]]
 > **Workflows:** [[workflows/endpoint/ai-governance/scan-flow|AI Agent Scan Flow]] · [[workflows/endpoint/ai-governance/authorize-access|Access Authorization]]
 > **Navigation:** [[pages/endpoint/ai-governance/endpoint-details|Endpoint Details]] · [[pages/endpoint/ai-governance/overview|Overview]]
 

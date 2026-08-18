@@ -41,29 +41,14 @@ AI Governance combines discovery, policy administration, deployment, and sensiti
 ## Outcome
 Endpoint Central administrators can assign four composable AI Governance permission families at Read, Write, or Full level. Every page, action, API response, KPI, endpoint column, filter, and drill-down honors the assigned level and the technician's existing Endpoint Central scope.
 
-## Scope
-### In scope
-- AI Discovery permissions at Read, Write, and Full levels.
-- AI Agent Policy permissions at Read, Write, and Full levels.
-- AI Agent Policy Deployment permissions at Read, Write, and Full levels.
-- AI DLP Observability permissions at Read, Write, and Full levels.
-- Hierarchical permission evaluation where Full includes Write and Read, and Write includes Read.
-- Server-side field projection for endpoint AI-agent and policy counts.
-- Permission-aware page navigation, actions, filters, empty states, and Action Log entries.
-
-### Out of scope
-- Fixed job personas that bundle the four permission families.
-- Shared CG/DCG administrative-group handling for scoped technicians.
-- RBAC administration UI changes outside the existing Endpoint Central role-management experience.
-- Notifications for role or permission changes.
-
 ## Users / Roles
 - Endpoint Central role administrators assign the four permission families and levels.
 - Technicians receive composable feature permissions in addition to their existing Endpoint Central scope.
 - System ingestion and endpoint enforcement continue independently of an interactive technician's UI permission.
 
 ## Product behavior
-### Permission hierarchy
+- Four composable permission families use Read, Write, and Full levels; Full includes Write and Read, and Write includes Read.
+
 | Permission family | Read | Write | Full |
 |---|---|---|---|
 | AI Discovery | View discovery KPIs, discovered agents, installations, and the AI Governance endpoint inventory. | Includes Read. Discovery has no user-initiated mutation in the current release. | Includes Write. Discovery has no Full-only action in the current release. |
@@ -71,17 +56,11 @@ Endpoint Central administrators can assign four composable AI Governance permiss
 | AI Agent Policy Deployment | View deployment tasks and endpoint-level deployment results. | Includes Read; create, modify, execute, and retry deployment tasks. | Includes Write; delete deployment tasks. Cancel is not supported in the current lifecycle. |
 | AI DLP Observability | View global and agent-specific prompt logs and prompt details, including authorized captured content. | Includes Read. No additional prompt mutation is in the current release. | Includes Write; export prompt-observability data. |
 
-### Endpoint-derived field projection
-| Endpoint field or derived view | Required permission | Behavior without permission |
-|---|---|---|
-| Number of AI agents installed | AI Discovery Read or higher | Return and display `0`; do not reveal the underlying count through sorting, filtering, export, or API metadata. |
-| Installed AI-agent rows, versions, locations, and effective control | AI Discovery Read or higher | Return an empty collection and hide agent drill-down actions. |
-| Number of AI-agent policies applied | AI Agent Policy Read or higher | Return and display `0`; do not reveal the underlying count through sorting, filtering, export, or API metadata. |
-| Applied-policy rows and merged effective policy | AI Agent Policy Read or higher | Return an empty collection and hide policy/effective-control details. |
-| Protected Endpoints KPI and filter | AI Agent Policy Read or higher | Display `0`; the Protected filter returns no rows because its projected policy count is zero. |
-| Prompt activity on an agent or endpoint | AI DLP Observability Read or higher | Hide the prompt-log tab/section and return no prompt records. |
-
-Projection occurs on the server before values are aggregated or returned. The UI must not calculate a real count and then visually mask it. Zero is an authorization-safe projected value, distinct from loading and retrieval failure.
+- AI Discovery Read controls endpoint-derived agent counts and rows; AI Agent Policy Read controls policy counts, Protected Endpoint results, applied policies, and merged controls; AI DLP Observability Read controls prompt activity.
+- Without the relevant permission, the server projects counts to `0`, returns empty collections, and hides related actions and filters.
+- Projection occurs before aggregation or return, including sorting, filtering, exports, pagination, direct URLs, and APIs.
+- Permissions are additive inside the technician's Endpoint Central scope.
+- The current release excludes fixed personas, shared CG/DCG handling, role-change notifications, and RBAC UI changes.
 
 ## Workflows
 - `workflow.endpoint.ai-governance.authorize-access` - Evaluates module permissions, technician scope, actions, and field projection for every AI Governance request.
@@ -101,21 +80,3 @@ Projection occurs on the server before values are aggregated or returned. The UI
 - `page.endpoint.ai-governance.deployment-list` and `page.endpoint.ai-governance.deployment-details` - Apply Deployment Read/Write/Full actions and policy-detail gating.
 - `page.endpoint.ai-governance.deployment-editor` - Requires Deployment Write or Full for task creation and modification.
 - `page.endpoint.ai-governance.observability` and `page.endpoint.ai-governance.prompt-details` - Apply DLP Observability Read/Write/Full access.
-
-## Dependencies and constraints
-- Permissions are additive and operate only within the technician's existing Endpoint Central scope.
-- Direct URLs and APIs must enforce the same authorization as navigation visibility.
-- Counts, filters, sorting, exports, and pagination totals must use projected values to prevent side-channel disclosure.
-- Sensitive prompt views and exports remain Action Log events; ME tracking must not include prompt, response, attachment, or sensitive finding content.
-
-## Release / completion criteria
-- All four permission families are assignable with Read, Write, and Full levels.
-- Write includes Read and Full includes Write without requiring duplicate grants.
-- Every page and action follows the permission matrix.
-- Endpoint agent and policy counts return zero when their corresponding Read permission is absent.
-- Protected Endpoint counts and filters do not reveal policy presence without AI Agent Policy Read.
-- Direct navigation and API calls cannot bypass page-level restrictions.
-- Permission denials and sensitive-data access are logged according to Endpoint Central conventions.
-
-## Open questions
-- None for the current role model.

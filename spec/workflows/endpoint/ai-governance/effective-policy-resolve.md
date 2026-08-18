@@ -6,7 +6,7 @@ status: draft
 domain: endpoint
 module: ai-governance
 features:
-  - feature.endpoint.ai-governance.endpoint-coverage
+  - feature.endpoint.ai-governance.endpoint-details
   - feature.endpoint.ai-governance.policy-control
   - feature.endpoint.ai-governance.policy-deployment
   - feature.endpoint.ai-governance.rbac

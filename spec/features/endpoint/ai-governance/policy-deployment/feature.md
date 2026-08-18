@@ -28,21 +28,6 @@ Administrators need to associate an AI-agent policy with target computers and mo
 ## Outcome
 Users can manage deployment tasks, each mapping exactly one policy to a target endpoint group, and inspect endpoint-level deployment results.
 
-## Scope
-### In scope
-- Create, modify, and delete deployment tasks.
-- Create and modify deployment tasks on a dedicated editor page.
-- Associate one policy with a target endpoint group.
-- Show deployment task metadata and targeted endpoint count.
-- Show endpoint name, domain, last contact, deployment status, and remarks.
-- Show a read-only snapshot of the associated policy.
-
-### Out of scope
-- Mapping multiple policies within one deployment task.
-- Direct endpoint selection in the current prototype.
-- Deployment through shared CG/DCG administrative-group handling for scoped technicians.
-- General-purpose software deployment.
-
 ## Users / Roles
 - AI Agent Policy Deployment Read or higher for task lists, task details, and endpoint rollout results.
 - AI Agent Policy Deployment Write or Full for create, modify, execute, and retry.
@@ -50,7 +35,13 @@ Users can manage deployment tasks, each mapping exactly one policy to a target e
 - AI Agent Policy Read or higher is additionally required to inspect granular policy content from deployment details.
 
 ## Product behavior
-Clicking a task opens its dedicated details page, while Create and Modify open a dedicated editor page. A task uses only three lifecycle states: Yet to start before endpoints begin reading the policy, In progress while current target-group members are still processing it, and Completed after all current targets have reported a terminal result. Target endpoints follow current group membership rather than an immutable creation-time snapshot. Endpoint results independently distinguish successful, pending, and failed application and include operational remarks. Cancel, schedule, pause, and rollback task actions are not included in the current release.
+- Users create, modify, and delete deployment tasks on dedicated pages.
+- Each task maps exactly one policy to one target endpoint group; target membership follows the group's current membership.
+- The task list shows task metadata and targeted endpoint count.
+- Task details show endpoint name, domain, last contact, deployment status, remarks, and the associated policy's read-only summary.
+- Tasks progress through Yet to start, In progress, and Completed.
+- Endpoint results identify successful, pending, or failed application.
+- Cancel, schedule, pause, and rollback are not included.
 
 ## Workflows
 - `workflow.endpoint.ai-governance.policy-deploy` - Delivers and tracks the selected policy.
@@ -61,23 +52,3 @@ Clicking a task opens its dedicated details page, while Create and Modify open a
 - `page.endpoint.ai-governance.deployment-editor` - Creates or modifies a deployment task on a dedicated page.
 - `page.endpoint.ai-governance.deployment-details` - Shows endpoint results and policy detail.
 - `page.endpoint.ai-governance.endpoint-details` - Shows policies effective on an endpoint.
-
-## Dependencies and constraints
-- Requires an existing policy and target endpoint group.
-- Target endpoints must be within the technician's existing Endpoint Central scope.
-- Target membership is resolved from the group's current membership rather than an original execution snapshot.
-- Offline and stale endpoints require explicit delivery semantics.
-- Access and linked endpoint field projection follow `feature.endpoint.ai-governance.rbac`.
-
-## Release / completion criteria
-- Each task maps exactly one policy.
-- Every task exposes only Yet to start, In progress, or Completed lifecycle state.
-- Status and remarks are available per targeted endpoint.
-- Failed and pending results have defined recovery behavior.
-- Deletion behavior preserves required audit history.
-- Deployment create, modify, and delete operations and auto-uninstallation are recorded in the Endpoint Central Action Log and aggregated through ME tracking.
-
-## Open questions
-- Does Save immediately deploy or create a draft task?
-- What endpoint-level retry behavior and limits are required?
-- Is the displayed policy live or a versioned deployment snapshot?

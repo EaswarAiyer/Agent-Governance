@@ -7,7 +7,7 @@ domain: endpoint
 module: ai-governance
 features:
   - feature.endpoint.ai-governance.discovery
-  - feature.endpoint.ai-governance.endpoint-coverage
+  - feature.endpoint.ai-governance.endpoint-details
   - feature.endpoint.ai-governance.rbac
 workflows:
   - workflow.endpoint.ai-governance.inventory-refresh
@@ -21,7 +21,7 @@ navigates_to:
 
 > [!info] Related specifications
 > **Map:** [[AI-Governance-Map|AI Governance Specification Map]]
-> **Features:** [[features/endpoint/ai-governance/discovery/feature|Discovery]] · [[features/endpoint/ai-governance/endpoint-coverage/feature|Endpoint Coverage]] · [[features/endpoint/ai-governance/rbac/feature|Role-Based Access]]
+> **Features:** [[features/endpoint/ai-governance/discovery/feature|Discovery]] · [[features/endpoint/ai-governance/endpoint-details/feature|Endpoint Details]] · [[features/endpoint/ai-governance/rbac/feature|Role-Based Access]]
 > **Workflows:** [[workflows/endpoint/ai-governance/scan-flow|AI Agent Scan Flow]] · [[workflows/endpoint/ai-governance/authorize-access|Access Authorization]]
 > **Navigation:** [[pages/endpoint/ai-governance/agent-details|Agent Details]] · [[pages/endpoint/ai-governance/endpoints|Endpoints]]
 
@@ -95,7 +95,7 @@ The table columns must appear in this order.
 - On success: open `page.endpoint.ai-governance.agent-details`.
 - On failure: show a non-destructive navigation or load error.
 
-### Open endpoint coverage
+### Open endpoint details
 - Available when: a KPI count is visible.
 - Triggers: no backend workflow; navigation applies a read-only endpoint filter.
 - UX feedback: apply All, With AI agents, or Protected filter.

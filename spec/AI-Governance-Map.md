@@ -16,7 +16,7 @@ Start with [[README|AI Governance product specification]].
 ## Features
 
 - [[features/endpoint/ai-governance/discovery/feature|AI Agent Discovery and Inventory]]
-- [[features/endpoint/ai-governance/endpoint-coverage/feature|Endpoint Coverage and Effective Controls]]
+- [[features/endpoint/ai-governance/endpoint-details/feature|Endpoint Details and Effective Controls]]
 - [[features/endpoint/ai-governance/policy-control/feature|AI Agent Policy Control]]
 - [[features/endpoint/ai-governance/policy-deployment/feature|AI Agent Policy Deployment]]
 - [[features/endpoint/ai-governance/prompt-observability/feature|Prompt Monitoring and Classification]]
@@ -34,7 +34,7 @@ Start with [[README|AI Governance product specification]].
 
 ## Pages
 
-### Discovery and endpoint coverage
+### Discovery and endpoint details
 
 - [[pages/endpoint/ai-governance/overview|AI Governance Overview]]
 - [[pages/endpoint/ai-governance/agent-details|AI Agent Details]]
@@ -57,7 +57,7 @@ Start with [[README|AI Governance product specification]].
 
 ## Product flow
 
-1. [[workflows/endpoint/ai-governance/scan-flow|AI agent scan flow]] supplies [[pages/endpoint/ai-governance/overview|Overview]], [[pages/endpoint/ai-governance/agent-details|Agent Details]], and endpoint coverage.
+1. [[workflows/endpoint/ai-governance/scan-flow|AI agent scan flow]] supplies [[pages/endpoint/ai-governance/overview|Overview]], [[pages/endpoint/ai-governance/agent-details|Agent Details]], and endpoint details.
 2. Administrators review configured controls in [[pages/endpoint/ai-governance/policy-details|Policy Details]] and create or modify them in [[pages/endpoint/ai-governance/policy-editor|Policy Editor]] through [[workflows/endpoint/ai-governance/policy-save|Policy Save]].
 3. [[pages/endpoint/ai-governance/deployment-list|Deployment]] opens the [[pages/endpoint/ai-governance/deployment-editor|Deployment Editor]] to map one policy to a target group through [[workflows/endpoint/ai-governance/policy-deploy|Policy Deploy]].
 4. [[workflows/endpoint/ai-governance/effective-policy-resolve|Effective Policy Resolution]] produces the final controls shown in [[pages/endpoint/ai-governance/endpoint-details|Endpoint Details]].

@@ -41,7 +41,7 @@ All insights, inventory counts, endpoint lists, and observability records must b
 ## Features
 
 - `feature.endpoint.ai-governance.discovery` — AI agent discovery and inventory
-- `feature.endpoint.ai-governance.endpoint-coverage` — endpoint coverage and effective controls
+- `feature.endpoint.ai-governance.endpoint-details` — endpoint details and effective controls
 - `feature.endpoint.ai-governance.policy-control` — AI agent policy control
 - `feature.endpoint.ai-governance.policy-deployment` — policy deployment
 - `feature.endpoint.ai-governance.prompt-observability` — prompt monitoring and classification
