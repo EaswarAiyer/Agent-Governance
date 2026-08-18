@@ -24,7 +24,7 @@ Start with [[README|AI Governance product specification]].
 
 ## Workflows
 
-- [[workflows/endpoint/ai-governance/inventory-refresh|Refresh AI Agent and Endpoint Inventory]]
+- [[workflows/endpoint/ai-governance/scan-flow|AI Agent Scan Flow]]
 - [[workflows/endpoint/ai-governance/policy-save|Create or Modify an AI Agent Policy]]
 - [[workflows/endpoint/ai-governance/policy-deploy|Deploy an AI Agent Policy to Endpoints]]
 - [[workflows/endpoint/ai-governance/effective-policy-resolve|Resolve an Endpoint's Effective AI Policy]]
@@ -45,6 +45,7 @@ Start with [[README|AI Governance product specification]].
 
 - [[pages/endpoint/ai-governance/policy-list|AI Agent Policies]]
 - [[pages/endpoint/ai-governance/policy-details|AI Agent Policy Details]]
+- [[pages/endpoint/ai-governance/policy-editor|AI Agent Policy Editor]]
 - [[pages/endpoint/ai-governance/deployment-list|Policy Deployment]]
 - [[pages/endpoint/ai-governance/deployment-editor|Deployment Task Editor]]
 - [[pages/endpoint/ai-governance/deployment-details|Deployment Task Details]]
@@ -56,8 +57,8 @@ Start with [[README|AI Governance product specification]].
 
 ## Product flow
 
-1. [[workflows/endpoint/ai-governance/inventory-refresh|Inventory refresh]] supplies [[pages/endpoint/ai-governance/overview|Overview]], [[pages/endpoint/ai-governance/agent-details|Agent Details]], and endpoint coverage.
-2. Administrators define controls in [[pages/endpoint/ai-governance/policy-details|Policy Details]] through [[workflows/endpoint/ai-governance/policy-save|Policy Save]].
+1. [[workflows/endpoint/ai-governance/scan-flow|AI agent scan flow]] supplies [[pages/endpoint/ai-governance/overview|Overview]], [[pages/endpoint/ai-governance/agent-details|Agent Details]], and endpoint coverage.
+2. Administrators review configured controls in [[pages/endpoint/ai-governance/policy-details|Policy Details]] and create or modify them in [[pages/endpoint/ai-governance/policy-editor|Policy Editor]] through [[workflows/endpoint/ai-governance/policy-save|Policy Save]].
 3. [[pages/endpoint/ai-governance/deployment-list|Deployment]] opens the [[pages/endpoint/ai-governance/deployment-editor|Deployment Editor]] to map one policy to a target group through [[workflows/endpoint/ai-governance/policy-deploy|Policy Deploy]].
 4. [[workflows/endpoint/ai-governance/effective-policy-resolve|Effective Policy Resolution]] produces the final controls shown in [[pages/endpoint/ai-governance/endpoint-details|Endpoint Details]].
 5. Deployed prompt-DLP settings drive [[workflows/endpoint/ai-governance/prompt-collect-classify|Prompt Collection and Classification]], surfaced in [[pages/endpoint/ai-governance/observability|Observability]] and [[pages/endpoint/ai-governance/prompt-details|Prompt Details]].

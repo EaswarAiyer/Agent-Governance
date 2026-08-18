@@ -16,62 +16,16 @@ pages:
 
 # Review a Captured AI Prompt Interaction
 
-> [!info] Related specifications
-> **Map:** [[AI-Governance-Map|AI Governance Specification Map]]
-> **Features:** [[features/endpoint/ai-governance/prompt-observability/feature|Prompt Monitoring and Classification]] · [[features/endpoint/ai-governance/rbac/feature|Role-Based Access]]
-> **Pages:** [[pages/endpoint/ai-governance/agent-details|Agent Details]] · [[pages/endpoint/ai-governance/observability|Observability]] · [[pages/endpoint/ai-governance/prompt-details|Prompt Details]]
-
 ## Purpose
-Authorize and retrieve the metadata and sensitive details required to investigate one captured AI interaction.
-
-## Trigger
-A user with AI DLP Observability Read or higher selects a prompt row from the global or agent-specific prompt log.
-
-## Preconditions
-- The interaction exists and is within retention.
-- The associated endpoint is within the technician's existing Endpoint Central scope.
-- The user has AI DLP Observability Read or higher; export additionally requires Full.
-
-## Inputs
-- Interaction ID and agent context.
-- Requesting user, permissions, and scope.
+Show an authorized technician the available metadata and sensitive details for one captured AI interaction.
 
 ## Flow
-### Client behavior
-1. Navigate to prompt details with stable interaction identity.
-2. Request metadata and permitted content.
-
-### Server behavior
-1. Authorize the request through `workflow.endpoint.ai-governance.authorize-access`; deny details below AI DLP Observability Read and deny export below Full.
-2. Verify that the associated endpoint remains inside the technician's scope before retrieving content.
-3. Retrieve the interaction, attachment findings, reasoning summary, and tool calls when available.
-4. Return the captured fields supported by the integration and retention policy; do not broaden endpoint scope.
-5. Record sensitive prompt views and exports in the Endpoint Central Action Log.
-6. Send aggregate view/failure counts to ME tracking without sensitive interaction content.
-
-## Success state
-The detail page shows all authorized available fields and explicitly labels unavailable, redacted, or absent data.
-
-## Failure, retry, and recovery
-### Permission denied
-- Condition: User lacks AI DLP Observability Read, or attempts export without Full.
-- Behavior: Deny the page/action without disclosing whether the interaction exists or broadening returned content.
-- Recovery: Request access through the organization's RBAC process.
-
-### Record unavailable
-- Condition: Interaction expired, was deleted, or was never fully collected.
-- Behavior: Show a clear unavailable state without leaking sensitive metadata.
-- Recovery: None unless retrievable from an approved archive `[TBD]`.
-
-## Edge cases
-- Agent-specific and global logs reference the same interaction.
-- Reasoning summary or tool calls are unsupported by the integration.
-- Attachment metadata exists but content was not retained.
+1. A technician selects a prompt from an agent-specific or global prompt log.
+2. The server verifies AI DLP Observability access and endpoint scope through Access Authorization.
+3. The server returns the authorized interaction details: prompt, response, model, session, attachments, classifications, reasoning summary, and tool calls when available.
+4. The server records sensitive prompt views and exports in the Endpoint Central Action Log.
 
 ## Related pages
-- `page.endpoint.ai-governance.agent-details` - Agent-scoped entry point.
-- `page.endpoint.ai-governance.observability` - Global entry point.
-- `page.endpoint.ai-governance.prompt-details` - Investigation result.
-
-## Open questions
-- Which additional non-sensitive observability views, if any, should generate Action Log events?
+- `page.endpoint.ai-governance.agent-details` - Provides the agent-specific prompt-log entry point.
+- `page.endpoint.ai-governance.observability` - Provides the global prompt-log entry point.
+- `page.endpoint.ai-governance.prompt-details` - Shows the authorized interaction details.

@@ -16,6 +16,7 @@ navigates_to:
   - page.endpoint.ai-governance.deployment-list
   - page.endpoint.ai-governance.deployment-editor
   - page.endpoint.ai-governance.endpoint-details
+  - page.endpoint.ai-governance.policy-details
 ---
 
 # Deployment Task Details
@@ -24,7 +25,7 @@ navigates_to:
 > **Map:** [[AI-Governance-Map|AI Governance Specification Map]]
 > **Features:** [[features/endpoint/ai-governance/policy-deployment/feature|Policy Deployment]] · [[features/endpoint/ai-governance/policy-control/feature|Policy Control]] · [[features/endpoint/ai-governance/rbac/feature|Role-Based Access]]
 > **Workflows:** [[workflows/endpoint/ai-governance/policy-deploy|Policy Deployment]] · [[workflows/endpoint/ai-governance/authorize-access|Access Authorization]]
-> **Navigation:** [[pages/endpoint/ai-governance/deployment-list|Deployment List]] · [[pages/endpoint/ai-governance/deployment-editor|Deployment Editor]] · [[pages/endpoint/ai-governance/endpoint-details|Endpoint Details]]
+> **Navigation:** [[pages/endpoint/ai-governance/deployment-list|Deployment List]] · [[pages/endpoint/ai-governance/deployment-editor|Deployment Editor]] · [[pages/endpoint/ai-governance/endpoint-details|Endpoint Details]] · [[pages/endpoint/ai-governance/policy-details|Policy Details]]
 
 ## Purpose
 Show the task summary, endpoint-level rollout results, and complete associated-policy configuration.
@@ -47,7 +48,7 @@ Show the task summary, endpoint-level rollout results, and complete associated-p
 
 ### Policy Details tab
 - Displays: Agent Control, Auto Uninstallation, Advanced Execution Rules, and Prompt Monitoring & Classification for the single associated policy.
-- Controls: read-only.
+- Controls: the associated policy name is clickable to open its read-only Policy Details summary; all in-tab values are read-only.
 - Requires AI Agent Policy Read; otherwise the tab is hidden/disabled and no policy definition is returned.
 
 ## UI content contract
@@ -135,6 +136,7 @@ Show these read-only sections in order: Policy Details; Agent Control; Auto Unin
 
 ## Navigation
 - Modify -> `page.endpoint.ai-governance.deployment-editor`.
+- Associated policy name -> `page.endpoint.ai-governance.policy-details`.
 - Endpoint row -> `page.endpoint.ai-governance.endpoint-details`.
 - Back/breadcrumb -> `page.endpoint.ai-governance.deployment-list`.
 

@@ -65,6 +65,7 @@ All insights, inventory counts, endpoint lists, and observability records must b
 - `page.endpoint.ai-governance.endpoint-details`
 - `page.endpoint.ai-governance.policy-list`
 - `page.endpoint.ai-governance.policy-details`
+- `page.endpoint.ai-governance.policy-editor`
 - `page.endpoint.ai-governance.deployment-list`
 - `page.endpoint.ai-governance.deployment-editor`
 - `page.endpoint.ai-governance.deployment-details`

@@ -21,7 +21,7 @@ navigates_to:
 > [!info] Related specifications
 > **Map:** [[AI-Governance-Map|AI Governance Specification Map]]
 > **Features:** [[features/endpoint/ai-governance/endpoint-coverage/feature|Endpoint Coverage]] · [[features/endpoint/ai-governance/rbac/feature|Role-Based Access]]
-> **Workflows:** [[workflows/endpoint/ai-governance/inventory-refresh|Inventory Refresh]] · [[workflows/endpoint/ai-governance/authorize-access|Access Authorization]]
+> **Workflows:** [[workflows/endpoint/ai-governance/scan-flow|AI Agent Scan Flow]] · [[workflows/endpoint/ai-governance/authorize-access|Access Authorization]]
 > **Navigation:** [[pages/endpoint/ai-governance/endpoint-details|Endpoint Details]] · [[pages/endpoint/ai-governance/overview|Overview]]
 
 ## Purpose

@@ -9,6 +9,7 @@ workflows:
   - workflow.endpoint.ai-governance.prompt-collect-classify
   - workflow.endpoint.ai-governance.prompt-review
 pages:
+  - page.endpoint.ai-governance.policy-editor
   - page.endpoint.ai-governance.agent-details
   - page.endpoint.ai-governance.observability
   - page.endpoint.ai-governance.prompt-details
@@ -19,7 +20,7 @@ pages:
 > [!info] Related specifications
 > **Map:** [[AI-Governance-Map|AI Governance Specification Map]]
 > **Workflows:** [[workflows/endpoint/ai-governance/prompt-collect-classify|Prompt Collection and Classification]] · [[workflows/endpoint/ai-governance/prompt-review|Prompt Review]]
-> **Pages:** [[pages/endpoint/ai-governance/agent-details|Agent Details]] · [[pages/endpoint/ai-governance/observability|Observability]] · [[pages/endpoint/ai-governance/prompt-details|Prompt Details]]
+> **Pages:** [[pages/endpoint/ai-governance/policy-editor|Policy Editor]] · [[pages/endpoint/ai-governance/agent-details|Agent Details]] · [[pages/endpoint/ai-governance/observability|Observability]] · [[pages/endpoint/ai-governance/prompt-details|Prompt Details]]
 
 ## Problem
 Security and governance users need to understand sensitive information used with AI agents across the organization and investigate individual interactions.
@@ -54,6 +55,7 @@ Prompt monitoring begins only when a deployed policy enables prompt-data collect
 - `workflow.endpoint.ai-governance.prompt-review` - Retrieves and presents an interaction for investigation.
 
 ## Pages
+- `page.endpoint.ai-governance.policy-editor` - Configures prompt collection, Data Groups, and DLP mode.
 - `page.endpoint.ai-governance.agent-details` - Shows prompts for one agent.
 - `page.endpoint.ai-governance.observability` - Shows prompts across all agents.
 - `page.endpoint.ai-governance.prompt-details` - Shows the complete captured interaction.

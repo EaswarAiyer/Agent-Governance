@@ -348,11 +348,11 @@
           <span>Observability</span>
         </div>
         <div class="page-title">Prompt Observability</div>
-        <div class="page-subtitle">A global view of prompts, attachments, classifications, and responses across all AI agents.</div>
+        <div class="page-subtitle">Review prompt activity and sensitive-data classifications across monitored AI agents.</div>
       </div>
 
       <section class="global-prompt-log">
-        <div class="global-log-toolbar"><strong>All prompt activity</strong><span>Click a prompt to view its full prompt and response.</span></div>
+        <div class="global-log-toolbar"><strong>All Prompt Activity</strong><input id="promptSearch" aria-label="Search prompt activity" placeholder="Search prompts, AI agents, computers, or files" oninput="renderGlobalPrompts()"><span>Click a prompt to view Prompt Details.</span></div>
         <div class="table-wrap"><table class="data-table"><thead><tr><th>AI Agent</th><th>Prompt</th><th>Attached Files</th><th>Data Classification</th><th>Computer</th><th>Time</th></tr></thead><tbody id="globalPromptRows"></tbody></table></div>
       </section>
 
@@ -474,7 +474,7 @@
 
   <style>
     #mainContent > .filter-tabs-bar,#mainContent > .toolbar,#mainContent > .table-wrap,#mainContent > .table-pagination,.detail-panel{display:none !important}
-    .global-prompt-log{display:flex;flex-direction:column;flex:1;min-height:0;background:#fff;overflow:auto}.global-log-toolbar{display:flex;justify-content:space-between;align-items:center;padding:13px 28px;border-bottom:1px solid #e5e7eb;font-size:13px}.global-log-toolbar span{font-size:12px;color:#6b7280}.global-prompt-log .table-wrap{flex:1}.global-prompt-log tbody tr{cursor:pointer}.global-prompt-log tbody tr:hover{background:#f5f8ff}.prompt-cell{max-width:420px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.global-classification{display:inline-block;padding:3px 8px;border-radius:9px;background:#fff3e0;color:#a85c00;font-size:11px;font-weight:700}
+    .global-prompt-log{display:flex;flex-direction:column;flex:1;min-height:0;background:#fff;overflow:auto}.global-log-toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:13px 28px;border-bottom:1px solid #e5e7eb;font-size:13px}.global-log-toolbar input{min-width:300px;padding:8px 10px;border:1px solid #d7dee8;border-radius:5px;font:12px inherit}.global-log-toolbar span{font-size:12px;color:#6b7280}.global-prompt-log .table-wrap{flex:1}.global-prompt-log tbody tr{cursor:pointer}.global-prompt-log tbody tr:hover{background:#f5f8ff}.prompt-cell{max-width:420px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.global-classification{display:inline-block;padding:3px 8px;border-radius:9px;background:#fff3e0;color:#a85c00;font-size:11px;font-weight:700}
   </style>
 
   <!-- ADD COMMENT MODAL -->
@@ -767,7 +767,8 @@
       {id:'P-001',agent:'Cursor IDE',agentId:'AI-003',prompt:'Summarize the customer escalation and propose a response.',files:'customer-escalation.docx, incident-timeline.xlsx',classification:'PII',computer:'WIN-DEV-007',time:'Jun 1, 2026 13:15'},
       {id:'P-002',agent:'Gemini CLI',agentId:'AI-006',prompt:'Review this deployment configuration for security issues.',files:'deployment-config.yaml, .env.example',classification:'Credentials & Secrets',computer:'MAC-ENG-010',time:'May 31, 2026 09:36'}
     ];
-    document.getElementById('globalPromptRows').innerHTML = GLOBAL_PROMPTS.map(p => `<tr onclick="location.href='prompt-details.html?agent=${p.agentId}&prompt=${p.id}'"><td><i class="fa fa-robot" style="color:#1a73e8;margin-right:7px"></i>${p.agent}</td><td class="prompt-cell">${p.prompt}</td><td>${p.files}</td><td><span class="global-classification">${p.classification}</span></td><td>${p.computer}</td><td style="white-space:nowrap;color:#6b7280">${p.time}</td></tr>`).join('');
+    function renderGlobalPrompts(){const term=(document.getElementById('promptSearch').value||'').toLowerCase();const rows=GLOBAL_PROMPTS.filter(p=>`${p.agent} ${p.prompt} ${p.files} ${p.computer}`.toLowerCase().includes(term));document.getElementById('globalPromptRows').innerHTML=rows.length?rows.map(p=>`<tr onclick="location.href='prompt-details.html?agent=${p.agentId}&prompt=${p.id}'"><td><i class="fa fa-robot" style="color:#1a73e8;margin-right:7px"></i>${p.agent}</td><td class="prompt-cell">${p.prompt}</td><td>${p.files}</td><td><span class="global-classification">${p.classification}</span></td><td>${p.computer}</td><td style="white-space:nowrap;color:#6b7280">${p.time}</td></tr>`).join(''):'<tr><td colspan="6" style="text-align:center;padding:32px;color:#8b95a5">No prompt activity matches the current search or filter.</td></tr>';}
+    renderGlobalPrompts();
   </script>
 </body>
 </html>

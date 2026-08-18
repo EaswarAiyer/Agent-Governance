@@ -25,7 +25,7 @@ navigates_to:
 > [!info] Related specifications
 > **Map:** [[AI-Governance-Map|AI Governance Specification Map]]
 > **Features:** [[features/endpoint/ai-governance/endpoint-coverage/feature|Endpoint Coverage]] · [[features/endpoint/ai-governance/policy-control/feature|Policy Control]] · [[features/endpoint/ai-governance/policy-deployment/feature|Policy Deployment]] · [[features/endpoint/ai-governance/rbac/feature|Role-Based Access]]
-> **Workflows:** [[workflows/endpoint/ai-governance/inventory-refresh|Inventory Refresh]] · [[workflows/endpoint/ai-governance/effective-policy-resolve|Effective Policy Resolution]] · [[workflows/endpoint/ai-governance/authorize-access|Access Authorization]]
+> **Workflows:** [[workflows/endpoint/ai-governance/scan-flow|AI Agent Scan Flow]] · [[workflows/endpoint/ai-governance/effective-policy-resolve|Effective Policy Resolution]] · [[workflows/endpoint/ai-governance/authorize-access|Access Authorization]]
 > **Navigation:** [[pages/endpoint/ai-governance/endpoints|Endpoints]] · [[pages/endpoint/ai-governance/agent-details|Agent Details]] · [[pages/endpoint/ai-governance/policy-details|Policy Details]]
 
 ## Purpose
@@ -55,7 +55,7 @@ Explain an endpoint's installed AI agents, applied policies, and final merged co
 - Requires AI Agent Policy Read; without it the section is empty/hidden and no underlying rows are returned.
 
 ### Merged Effective Policy
-- Displays: the final effective result for every supported control field and explains restrictive precedence.
+- Displays: the final effective result for every supported control field and explains additive allow precedence.
 - Controls: read-only.
 - Requires AI Agent Policy Read; without it the merged result is not returned.
 - The merged section does not add field-level contributing-policy provenance or deployment history; applied policies remain listed in their separate section.
@@ -70,7 +70,7 @@ Explain an endpoint's installed AI agents, applied policies, and final merged co
 | Installed-agents section | Installed AI Agents |
 | Applied-policies section | Applied AI Agent Policies |
 | Merged-policy section | Merged Effective Policy |
-| Merged-policy description | Final controls calculated from all successfully applied AI-agent policies. More restrictive settings take precedence. |
+| Merged-policy description | Final controls reported by the endpoint after combining all successfully applied AI-agent policies. Allow-listed settings take precedence; Strict takes precedence when resolving a mode. |
 
 ### Summary labels
 | Label | Content |
@@ -117,7 +117,7 @@ Use a read-only label-and-value layout rather than a data table. Show each suppo
 - Available when: user has AI Agent Policy Read or higher.
 - Triggers: no backend workflow; navigation reads the existing policy.
 - UX feedback: navigate immediately.
-- On success: open `page.endpoint.ai-governance.policy-details` in view/edit mode according to permission.
+- On success: open `page.endpoint.ai-governance.policy-details` as a read-only summary.
 - On failure: show permission or not-found feedback.
 
 ## States

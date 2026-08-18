@@ -37,9 +37,9 @@
       <div class="body">
         <a class="back-link" href="overview.html#discoveredAgents"><i class="fa fa-arrow-left"></i>Back to Overview</a>
         <section class="card">
-          <div class="tab-bar"><button class="tab active" data-tab="computers">Installed computers</button><button class="tab" data-tab="prompts">Prompt log</button></div>
-          <div id="computersTab"><div class="card-header"><span class="card-title">Installed computers</span><span class="computer-total"><strong id="computerCount">0</strong> computers</span></div><div class="table-wrap"><table><thead><tr><th>Computer name</th><th>Operating system</th><th>Logged-in user</th><th>Install location</th><th>Agent version</th></tr></thead><tbody id="computerRows"></tbody></table></div></div>
-          <div id="promptsTab" style="display:none"><div class="card-header"><span class="card-title">Prompt log</span><span class="computer-total"><strong id="promptCount">0</strong> prompts</span></div><div class="table-wrap"><table><thead><tr><th>Prompt</th><th>Attached files</th><th>Data classification</th><th>Computer</th><th>Time</th></tr></thead><tbody id="promptRows"></tbody></table></div></div>
+          <div class="tab-bar"><button class="tab active" data-tab="computers">Installed Computers</button><button class="tab" data-tab="prompts">Prompt Log</button></div>
+          <div id="computersTab"><div class="card-header"><span class="card-title">Installed Computers</span><span class="computer-total"><strong id="computerCount">0</strong> computers</span></div><div class="table-wrap"><table><thead><tr><th>Computer Name</th><th>Operating System</th><th>Last Logged-in User</th><th>Last Contact Time</th></tr></thead><tbody id="computerRows"></tbody></table></div></div>
+          <div id="promptsTab" style="display:none"><div class="card-header"><span class="card-title">Prompt Log</span><span class="computer-total"><strong id="promptCount">0</strong> prompts</span></div><div class="table-wrap"><table><thead><tr><th>Prompt</th><th>Attached Files</th><th>Data Classification</th><th>Computer</th><th>Time</th></tr></thead><tbody id="promptRows"></tbody></table></div></div>
         </section>
       </div>
     </main>
@@ -67,7 +67,7 @@
     document.getElementById('crumbName').textContent = agent.name;
     document.getElementById('agentPublisher').textContent = agent.provider;
     document.getElementById('computerCount').textContent = agent.computers.length;
-    document.getElementById('computerRows').innerHTML = agent.computers.length ? agent.computers.map(c => `<tr><td class="computer-name"><i class="fa fa-desktop"></i>${c[0]}</td><td>${c[1]}</td><td>${c[2]}</td><td style="font-family:monospace;font-size:12px">${c[3]}</td><td><span class="department">${c[4]}</span></td></tr>`).join('') : '<tr><td class="empty" colspan="5"><i class="fa fa-desktop"></i>No managed computers found for this agent.</td></tr>';
+    document.getElementById('computerRows').innerHTML = agent.computers.length ? agent.computers.map((c,index) => `<tr class="clickable" onclick="location.href='endpoint-details.html?endpoint=EP-${String(index+1).padStart(3,'0')}'"><td class="computer-name"><i class="fa fa-desktop"></i>${c[0]}</td><td>${c[1]}</td><td>${c[2]}</td><td>${index%2?'18 minutes ago':'6 minutes ago'}</td></tr>`).join('') : '<tr><td class="empty" colspan="4"><i class="fa fa-desktop"></i>No installations detected for this AI agent.</td></tr>';
     document.getElementById('promptCount').textContent = prompts.length;
     document.getElementById('promptRows').innerHTML = prompts.map(p => `<tr class="clickable" onclick="location.href='prompt-details.html?agent=${agentId}&prompt=${p.id}'"><td class="prompt-preview">${p.text}</td><td>${p.files.join(', ')}</td><td><span class="classification">${p.classification}</span></td><td>${p.computer}</td><td class="last-seen">${p.time}</td></tr>`).join('');
     document.querySelectorAll('.tab').forEach(tab => tab.addEventListener('click', () => { const promptsActive = tab.dataset.tab === 'prompts'; document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t === tab)); document.getElementById('computersTab').style.display = promptsActive ? 'none' : 'block'; document.getElementById('promptsTab').style.display = promptsActive ? 'block' : 'none'; }));

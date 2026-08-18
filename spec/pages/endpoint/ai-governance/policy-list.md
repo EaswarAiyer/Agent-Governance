@@ -13,6 +13,7 @@ workflows:
   - workflow.endpoint.ai-governance.authorize-access
 navigates_to:
   - page.endpoint.ai-governance.policy-details
+  - page.endpoint.ai-governance.policy-editor
   - page.endpoint.ai-governance.overview
 ---
 
@@ -22,7 +23,7 @@ navigates_to:
 > **Map:** [[AI-Governance-Map|AI Governance Specification Map]]
 > **Features:** [[features/endpoint/ai-governance/policy-control/feature|Policy Control]] · [[features/endpoint/ai-governance/rbac/feature|Role-Based Access]]
 > **Workflows:** [[workflows/endpoint/ai-governance/policy-save|Policy Save]] · [[workflows/endpoint/ai-governance/authorize-access|Access Authorization]]
-> **Navigation:** [[pages/endpoint/ai-governance/policy-details|Policy Details]] · [[pages/endpoint/ai-governance/overview|Overview]]
+> **Navigation:** [[pages/endpoint/ai-governance/policy-details|Policy Details]] · [[pages/endpoint/ai-governance/policy-editor|Policy Editor]] · [[pages/endpoint/ai-governance/overview|Overview]]
 
 ## Purpose
 List AI-agent policies and provide OS-specific creation and modification entry points.
@@ -60,7 +61,7 @@ The table columns must appear in this order.
 
 | # | Column header | Content |
 |---:|---|---|
-| 1 | Policy Name | Policy name; clickable to open Policy Details. |
+| 1 | Policy Name | Policy name; clickable to open the read-only Policy Details summary. |
 | 2 | OS Platform | Windows, Mac, or Linux. |
 | 3 | Mode | Saved Agent Enforcement Mode. |
 | 4 | Modified By | User who last modified the policy. |
@@ -82,14 +83,14 @@ The table columns must appear in this order.
 - Available when: user has AI Agent Policy Write or Full.
 - Triggers: begins `workflow.endpoint.ai-governance.policy-save` after editing.
 - UX feedback: require platform selection.
-- On success: open `page.endpoint.ai-governance.policy-details` as a new policy.
+- On success: open `page.endpoint.ai-governance.policy-editor` as a new policy.
 - On failure: remain on the list and explain the error.
 
 ### Modify policy
 - Available when: user has AI Agent Policy Write or Full.
 - Triggers: `workflow.endpoint.ai-governance.policy-save` when saved.
-- UX feedback: open the selected policy.
-- On success: return to the updated list after save.
+- UX feedback: open the selected policy in the editor.
+- On success: open the updated policy summary after save.
 - On failure: preserve unsaved edits on details.
 
 ### Delete policy
@@ -122,5 +123,6 @@ The table columns must appear in this order.
 - A policy referenced by one or more deployment tasks cannot be deleted; the user must first remove or change those mappings.
 
 ## Navigation
-- Policy/create/modify -> `page.endpoint.ai-governance.policy-details`.
+- Policy name -> `page.endpoint.ai-governance.policy-details`.
+- Create/Modify -> `page.endpoint.ai-governance.policy-editor`.
 - Breadcrumb -> `page.endpoint.ai-governance.overview`.

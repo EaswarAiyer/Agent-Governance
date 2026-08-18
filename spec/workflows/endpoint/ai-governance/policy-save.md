@@ -11,73 +11,23 @@ features:
 pages:
   - page.endpoint.ai-governance.policy-list
   - page.endpoint.ai-governance.policy-details
+  - page.endpoint.ai-governance.policy-editor
 ---
 
 # Create or Modify an AI Agent Policy
 
-> [!info] Related specifications
-> **Map:** [[AI-Governance-Map|AI Governance Specification Map]]
-> **Features:** [[features/endpoint/ai-governance/policy-control/feature|Policy Control]] · [[features/endpoint/ai-governance/rbac/feature|Role-Based Access]]
-> **Pages:** [[pages/endpoint/ai-governance/policy-list|Policy List]] · [[pages/endpoint/ai-governance/policy-details|Policy Details]]
-
 ## Purpose
-Validate and persist a reusable, OS-specific AI-agent control and prompt-DLP policy.
-
-## Trigger
-A user with AI Agent Policy Write or Full selects Save policy on `page.endpoint.ai-governance.policy-details`.
-
-## Preconditions
-- The user has AI Agent Policy Write or Full; Read alone cannot submit a mutation.
-- The selected Data, Website, and Application Groups still exist and are accessible.
-- Every advanced rule references an agent currently in the Allow List.
-- Administrative-group support for shared CG/DCG access by scoped technicians is not available in the current release.
-
-## Inputs
-- All configurable policy fields are optional; the OS platform is established by the creation context.
-- Policy name and OS platform.
-- Allow List, Block List, and agent enforcement mode.
-- Auto-uninstallation setting.
-- Zero or more per-agent advanced execution rules.
-- Prompt collection setting, Data Groups, and DLP mode.
+Save an OS-specific AI-agent control and prompt-DLP policy.
 
 ## Flow
-### Client behavior
-1. Validate mutually exclusive agent lists, reference integrity, and platform-specific folder wildcard patterns against the supported set.
-2. When Strict agent mode has an empty Allow List, warn that all AI agents will be blocked; this warning does not prevent save.
-3. Submit the complete policy definition and, for modification, its identity/version.
-
-### Server behavior
-1. Authorize the mutation through `workflow.endpoint.ai-governance.authorize-access` and validate all identifiers and combinations.
-2. Reject allow/block overlap, advanced rules for non-allowlisted agents, and folder wildcard patterns unsupported by the policy OS.
-3. Persist the new policy or a new version of the existing policy; versioning is `[TBD]`.
-4. Record who modified the policy and when.
-5. Record successful create/modify operations in the Endpoint Central Action Log and aggregate operation success/failure through ME tracking without sensitive policy values.
-6. Return the saved identity and state.
-
-## Success state
-The policy list displays the saved policy with its platform, modes, counts/settings, modifier, and last-modified time.
-
-## Failure, retry, and recovery
-### Validation failure
-- Condition: Conflicting or invalid values, unsupported platform-specific wildcard patterns, or inaccessible references are submitted.
-- Behavior: Do not persist; return field-level errors.
-- Recovery: Preserve the draft and focus the first invalid section.
-
-### Concurrent modification
-- Condition: The submitted version is older than the current version.
-- Behavior: Do not overwrite silently.
-- Recovery: Conflict and merge behavior is `[TBD]`.
-
-## Edge cases
-- Empty Allow List in Strict mode blocks all agents; the client warns before save but does not reject the policy.
-- Empty Allow List in Audit mode does not block agents not on the Block List.
-- Turning prompt collection off disables dependent classifier and DLP controls.
-- Removing an allowlisted agent invalidates or removes its advanced rules.
+1. A technician with AI Agent Policy Write or Full configures the policy in Policy Editor.
+2. The editor validates Allow List and Block List overlap, advanced-rule references, group selections, and supported folder patterns.
+3. Strict mode with an empty Allow List warns that all AI agents will be blocked, but the policy can still be saved.
+4. The server validates the configuration, saves the policy, and records the modification details.
+5. The saved policy is available for deployment and opens as a read-only Policy Details summary.
+6. Any modification in associated policies should trigger the deployment.
 
 ## Related pages
-- `page.endpoint.ai-governance.policy-details` - Initiates and validates the save.
-- `page.endpoint.ai-governance.policy-list` - Shows the saved result.
-
-## Open questions
-- Are drafts, approvals, version history, and rollback required?
-- What happens to active deployments when an associated policy is edited?
+- `page.endpoint.ai-governance.policy-editor` - Creates and modifies the policy.
+- `page.endpoint.ai-governance.policy-details` - Shows the saved policy summary.
+- `page.endpoint.ai-governance.policy-list` - Lists saved policies.

@@ -10,11 +10,10 @@ features:
   - feature.endpoint.ai-governance.prompt-observability
   - feature.endpoint.ai-governance.rbac
 workflows:
-  - workflow.endpoint.ai-governance.policy-save
-  - workflow.endpoint.ai-governance.prompt-collect-classify
   - workflow.endpoint.ai-governance.authorize-access
 navigates_to:
   - page.endpoint.ai-governance.policy-list
+  - page.endpoint.ai-governance.policy-editor
 ---
 
 # AI Agent Policy Details
@@ -22,139 +21,90 @@ navigates_to:
 > [!info] Related specifications
 > **Map:** [[AI-Governance-Map|AI Governance Specification Map]]
 > **Features:** [[features/endpoint/ai-governance/policy-control/feature|Policy Control]] · [[features/endpoint/ai-governance/prompt-observability/feature|Prompt Monitoring and Classification]] · [[features/endpoint/ai-governance/rbac/feature|Role-Based Access]]
-> **Workflows:** [[workflows/endpoint/ai-governance/policy-save|Policy Save]] · [[workflows/endpoint/ai-governance/prompt-collect-classify|Prompt Collection and Classification]] · [[workflows/endpoint/ai-governance/authorize-access|Access Authorization]]
-> **Navigation:** [[pages/endpoint/ai-governance/policy-list|Policy List]]
+> **Workflows:** [[workflows/endpoint/ai-governance/authorize-access|Access Authorization]]
+> **Navigation:** [[pages/endpoint/ai-governance/policy-list|Policy List]] · [[pages/endpoint/ai-governance/policy-editor|Policy Editor]]
 
 ## Purpose
-Create or modify all control, execution, remediation, and prompt-DLP settings for one OS-specific AI-agent policy.
+Show the complete saved configuration of one OS-specific AI-agent policy without allowing inline edits.
 
 ## Access / roles
-- AI Agent Policy Read or higher for read-only access.
-- AI Agent Policy Write or Full for creation, duplication, and editable access, including auto-uninstallation configuration.
-- AI Agent Policy Full is required only for policy deletion, which is initiated from the policy list.
+- AI Agent Policy Read or higher for policy-summary access.
+- AI Agent Policy Write or Full for the Modify action, which opens `page.endpoint.ai-governance.policy-editor`.
+- AI Agent Policy Full is required for Delete, which is initiated from the policy list.
 - Referenced endpoints and reusable objects must remain within the technician's existing Endpoint Central scope; shared CG/DCG administrative-group support is not part of the current release.
 
 ## Entry points
-- `page.endpoint.ai-governance.policy-list` -> create for Windows/Mac/Linux or modify a row.
-- `page.endpoint.ai-governance.endpoint-details` -> open an applied policy.
+- `page.endpoint.ai-governance.policy-list` -> select a policy name.
+- `page.endpoint.ai-governance.endpoint-details` -> select an applied policy name.
+- `page.endpoint.ai-governance.deployment-details` -> select the associated policy name.
 
 ## Page structure
-### Policy Details
-- Displays/controls: policy name and fixed operating-system platform.
+### Policy identity
+- Displays: policy name, operating-system platform, Modified By, Last Modified, and Created Time.
+- Controls: Modify for users with AI Agent Policy Write or Full.
 
 ### Agent Control
-- Controls: searchable multi-select Allow List and Block List; Strict/Audit agent mode.
-- Strict: only Allow List agents run. Audit: Block List agents are blocked and all others run.
+- Displays: saved Allow List, Block List, and Agent Enforcement Mode.
 
 ### Auto Uninstallation
-- Controls: automatically remove detected Block List agents.
+- Displays: whether automatic removal of detected Block List agents is enabled.
 
 ### Advanced Execution Rules
-- Controls: add multiple rules; select one allowlisted agent; add folder paths; select Website Groups for domains and Application Groups for allowed child processes.
+- Displays: every saved rule with its allowlisted AI agent, accessible folders, Website Groups, and Application Groups.
 
 ### Prompt Monitoring & Classification
-- Controls: enable collection; searchable Data Groups; independent Strict/Audit DLP mode.
-- Collection includes available prompts, responses, attachments, reasoning summaries, and tool calls after deployment.
+- Displays: Prompt Data Collection status, selected Data Groups, and DLP Mode.
 
 ## UI content contract
 ### Page-level copy
 | Element | Final text |
 |---|---|
-| Create title | Create AI Agent Policy |
-| Modify title | Modify AI Agent Policy |
-| Page description | Configure AI-agent execution controls, resource access, remediation, and prompt monitoring. |
+| Page title | `{Policy Name}` |
+| Page description | Review the configured controls, access rules, remediation, and prompt monitoring for this policy. |
 | Back link | Back to Policies |
-| Primary action | Save Policy |
-| Secondary action | Cancel |
+| Primary action | Modify |
 
-### Section and field labels
-| Section | Field labels, in display order |
+### Summary sections and field labels
+| Section | Displayed fields, in order |
 |---|---|
-| Policy Details | Policy Name; Operating System |
+| Policy Details | Policy Name; Operating System; Modified By; Last Modified; Created Time |
 | Agent Control | Allow List; Block List; Agent Enforcement Mode |
 | Auto Uninstallation | Auto-uninstall Block List Agents |
 | Advanced Execution Rules | AI Agent; Accessible Folders; Website Groups; Application Groups |
 | Prompt Monitoring & Classification | Enable Prompt Data Collection; Data Groups to Monitor; DLP Mode |
 
-### Control options and actions
-| Control | Final text |
-|---|---|
-| Agent Enforcement Mode options | Strict; Audit |
-| DLP Mode options | Strict; Audit |
-| Advanced-rule action | Add Rule |
-| Advanced-rule removal | Remove Rule |
-| Allow List placeholder | Search AI agents |
-| Block List placeholder | Search AI agents |
-| Data Groups placeholder | Search data groups |
-| Website Groups placeholder | Search website groups |
-| Application Groups placeholder | Search application groups |
-
-### Helper text
-| Field | Final text |
-|---|---|
-| Allow List | AI agents approved to run on targeted endpoints. |
-| Block List | AI agents that must not run on targeted endpoints. |
-| Agent Strict | Only agents in the Allow List can run. If the Allow List is empty, all AI agents are blocked. |
-| Agent Audit | Agents in the Block List are blocked. All other AI agents can run. |
-| Auto-uninstall Block List Agents | Automatically remove detected AI agents included in the Block List. |
-| Advanced Execution Rules | Define folder, website-group, and child-process access for an allowlisted AI agent. |
-| Enable Prompt Data Collection | Collect supported prompts, responses, attachments, reasoning summaries, and tool calls after this policy is deployed. |
-| DLP Strict | Collect and classify prompt activity, and block transfers matching the selected Data Groups. |
-| DLP Audit | Collect and classify prompt activity without blocking transfers. |
-
-### Validation and state text
+### State text
 | Context | Final text |
 |---|---|
-| Strict empty-Allow-List warning | Strict mode with an empty Allow List will block all AI agents on targeted endpoints. |
-| Unsupported folder pattern | This folder pattern is not supported for `{Operating System}`. |
-| Agent in both lists | An AI agent cannot be included in both the Allow List and Block List. |
-| Rule agent unavailable | Select an agent from the Allow List. |
-| Save success | Policy saved successfully. |
-| Save error | Unable to save the policy. Review the highlighted fields and try again. |
-| Permission | You do not have permission to modify this policy. |
+| Empty Allow List | No AI agents are allowlisted. |
+| Empty Block List | No AI agents are blocklisted. |
+| No advanced rules | No advanced execution rules are configured. |
+| Prompt collection off | Prompt Data Collection is not enabled for this policy. |
+| Not found | The requested policy could not be found or is outside your scope. |
+| Permission | You do not have permission to view this policy. |
 
 ## User actions
-### Save policy
-- Available when: user has AI Agent Policy Write or Full and inputs are valid.
-- Triggers: `workflow.endpoint.ai-governance.policy-save`.
-- UX feedback: show submitting and field-level validation.
-- On success: return to `page.endpoint.ai-governance.policy-list` with saved confirmation.
-- On failure: preserve all edits and identify invalid sections.
-- Logging: record successful create or modify actions in the Endpoint Central Action Log and ME tracking; do not include sensitive policy values in telemetry.
-
-### Add or remove an advanced rule
-- Available when: an agent exists in the Allow List.
-- Triggers: no server workflow until Save.
-- UX feedback: update the draft immediately.
-- On success: rule remains in the draft.
-- On failure: explain invalid agent/group/folder input.
+### Modify policy
+- Available when: user has AI Agent Policy Write or Full.
+- Triggers: no backend workflow; navigation opens the existing saved definition in the editor.
+- UX feedback: navigate immediately.
+- On success: open `page.endpoint.ai-governance.policy-editor` for the selected policy.
+- On failure: show unavailable or permission feedback.
 
 ## States
 ### Loading
-- Prevent editing until policy and group references load.
+- Show summary skeletons until the saved policy loads.
 
 ### Empty
-- No configurable field is mandatory. A new policy may retain empty lists and unset optional settings; the default agent-enforcement and DLP modes remain `[TBD]`.
+- Show explicit empty configuration states for optional lists, rules, and prompt monitoring.
 
 ### Error
-- Preserve recoverable draft state and show retry.
+- Show retry without displaying stale or partial policy values as current.
 
 ### Permission / disabled
-- Users with AI Agent Policy Read see controls as read-only; users without Read are denied the page.
-- Classifier and DLP controls are disabled when prompt collection is off.
-
-## Validation and feedback
-- An agent cannot be in both Allow List and Block List.
-- Advanced rules can reference only current Allow List agents.
-- Selecting Strict agent mode with an empty Allow List is permitted, but the UI must warn that all AI agents will be blocked.
-- Folder wildcard syntax is platform-specific. Accept only the supported wildcard set for the policy OS and reject unsupported patterns with field-level feedback.
-- Accessible domains accept Website Groups only.
-- Allowed child processes accept Application Groups only.
-- Data classification accepts Data Groups only.
+- Users without AI Agent Policy Read are denied the page.
+- Hide Modify for Read-only users.
 
 ## Navigation
-- Save success/cancel/back -> `page.endpoint.ai-governance.policy-list`.
-
-## Open questions
-- What are the default agent-enforcement and DLP modes for a new policy?
-- Which folder wildcard patterns are supported on Windows, macOS, and Linux?
+- Modify -> `page.endpoint.ai-governance.policy-editor`.
+- Back/breadcrumb -> `page.endpoint.ai-governance.policy-list`.

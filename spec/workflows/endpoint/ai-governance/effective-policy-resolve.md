@@ -16,57 +16,17 @@ pages:
 
 # Resolve an Endpoint's Effective AI Policy
 
-> [!info] Related specifications
-> **Map:** [[AI-Governance-Map|AI Governance Specification Map]]
-> **Features:** [[features/endpoint/ai-governance/endpoint-coverage/feature|Endpoint Coverage]] · [[features/endpoint/ai-governance/policy-control/feature|Policy Control]] · [[features/endpoint/ai-governance/policy-deployment/feature|Policy Deployment]] · [[features/endpoint/ai-governance/rbac/feature|Role-Based Access]]
-> **Page:** [[pages/endpoint/ai-governance/endpoint-details|Endpoint Details]]
-
 ## Purpose
-Produce one deterministic set of final AI-agent and prompt-DLP controls from all policies successfully applied to an endpoint.
-
-## Trigger
-The workflow runs when an endpoint's applied-policy set or any contributing policy version changes, and when endpoint details require a current effective-policy view.
-
-## Preconditions
-- Contributing policies are valid and applicable to the endpoint platform.
-- Only successfully applied policy versions participate; handling of pending/failed records is `[TBD]`.
-
-## Inputs
-- Endpoint identity and platform.
-- Applied policy identities, versions, and complete control definitions.
+Have an endpoint merge all successfully applied AI-agent policies and report the final policy to the server for technician visibility.
 
 ## Flow
-### Server behavior
-1. Load all applicable policy versions for the endpoint.
-2. Choose Strict when any contributing policy uses Strict agent mode.
-3. Union Block Lists; blocking takes precedence over allowing.
-4. Restrict permitted resources to values common to applicable policies.
-5. Enable auto-uninstallation when any contributing policy enables it.
-6. Enable prompt collection when any contributing policy enables it.
-7. Choose Strict DLP when any contributing prompt policy uses Strict; union monitored Data Groups.
-8. Persist or return the final effective value for every supported control field. Keep the applied-policy list separate; do not require field-level merge provenance or deployment history in the merged result.
-9. When serving an interactive endpoint request, return the result only with AI Agent Policy Read or higher; otherwise `workflow.endpoint.ai-governance.authorize-access` projects the policy count to `0` and returns no applied/merged policy detail.
-
-### Agent behavior
-If effective resolution occurs on the agent instead, the division of responsibility and signed input format are `[TBD]`. The prototype represents a server-readable result.
-
-## Success state
-A deterministic effective policy containing the final result for every supported control field is available for the endpoint, and each installed agent can be labeled Allowed, Blocked, or Unmanaged.
-
-## Failure, retry, and recovery
-### Missing or invalid contributing policy
-- Condition: A referenced policy/version cannot be loaded or validated.
-- Behavior: Do not silently omit the policy; expose an inconsistent state.
-- Recovery: Reconcile deployment records and recompute.
-
-## Edge cases
-- No policies results in an Unmanaged endpoint.
-- Empty intersection of permitted resources means no resource in that category is allowed.
-- An agent present in both effective Allow and Block sets is Blocked.
-- Strict mode with an empty effective Allow List blocks all agents.
+1. The server delivers the successfully applied, platform-compatible policy definitions to the endpoint.
+2. The endpoint combines Allow Lists, Block Lists, accessible folders, Website Groups, Application Groups, and Data Groups additively.
+3. When an agent appears in both lists, the endpoint applies allow precedence: it remains allowed and is removed from the effective Block List.
+4. The endpoint resolves Agent Enforcement Mode and DLP Mode as Strict when any contributing policy is Strict; otherwise it resolves them as Audit.
+5. The endpoint enables auto-uninstallation and Prompt Data Collection when any contributing policy enables them.
+6. The endpoint reports the merged policy, contributing policy versions, and resolution status to the server.
+7. The server stores the reported result and returns it to technicians with AI Agent Policy Read or higher.
 
 ## Related pages
-- `page.endpoint.ai-governance.endpoint-details` - Displays contributing and effective controls.
-
-## Open questions
-- Are all controls merged using the prototype's restrictive precedence, or can policies have priority/order?
+- `page.endpoint.ai-governance.endpoint-details` - Shows the endpoint-reported final policy.

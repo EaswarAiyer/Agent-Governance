@@ -18,7 +18,7 @@ pages:
 
 > [!info] Related specifications
 > **Map:** [[AI-Governance-Map|AI Governance Specification Map]]
-> **Workflows:** [[workflows/endpoint/ai-governance/inventory-refresh|Inventory Refresh]] · [[workflows/endpoint/ai-governance/effective-policy-resolve|Effective Policy Resolution]]
+> **Workflows:** [[workflows/endpoint/ai-governance/scan-flow|AI Agent Scan Flow]] · [[workflows/endpoint/ai-governance/effective-policy-resolve|Effective Policy Resolution]]
 > **Pages:** [[pages/endpoint/ai-governance/overview|Overview]] · [[pages/endpoint/ai-governance/endpoints|Endpoints]] · [[pages/endpoint/ai-governance/endpoint-details|Endpoint Details]]
 
 ## Problem
@@ -48,7 +48,7 @@ The product identifies endpoints with AI agents, protected endpoints, installed 
 An endpoint is “with AI agents” when its permission-projected installed-agent count is greater than zero. An endpoint is “protected” when its permission-projected applied-policy count is greater than zero. Without the corresponding Read permission, the server returns `0`, empty detail collections, and no matching filter rows instead of exposing the underlying value. The merged effective policy is explanatory and read-only, showing the final resolved result for every supported control field. Applied policies are listed separately; field-level merge provenance and deployment history are not part of the merged view. MSP calculations run inside one customer's context. Summary Server exposes probe-level handling only in the current scope.
 
 ## Workflows
-- `workflow.endpoint.ai-governance.inventory-refresh` - Supplies endpoint and agent state.
+- `workflow.endpoint.ai-governance.inventory-refresh` - Supplies endpoint and agent state from endpoint scans.
 - `workflow.endpoint.ai-governance.effective-policy-resolve` - Calculates final endpoint controls.
 
 ## Pages

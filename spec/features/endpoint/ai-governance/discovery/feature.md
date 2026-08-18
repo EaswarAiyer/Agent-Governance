@@ -16,14 +16,14 @@ pages:
 
 > [!info] Related specifications
 > **Map:** [[AI-Governance-Map|AI Governance Specification Map]]
-> **Workflow:** [[workflows/endpoint/ai-governance/inventory-refresh|Inventory Refresh]]
+> **Workflow:** [[workflows/endpoint/ai-governance/scan-flow|AI Agent Scan Flow]]
 > **Pages:** [[pages/endpoint/ai-governance/overview|Overview]] · [[pages/endpoint/ai-governance/agent-details|Agent Details]]
 
 ## Problem
 Administrators need to know which AI agents exist across managed computers and where each agent is installed.
 
 ## Outcome
-The product presents a current, searchable inventory of discovered AI agents and the endpoints, versions, and install locations associated with each agent.
+The product presents a current, searchable inventory of discovered AI agents and the endpoints associated with each agent.
 
 ## Scope
 ### In scope
@@ -47,7 +47,7 @@ The product presents a current, searchable inventory of discovered AI agents and
 Overview and Discovery are a single experience named Overview. Selecting an agent opens its dedicated details page rather than a side panel. Governance status is informational only; search and governance-status filters change the visible inventory without mutating agent or policy state. On upgrade, discovery begins automatically, and the AI Governance tab carries a New indicator with an informational introduction box.
 
 ## Workflows
-- `workflow.endpoint.ai-governance.inventory-refresh` - Supplies agent and installation inventory.
+- `workflow.endpoint.ai-governance.inventory-refresh` - Synchronizes Crawler rules, scans agents, and supplies agent and installation inventory.
 
 ## Pages
 - `page.endpoint.ai-governance.overview` - Presents KPIs and discovered agents.

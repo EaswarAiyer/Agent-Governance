@@ -406,8 +406,8 @@
         <div class="policy-editor" id="policyEditor"></div>
       </section>
       <section class="policy-table-manager">
-        <div class="policy-table-toolbar"><strong>All Policies</strong><div class="policy-create"><button class="new-profile-btn" onclick="toggleTableCreate(event)"><i class="fa fa-plus"></i> Create policy <i class="fa fa-chevron-down" style="font-size:9px"></i></button><div class="policy-create-menu" id="tableCreateMenu"><button onclick="openNewPolicy('Windows')"><i class="fa fa-windows"></i> Windows</button><button onclick="openNewPolicy('Mac')"><i class="fa fa-apple"></i> Mac</button><button onclick="openNewPolicy('Linux')"><i class="fa fa-linux"></i> Linux</button></div></div></div>
-        <div class="table-wrap"><table class="data-table"><thead><tr><th>Policy Name</th><th>OS Platform</th><th>Mode</th><th>Allow List</th><th>Block List</th><th>Auto-uninstall</th><th>Modified By</th><th>Last Modified</th><th>Action</th></tr></thead><tbody id="policyTableBody"></tbody></table></div>
+        <div class="policy-table-toolbar"><strong>All Policies</strong><div class="policy-create"><button class="new-profile-btn" onclick="toggleTableCreate(event)"><i class="fa fa-plus"></i> Create Policy <i class="fa fa-chevron-down" style="font-size:9px"></i></button><div class="policy-create-menu" id="tableCreateMenu"><button onclick="openNewPolicy('Windows')"><i class="fa fa-windows"></i> Windows</button><button onclick="openNewPolicy('Mac')"><i class="fa fa-apple"></i> Mac</button><button onclick="openNewPolicy('Linux')"><i class="fa fa-linux"></i> Linux</button></div></div></div>
+        <div class="table-wrap"><table class="data-table"><thead><tr><th>Policy Name</th><th>OS Platform</th><th>Mode</th><th>Modified By</th><th>Last Modified</th><th>Action</th></tr></thead><tbody id="policyTableBody"></tbody></table></div>
       </section>
 
     </main>
@@ -738,12 +738,13 @@
   </script>
   <script>
     function policyUrl(id, platform='Windows'){ return `policy-details.html?policy=${encodeURIComponent(id)}&platform=${encodeURIComponent(platform)}`; }
+    function policyEditorUrl(id, platform='Windows'){ return `policy-editor.html?policy=${encodeURIComponent(id)}&platform=${encodeURIComponent(platform)}`; }
     function renderPolicyTable(){
-      document.getElementById('policyTableBody').innerHTML = AI_POLICIES.map(p => `<tr><td><a class="policy-link" href="${policyUrl(p.id,p.platform)}"><i class="fa ${p.platform === 'Mac' ? 'fa-apple' : p.platform === 'Linux' ? 'fa-linux' : 'fa-windows'}" style="margin-right:7px;color:#6b7280"></i>${p.name}</a></td><td>${p.platform}</td><td><span class="mode-chip ${p.mode === 'audit' ? 'audit' : ''}">${p.mode}</span></td><td>${p.allow.length}</td><td>${p.block.length}</td><td>${p.uninstall ? '<span style="color:#2e7d32;font-weight:600">Enabled</span>' : '<span style="color:#6b7280">Disabled</span>'}</td><td>easwar</td><td>Jun 2, 2026 14:30</td><td><div class="action-menu" id="policy-action-${p.id}"><button class="action-menu-button" onclick="togglePolicyAction('${p.id}',event)" aria-label="Actions">•••</button><div class="action-popup"><button onclick="location.href='${policyUrl(p.id,p.platform)}'"><i class="fa fa-pen" style="margin-right:6px"></i>Modify</button></div></div></td></tr>`).join('');
+      document.getElementById('policyTableBody').innerHTML = AI_POLICIES.map(p => `<tr><td><a class="policy-link" href="${policyUrl(p.id,p.platform)}"><i class="fa ${p.platform === 'Mac' ? 'fa-apple' : p.platform === 'Linux' ? 'fa-linux' : 'fa-windows'}" style="margin-right:7px;color:#6b7280"></i>${p.name}</a></td><td>${p.platform}</td><td><span class="mode-chip ${p.mode === 'audit' ? 'audit' : ''}">${p.mode}</span></td><td>easwar</td><td>Jun 2, 2026 14:30</td><td><div class="action-menu" id="policy-action-${p.id}"><button class="action-menu-button" onclick="togglePolicyAction('${p.id}',event)" aria-label="Actions">•••</button><div class="action-popup"><button onclick="location.href='${policyEditorUrl(p.id,p.platform)}'"><i class="fa fa-pen" style="margin-right:6px"></i>Modify</button></div></div></td></tr>`).join('');
     }
     function togglePolicyAction(id,event){ event.stopPropagation(); document.querySelectorAll('.action-menu.open').forEach(el => el.id !== `policy-action-${id}` && el.classList.remove('open')); document.getElementById(`policy-action-${id}`).classList.toggle('open'); }
     function toggleTableCreate(event){ event.stopPropagation(); document.getElementById('tableCreateMenu').classList.toggle('open'); }
-    function openNewPolicy(platform){ location.href = `policy-details.html?platform=${encodeURIComponent(platform)}&new=1`; }
+    function openNewPolicy(platform){ location.href = `policy-editor.html?platform=${encodeURIComponent(platform)}&new=1`; }
     document.addEventListener('click', () => { const menu = document.getElementById('tableCreateMenu'); if(menu) menu.classList.remove('open'); document.querySelectorAll('.action-menu.open').forEach(el => el.classList.remove('open')); });
     renderPolicyTable();
   </script>
