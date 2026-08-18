@@ -36,25 +36,24 @@
         </section>
         <section class="card" id="discoveredAgents">
           <div class="card-head"><div><div class="card-title">Discovered AI Agents</div><div class="card-sub">AI agents detected across managed endpoints. Select an agent to view its installed computers and prompt activity.</div></div><span class="agent-count"><strong id="visibleCount">8</strong> agents</span></div>
-          <div class="toolbar"><div class="search"><i class="fa fa-search"></i><input id="agentSearch" placeholder="Search AI agents or publishers" oninput="renderAgents()"></div><select id="statusFilter" onchange="renderAgents()"><option value="all">All statuses</option><option value="approved">Approved</option><option value="unreviewed">Unreviewed</option><option value="unauthorized">Unauthorized</option></select></div>
-          <div class="table-wrap"><table><thead><tr><th>AI Agent</th><th>Publisher</th><th>Detection Source</th><th>Endpoints</th><th>Governance Status</th><th>First Detected</th><th>Last Seen</th></tr></thead><tbody id="agentRows"></tbody></table></div>
+          <div class="toolbar"><div class="search"><i class="fa fa-search"></i><input id="agentSearch" placeholder="Search AI agents or publishers" oninput="renderAgents()"></div></div>
+          <div class="table-wrap"><table><thead><tr><th>AI Agent</th><th>Publisher</th><th>Endpoints</th></tr></thead><tbody id="agentRows"></tbody></table></div>
         </section>
       </div>
     </main>
   </div>
   <script>
     const discoveredAgents=[
-      {id:'AI-001',name:'GitHub Copilot',publisher:'Microsoft / OpenAI',source:'Installed software',endpoints:42,status:'approved',first:'Jan 18, 2026',last:'8 minutes ago'},
-      {id:'AI-002',name:'Claude Desktop',publisher:'Anthropic',source:'Software and process',endpoints:18,status:'approved',first:'Feb 4, 2026',last:'12 minutes ago'},
-      {id:'AI-003',name:'Cursor IDE',publisher:'Anysphere / OpenAI',source:'Portable application',endpoints:7,status:'unreviewed',first:'May 29, 2026',last:'18 minutes ago'},
-      {id:'AI-004',name:'Ollama',publisher:'Ollama (Local)',source:'Installed software',endpoints:3,status:'unreviewed',first:'May 30, 2026',last:'31 minutes ago'},
-      {id:'AI-005',name:'Continue.dev',publisher:'Anthropic / OpenAI',source:'Editor extension',endpoints:12,status:'unauthorized',first:'Mar 12, 2026',last:'22 minutes ago'},
-      {id:'AI-006',name:'Gemini CLI',publisher:'Google',source:'Software and process',endpoints:5,status:'unreviewed',first:'May 31, 2026',last:'44 minutes ago'},
-      {id:'AI-007',name:'LM Studio',publisher:'Hugging Face',source:'Installed software',endpoints:2,status:'unauthorized',first:'Apr 26, 2026',last:'1 hour ago'},
-      {id:'AI-008',name:'Codeium',publisher:'Codeium',source:'Software and extension',endpoints:9,status:'unreviewed',first:'Mar 8, 2026',last:'26 minutes ago'}
+      {id:'AI-001',name:'GitHub Copilot',publisher:'Microsoft / OpenAI',endpoints:42},
+      {id:'AI-002',name:'Claude Desktop',publisher:'Anthropic',endpoints:18},
+      {id:'AI-003',name:'Cursor IDE',publisher:'Anysphere / OpenAI',endpoints:7},
+      {id:'AI-004',name:'Ollama',publisher:'Ollama (Local)',endpoints:3},
+      {id:'AI-005',name:'Continue.dev',publisher:'Anthropic / OpenAI',endpoints:12},
+      {id:'AI-006',name:'Gemini CLI',publisher:'Google',endpoints:5},
+      {id:'AI-007',name:'LM Studio',publisher:'Hugging Face',endpoints:2},
+      {id:'AI-008',name:'Codeium',publisher:'Codeium',endpoints:9}
     ];
-    const statusLabels={approved:'Approved',unreviewed:'Unreviewed',unauthorized:'Unauthorized'};
-    function renderAgents(){const query=document.getElementById('agentSearch').value.trim().toLowerCase(),status=document.getElementById('statusFilter').value;const agents=discoveredAgents.filter(agent=>(status==='all'||agent.status===status)&&`${agent.name} ${agent.publisher}`.toLowerCase().includes(query));document.getElementById('visibleCount').textContent=agents.length;document.getElementById('agentRows').innerHTML=agents.length?agents.map(agent=>`<tr onclick="location.href='agent-details.html?agent=${agent.id}'"><td><span class="agent-name"><span class="agent-icon"><i class="fa fa-robot"></i></span>${agent.name}</span></td><td>${agent.publisher}</td><td><span class="source"><i class="fa fa-magnifying-glass"></i>${agent.source}</span></td><td><span class="number">${agent.endpoints}</span></td><td><span class="status ${agent.status}">${statusLabels[agent.status]}</span></td><td>${agent.first}</td><td>${agent.last}</td></tr>`).join(''):'<tr><td class="empty" colspan="7">No AI agents match the current filters.</td></tr>';}
+    function renderAgents(){const query=document.getElementById('agentSearch').value.trim().toLowerCase(),agents=discoveredAgents.filter(agent=>`${agent.name} ${agent.publisher}`.toLowerCase().includes(query));document.getElementById('visibleCount').textContent=agents.length;document.getElementById('agentRows').innerHTML=agents.length?agents.map(agent=>`<tr onclick="location.href='agent-details.html?agent=${agent.id}'"><td><span class="agent-name"><span class="agent-icon"><i class="fa fa-robot"></i></span>${agent.name}</span></td><td>${agent.publisher}</td><td><span class="number">${agent.endpoints}</span></td></tr>`).join(''):'<tr><td class="empty" colspan="3">No AI agents match the current search.</td></tr>';}
     renderAgents();
   </script>
 </body>
