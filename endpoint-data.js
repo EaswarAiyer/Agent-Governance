@@ -26,9 +26,9 @@
   });
   function endpointIds(from,to){return Array.from({length:to-from+1},(_,index)=>`EP-${String(from+index).padStart(3,'0')}`);}
   const deployments=[
-    {id:'DEP-001',name:'Engineering Windows rollout',policyId:'POL-001',targetIds:endpointIds(1,42),status:'In progress',lastModified:'Jun 2, 2026 02:30 PM',lastModifiedBy:'easwar',created:'May 28, 2026 10:15 AM'},
-    {id:'DEP-002',name:'Developer Mac pilot monitoring',policyId:'POL-002',targetIds:endpointIds(71,88),status:'Yet to start',lastModified:'Jun 1, 2026 11:45 AM',lastModifiedBy:'easwar',created:'May 30, 2026 04:20 PM'},
-    {id:'DEP-003',name:'Finance controls rollout',policyId:'POL-003',targetIds:endpointIds(43,54),status:'Completed',lastModified:'May 31, 2026 09:10 AM',lastModifiedBy:'security.admin',created:'May 24, 2026 03:05 PM'}
+    {id:'DEP-001',name:'Engineering Windows rollout',policyId:'POL-001',targetGroup:'Engineering Windows',targetIds:endpointIds(1,42),status:'In progress',lastModified:'Jun 2, 2026 02:30 PM',lastModifiedBy:'easwar',created:'May 28, 2026 10:15 AM'},
+    {id:'DEP-002',name:'Developer Mac pilot monitoring',policyId:'POL-002',targetGroup:'Developer Macs',targetIds:endpointIds(71,88),status:'Yet to start',lastModified:'Jun 1, 2026 11:45 AM',lastModifiedBy:'easwar',created:'May 30, 2026 04:20 PM'},
+    {id:'DEP-003',name:'Finance controls rollout',policyId:'POL-003',targetGroup:'Finance Windows',targetIds:endpointIds(43,54),status:'Completed',lastModified:'May 31, 2026 09:10 AM',lastModifiedBy:'security.admin',created:'May 24, 2026 03:05 PM'}
   ];
   window.ENDPOINT_AGENT_CATALOG=agents;
   window.ENDPOINT_POLICY_CATALOG=policies;
